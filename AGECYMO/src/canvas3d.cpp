@@ -282,7 +282,7 @@ Canvas3D::resizeGL(int width, int height)
   gluPerspective(_camera._fovy,
                  (double)width/(double)height,
                  0.1,
-                 100.0);
+                 200.0);
 }
 
 Renderer&
