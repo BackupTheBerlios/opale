@@ -385,9 +385,9 @@ void Curves::calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point)
 
 /**************************************************************
  *
- *  discretize the entiere figure (all the curves)
- *  @param nbSegments the number of segments between two control
- *   point of the network
+ *  discretize the entiere figure (all the curves).
+ *  @param nbSegments the number of segments of the global
+ *  network. we have to find a multiple of the number of curves.
  *  @return the list of points
  *
  *************************************************************/
@@ -395,6 +395,19 @@ std::vector<gml::Point3D> Curves::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
   std::vector<gml::Point3D> tmp;
+  int nbCurves = getNbCurves();
+  int result;
+
+  //find a multiple
+
+  result = nbSegments/nbCurves;
+  result = nbCurves*result;
+  while(result<nbSegments){
+    nbSegments+=1;
+    result = nbSegments/nbCurves;
+    result = nbCurves*result;
+  }
+  nbSegments = nbSegments/nbCurves;
 
   for(int i = 0; i<getNbCurves(); i++){
     tmp = _listOfCurves[i]->discretize(nbSegments);
