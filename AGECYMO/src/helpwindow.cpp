@@ -1,8 +1,12 @@
 #include "helpwindow.hpp"
 
 
-//most of this code has been taken from Qt example
-
+/**************************************************************
+ *
+ *  HelpWindow constructor
+ *  @param home the home url
+ *
+ *************************************************************/
 HelpWindow::HelpWindow(const QString& home)
 //    : QVBox()
     : QMainWindow()
@@ -67,25 +71,27 @@ HelpWindow::HelpWindow(const QString& home)
   
   button = new QToolButton( icon_home, tr("Home"), "", _browser, SLOT(home()), toolbar );
 
-  
-//   QFile file( home ); // Read the text from a file
-//   if ( file.open( IO_ReadOnly ) )
-//   {
-//     QTextStream stream( &file );
-//     _browser->setText( stream.read() );
-//   }
-
-//   file.close();
-
   setCentralWidget( _browser);
   resize(620, 700);
 }
 
+/**************************************************************
+ *
+ *  change the source
+ *  @param url the new url
+ *
+ *************************************************************/
 void
 HelpWindow::sourceChanged( const QString& url)
 {
 }
 
+/**************************************************************
+ *
+ *  redirection to a url
+ *  @param url the new url
+ *
+ *************************************************************/
 void
 HelpWindow::redirection( const QString& url )
 {
@@ -99,13 +105,22 @@ HelpWindow::redirection( const QString& url )
   file.close();
 }
 
-
+/**************************************************************
+ *
+ *  enable or disable backward
+ *
+ *************************************************************/
 void
 HelpWindow::setBackwardAvailable( bool b)
 {
     menuBar()->setItemEnabled( backwardId, b);
 }
 
+/**************************************************************
+ *
+ *  enable or disable forward
+ *
+ *************************************************************/
 void
 HelpWindow::setForwardAvailable( bool b)
 {

@@ -18,37 +18,64 @@
 #include <qmainwindow.h>
 #include <qstringlist.h>
 
-//class HelpWindow : public QVBox
+/******************************************************
+ *  derived from QMainWindow. help for user
+ *
+ ******************************************************/
 class HelpWindow : public QMainWindow
 {
   Q_OBJECT
   
   private:
-  QTextBrowser* _browser;
+  QTextBrowser* _browser; /**the text browser*/
+  QStringList history; /**the history*/
   
-  QStringList history;
-  
-  int backwardId, forwardId;
+  int backwardId; /**backwardId*/ 
+  int forwardId; /**forwardId*/
   
   public:
+
+  /**************************************************************
+   *
+   *  HelpWindow constructor
+   *  @param home the home url
+   *
+   *************************************************************/
   HelpWindow(const QString& home);
 
   public slots:
  
  
-  
+  /**************************************************************
+   *
+   *  redirection to a url
+   *  @param url the new url
+   *
+   *************************************************************/
   void redirection( const QString& url );
-
-//   void forward();
-
-//   void backward();
   
   private slots:
 
+  /**************************************************************
+   *
+   *  enable backward
+   *
+   *************************************************************/
   void setBackwardAvailable( bool );
 
+  /**************************************************************
+   *
+   *  enable or disable forward
+   *
+   *************************************************************/
   void setForwardAvailable( bool );
 
+  /**************************************************************
+   *
+   *  change the source
+   *  @param url the new url
+   *
+   *************************************************************/
   void sourceChanged( const QString& url ); 
 };
 
