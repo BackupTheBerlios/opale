@@ -11,7 +11,6 @@ Faces::Faces(std::vector<gml::Point3D> *points,
       _faces(faces)
   
 {
-//  std::cout << "liste de faces dans constructeur : " << *this << std::endl;
 }
 
 
@@ -25,24 +24,25 @@ Faces::~Faces()
 void
 Faces::render() const
 {
-
-//  std::cout << "dans faces render" << std::endl;
-
-  
-  int cpt = 0;
-
   std::vector<AbsFace*> faces = *_faces;
-
-//  std::cout << "liste de faces dans faces render : " << *this << std::endl;
-  
   std::vector<AbsFace*>::iterator i;  
-
-//  std::cout << "Premier point dans faces render :" << ((_points)[0])[0] << std::endl;
 
   for(i = faces.begin(); i != faces.end(); i++)
   {
     (*i)->render();
-    cpt++;
+  }  
+}
+
+
+void
+Faces::renderWithNormal() const
+{
+  std::vector<AbsFace*> faces = *_faces;
+  std::vector<AbsFace*>::iterator i;  
+
+  for(i = faces.begin(); i != faces.end(); i++)
+  {
+    (*i)->renderWithNormal();
   }  
 }
 
