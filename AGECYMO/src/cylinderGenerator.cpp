@@ -111,15 +111,16 @@ CylinderGenerator::profileToWayByIndex( const std::vector<Point3D> & profilePts,
   std::cout << "index calculé entier = "
             << static_cast<int>( round( index ) )
             << std::endl;
+
+  int index2 = static_cast<int>( round( index ) ); 
+
+  assert( index2 >= 0);
+  assert( index2 < _nbPtWay);
   
-  
-  return (static_cast<int>( round( index ) ) );
-  
-  //  return static_cast<int>( ( (profilePts[profileIndex][1] + 1) / 2.0 ) * (_nbPtWay-1) );
-  
+  return index2;
 }
 
-void
+bool
 CylinderGenerator::profileToWayByPoints( const std::vector<Point3D> & wayPts,
                                          const std::vector<Point3D> & profilePts,
                                          int profileIndex,
@@ -130,8 +131,21 @@ CylinderGenerator::profileToWayByPoints( const std::vector<Point3D> & wayPts,
   Point3D p = profilePts[profileIndex];
 
   double index = (_nbPtWay-1) * ( (p[1] - _minProfile) / (_maxProfile - _minProfile) );
+
   int  partieEntiere = static_cast<int>( floor(index) );
   double partieDecimale =  index - partieEntiere;
+
+  std::cout << "Dans profileToWayByPoints _nbPtWay = "<< _nbPtWay << std::endl;
+
+  if ( (partieEntiere+1) >= _nbPtWay)
+  {
+    return false;
+  }
+    
+  assert( partieEntiere >= 0);
+  assert( partieEntiere < _nbPtWay);
+  assert( (partieEntiere+1) < _nbPtWay);
+
   
     
   std::cout << "index calculé = "<< index << std::endl;
@@ -147,6 +161,8 @@ CylinderGenerator::profileToWayByPoints( const std::vector<Point3D> & wayPts,
   
   previous = position1;
   next = position2;
+
+  return true;
 }
 
 
@@ -197,19 +213,29 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
 //                        wayPts[i-1], wayPts[i], wayPts[i+1],
 //                        currentFrame);
 
+    
 //      startIndex = profileToWayByIndex(profilePts, i);
 
 //     computeFrenetFrame(previousFrame,
 //                        wayPts[startIndex-1], wayPts[startIndex], wayPts[startIndex+1],
 //                        currentFrame);
         
-    profileToWayByPoints( wayPts, profilePts, i,
-                          previous, current, next);
+    bool onMiddle = profileToWayByPoints( wayPts, profilePts, i,
+                                          previous, current, next) ;
 
-    computeFrenetFrame(previousFrame,
-                       previous, current, next,
-                       currentFrame);
-    
+    if (onMiddle)
+    {
+      computeFrenetFrame(previousFrame,
+                         previous, current, next,
+                         currentFrame);
+      
+    }
+    else
+    {
+      qDebug("Not on the MIDDLE");
+      lastFrenetFrame(wayPts[_nbPtWay-2], wayPts[_nbPtWay-1], currentFrame);
+    }
+        
     //Profile part
     computeProfileMatrix(profilePts, i, profileMatrix);
     computePointsAccordingToFrame(sectionPts, currentFrame, profileMatrix);

@@ -63,7 +63,7 @@ class CylinderGenerator
   int profileToWayByIndex( const std::vector<Point3D> & profilePts,
                          int profileIndex);
 
-  void profileToWayByPoints( const std::vector<Point3D> & wayPts,
+  bool profileToWayByPoints( const std::vector<Point3D> & wayPts,
                              const std::vector<Point3D> & profilePts,
                              int profileIndex,
                              Point3D & previous,
