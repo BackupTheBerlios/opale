@@ -46,17 +46,17 @@ Window3D::canvas()
 void
 Window3D::setCameraPosition(gml::Point3D const& new_position)
 {
-  _canvas->setCameraPosition(new_position);
+  // _canvas->setCameraPosition(new_position);
 }
 
 void
 Window3D::setCameraPosition(double px, double py, double pz)
 {
-  _canvas->setCameraPosition(px, py, pz);
+  //_canvas->setCameraPosition(px, py, pz);
 }
 
 void
 Window3D::setCameraUp(double upx, double upy, double upz)
 {
-  _canvas->setCameraUp( upx, upy, upz);
+  //_canvas->setCameraUp( upx, upy, upz);
 }
