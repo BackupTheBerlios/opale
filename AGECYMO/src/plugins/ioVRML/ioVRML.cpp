@@ -41,7 +41,7 @@ const char* GEOMETRY_PARAMETER    = "geometry";
 const char* INDEXED_FACE_SET_NODE = "IndexedFaceSet";
 const char* COORD_PARAMETER       = "coord";
 const char* COORDINATE_NODE       = "Coordinate";
-const char* POINT_PARAMETER       = "point";
+const char* POINT_PARAMETER       = " point";
 const char* COORD_INDEX_PARAMETER = "coordIndex";
 const char* SPACE                 = " ";
 
@@ -274,7 +274,7 @@ int load(MainWindow *mainW){
 	      p[0] = xValue;
 	      p[1] = yValue;
 	      p[2] = zValue;
-	      cout << "x=" << p[0] << "y=" << p[1] << "z=" << p[2] << endl;
+	      //cout << "x=" << p[0] << " y=" << p[1] << " z=" << p[2] << endl;
 	      listPoint->push_back(p);
 	      numCoord = 1;
 	      
@@ -304,7 +304,7 @@ int load(MainWindow *mainW){
       if (leftBracketPos != string::npos) {
 
 	string strTemp(allFile, leftBracketPos + strlen(L_SBRACKET), rightBracketPos-leftBracketPos-strlen(R_SBRACKET));
-	cout << "strTemp : " << strTemp << endl;
+	//cout << "strTemp : " << strTemp << endl;
 	listWords = searchWords(strTemp);
 
 	// Management of the last -1
@@ -330,11 +330,13 @@ int load(MainWindow *mainW){
 	    
 	    if (nbPointsIndex == 3) {
 	      t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
+	      //cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << endl;
 	      listFaces->push_back(t);
 	    }
 	    else {
 	      if (nbPointsIndex == 4) {
 		q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
+		//cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << " " << indexValues[3] << endl;
 		listFaces->push_back(q);
 	      }
 	      else {
@@ -361,212 +363,10 @@ int load(MainWindow *mainW){
 
 
   Faces* faces = new Faces(listPoint, listFaces);
-  //cout << "La face :" << endl << *f;
+  //cout << "La face :" << endl << *faces;
   mainW->setModel(*faces);
       
 
-  /*
-  // Using of the main window in order to enable the model access
-  //MainWindow *mainW = (MainWindow*)mainWindow[0];
-
-  // Variables declaration
-  string word;
-
-  int currentIndex;
-
-  double currentValue, xValue, yValue, zValue;
-
-  vector<int> indexValues;
-
-  int numCoord = 1, nbPointsIndex = 0;
-
-  vector<string> awaitedSequence1;
-  vector<string> awaitedSequence2;
-  vector<Point3D> *listPoint = new vector<Point3D>();
-  vector<AbsFace*> *listFaces = new vector<AbsFace*>();
-
-  int indexesTranslation = 0;
-
-
-  // User chooses a file in order to load a VRML model
-  QString fileName = QFileDialog::getOpenFileName(
-    ".",
-    "*.wrl",
-    mainW,
-    "VRML load dialog box",
-    "choose a name for VRML load" );
-
-  // If no name defined exit
-  if(fileName.isEmpty()){
-    return EXIT_FAILURE;
-  }
-
-  // Open the file
-  ifstream VRMLFile (fileName,ios::in);
-
-  Tria *t;
-  Quad *q;
-  Face *f;
-
-
-  // Making of awaited sequences
-  sequence1Construction(awaitedSequence1);
-  sequence2Construction(awaitedSequence2);
-
-  // If the file doesn't exist
-  if(!VRMLFile){ 
-    cerr << "File not found !" << endl; 
-    return EXIT_FAILURE;
-  } 
-
-  
-
-  // Reading of the file
-  while (!VRMLFile.eof()){ 
-    
-    VRMLFile >> word;
-
-    // When the first sequence is found
-    if (awaitedSequence1.size() == 1) {
-      
-      if (word != awaitedSequence1.front()) {
-
-        currentValue = atof(word.c_str());
-	
-        // Coordinate X management
-        if (numCoord == 1) {
-          xValue = currentValue;
-          numCoord++;
-        }
-        else {
-          // Coordinate Y management
-          if (numCoord == 2) {
-            yValue = currentValue;
-            numCoord++;
-          }
-          // Coordinate Z management 
-          else {
-            zValue = currentValue;
-            Point3D p;
-            p[0] = xValue;
-            p[1] = yValue;
-            p[2] = zValue;
-            cout << "x=" << p[0] << "y=" << p[1] << "z=" << p[2] << endl;
-            listPoint->push_back(p);
-            numCoord = 1;
-	
-          }
-        }
-      }
-    }
-    
-
-    // When the second sequence is found
-    if (awaitedSequence2.size() == 1) {
-     
-      
-      if (word != awaitedSequence2.front()) {
-      
-        currentIndex = atoi(word.c_str());
-	
-        if (currentIndex == -1) {
-
-          if (nbPointsIndex < 3) {
-            return EXIT_FAILURE;
-          }
-
-          // Moving of indexes
-          for (int i=0; i<=nbPointsIndex;i++) {
-            indexValues[i] += indexesTranslation;
-          }
-
-          if (nbPointsIndex == 3) {
-            t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
-            listFaces->push_back(t);
-          }
-          else {
-            if (nbPointsIndex == 4) {
-              q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
-              listFaces->push_back(q);
-            }
-            else {
-              f = new Face(&indexValues, listPoint, nbPointsIndex);
-              listFaces->push_back(f);
-            }
-          }
-
-          nbPointsIndex = 0;
-          indexValues.clear();
-	    
-        }
-        else {
-          indexValues.push_back(currentIndex);
-          nbPointsIndex++;
-        }
-	
-	
-      }
-    }
-    
-
-    if (word == awaitedSequence1.front()) {
-      awaitedSequence1.erase(awaitedSequence1.begin());
-    } 
-    
-    if (word == awaitedSequence2.front()) {
-      awaitedSequence2.erase(awaitedSequence2.begin());
-    }
-   
-    // If there are more one point coordinate declaration
-    if (awaitedSequence1.empty()) {
-      sequence1Construction(awaitedSequence1);
-    }
-
-    // If there are more one index declaration
-    if (awaitedSequence2.empty()) {
-
-
-      
-      // Management of the last index
-      if (nbPointsIndex > 3) {
-      
-	// Moving of indexes
-	for (int i=0; i<=nbPointsIndex;i++) {
-	  indexValues[i] += indexesTranslation;
-	}
-	
-	if (nbPointsIndex == 3) {
-	  t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
-	  listFaces->push_back(t);
-	}
-	else {
-	  if (nbPointsIndex == 4) {
-	    q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
-	    listFaces->push_back(q);
-	  }
-	  else {
-	    f = new Face(&indexValues, listPoint, nbPointsIndex);
-	    listFaces->push_back(f);
-	  }
-	}
-      
-      }
-      // Indexes management
-      indexesTranslation = indexesTranslation + listPoint->size();
-    
-      
-      sequence2Construction(awaitedSequence2);
-    }
-
-  } 
-
-  Faces* faces = new Faces(listPoint, listFaces);
-  //cout << "La face :" << endl << *f;
-  mainW->setModel(*faces);
-
-  qDebug("Fin de la methode LOAD du plugin VRML");
-  
-  */
   return EXIT_SUCCESS;
 }
 
