@@ -1,9 +1,18 @@
 #include "face.hpp"
 
-
-Face::Face(std::vector<int> *indexes, std::vector<gml::Point3D> *points, int numberOfPoints)
-    : AbsFace(points),
-      _numberOfPts(numberOfPoints)
+/**************************************************************
+ *
+ *  constructor for Face class
+ *  @param indexes the indexes of the face
+ *  @param points the points used in the face
+ *  @param numberOfPoints the number of points in the face
+ *
+ *************************************************************/
+Face::Face(std::vector<int> *indexes, 
+	   std::vector<gml::Point3D> *points, 
+	   int numberOfPoints)
+  : AbsFace(points),
+    _numberOfPts(numberOfPoints)
 {
   _indexPts = new int[numberOfPoints];
 
@@ -15,11 +24,21 @@ Face::Face(std::vector<int> *indexes, std::vector<gml::Point3D> *points, int num
   updateNormal();
 }
 
+/**************************************************************
+ *
+ *  destructor for Face class
+ *
+ *************************************************************/
 Face::~Face()
 {
   delete[] _indexPts;
 }
 
+/**************************************************************
+ *
+ *  draw the face in the openGL context
+ *
+ *************************************************************/
 void
 Face::render()
 {
@@ -44,7 +63,11 @@ Face::render()
   glEnd();
 }
 
-
+/**************************************************************
+ *
+ *  draw the normals of the face
+ *
+ *************************************************************/
 void
 Face::renderNormal()
 {
@@ -65,7 +88,11 @@ Face::renderNormal()
   
 }
 
-
+/**************************************************************
+ *
+ *  draw the face in the openGL context with the normals
+ *
+ *************************************************************/
 void
 Face::renderWithNormal()
 {
@@ -73,7 +100,13 @@ Face::renderWithNormal()
   renderNormal();
 }
 
-
+/**************************************************************
+ *
+ *  define if the face contains a vertex
+ *  @param vertexIndex the index of the vertex
+ *  @return true if the quad contains the vertex, false else
+ *
+ *************************************************************/
 bool
 Face::containVertex(int vertexIndex) const
 {
@@ -88,7 +121,12 @@ Face::containVertex(int vertexIndex) const
   return false;
 }
 
-
+/**************************************************************
+ *
+ *  returns all the indexes of the face
+ *  @return a vector of indexes
+ *
+ *************************************************************/
 std::vector<int>*
 Face::getIndexes()
 {
@@ -104,6 +142,11 @@ Face::getIndexes()
   return indices;
 }
 
+/**************************************************************
+ *
+ *  redefine the display stream operator for debug
+ *
+ *************************************************************/
 std::ostream&
 operator<<(std::ostream& os, Face const& f)
 {
@@ -129,6 +172,11 @@ operator<<(std::ostream& os, Face const& f)
 // and compute the normal for each triangle and take the average normal of thoses
 // triangles
 
+/**************************************************************
+ *
+ *  update the normals of the face
+ *
+ *************************************************************/
 void
 Face::updateNormal()
 {
