@@ -16,7 +16,12 @@ class Renderer
   Faces * _faces;
   
   public:
-  enum RenderMode {WF, GOURAUD};
+  enum RenderMode
+  {WF, //wireframe
+   FLAT, //no shading
+   GOURAUD, //gourad shading
+   WF_HDLR, //Wireframe with hidden line removal
+  };
   
   Renderer();
   ~Renderer();
