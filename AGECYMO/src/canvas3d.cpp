@@ -475,6 +475,7 @@ Canvas3D::accelEvent(int id)
     
     case ENABLE_DRAW_BOUNDING_BOX:
     {
+      _mw->getEventsWindow().writeComments("bounding box display toggled");
       _boundingBoxEnabled = !_boundingBoxEnabled;
       updateGL();
       break;
@@ -482,6 +483,7 @@ Canvas3D::accelEvent(int id)
     
     case ENABLE_DRAW_AXES:
     {
+      _mw->getEventsWindow().writeComments("axes diplay toggled");
       _axesEnabled = !_axesEnabled;
       updateGL();
       break;
@@ -489,6 +491,7 @@ Canvas3D::accelEvent(int id)
 
     case ENABLE_DRAW_FPS:
     {
+      _mw->getEventsWindow().writeComments("fps informations toggled");
       _fpsEnabled = !_fpsEnabled;
       updateGL();
       break;
@@ -496,6 +499,7 @@ Canvas3D::accelEvent(int id)
 
     case ENABLE_DRAW_INFO_MODEL:
     {
+      _mw->getEventsWindow().writeComments("informations toggled");
       _infoEnabled = !_infoEnabled;
       updateGL();
       break;
@@ -503,6 +507,7 @@ Canvas3D::accelEvent(int id)
 
     case WIREFRAME_RENDERING_MODE:
     {
+      _mw->getEventsWindow().writeComments("wireframe rendering mode");
       _renderer.setRenderMode(Renderer::WF);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -519,6 +524,7 @@ Canvas3D::accelEvent(int id)
     
     case FLAT_RENDERING_MODE:
     {
+      _mw->getEventsWindow().writeComments("flat rendering mode");
       _renderer.setRenderMode(Renderer::FLAT);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -536,6 +542,7 @@ Canvas3D::accelEvent(int id)
         
     case GOURAUD_RENDERING_MODE:
     {
+      _mw->getEventsWindow().writeComments("Gouraud rendering mode");
       _renderer.setRenderMode(Renderer::GOURAUD);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -553,6 +560,7 @@ Canvas3D::accelEvent(int id)
         
     case WF_HDLR_RENDERING_MODE:
     {
+      _mw->getEventsWindow().writeComments("wireframe HDLR rendering mode");
       _renderer.setRenderMode(Renderer::WF_HDLR);
       updateGL();
       break;
@@ -560,6 +568,7 @@ Canvas3D::accelEvent(int id)
 
     case NORMAL_RENDERING_MODE:
     {
+      _mw->getEventsWindow().writeComments("normal diplay toggled");
       _normalEnabled = !_normalEnabled;
       updateGL();
       break;

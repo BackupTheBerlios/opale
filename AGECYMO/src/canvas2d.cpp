@@ -4,6 +4,7 @@
 #include "curves.hpp"
 #include "mainwindow.hpp"
 #include <qaction.h>
+#include "eventswindow.hpp"
 
 //a mettre dans les attributs de classe
 //a modifier pour une gestion par l'interface
@@ -408,6 +409,7 @@ int Canvas2D::getSquareNumber()
 void Canvas2D::setSquareNumber(int newValue)
 {
   _squareNumber = newValue;
+  _mw->getEventsWindow().writeComments("square number updated");
 }
 
 /**************************************************************
@@ -540,6 +542,8 @@ void Canvas2D::deleteAllPoints()
   _figure->deleteAllCurves();
   //polyline default tool
   _toolMode = POLY_MODE;
+
+  _mw->getEventsWindow().writeComments("all points deleted");
 }
 
 /**************************************************************
@@ -555,6 +559,7 @@ void Canvas2D::selectAllPoints()
   for(unsigned i = 0; i<points.size(); i++){
     cout<<"x = "<<points[i][0]<<" y = "<<points[i][1]<<endl;
   }
+  _mw->getEventsWindow().writeComments("all points selected");
 }
 
 /**************************************************************
@@ -565,6 +570,7 @@ void Canvas2D::selectAllPoints()
 void Canvas2D::deselectAllPoints()
 {
   _figure->noSelection();
+  _mw->getEventsWindow().writeComments("all points deselected");
 }
 
 
