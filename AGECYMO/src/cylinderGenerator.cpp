@@ -5,6 +5,7 @@ CylinderGenerator::CylinderGenerator(Canvas3D & acanvas)
     : _canvas(acanvas),
       _points(NULL),
       _faces(NULL),
+      _isWayClosed(false),
       _chronometer()
 
 {
@@ -22,6 +23,11 @@ CylinderGenerator::~CylinderGenerator()
     delete _points;
   }
   
+}
+void
+CylinderGenerator::setWayClosed(bool wayStatus)
+{
+  _isWayClosed = wayStatus;
 }
 
 int
@@ -360,6 +366,8 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
     }
   }
 
+  //TODO: Add a connexion between last section and the first
+  // if the way curve is closed
 
   // TODO : Check this or the normal for face...
 //   std::vector<int> * indexes = new std::vector<int>();

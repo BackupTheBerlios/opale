@@ -24,11 +24,11 @@ class CylinderGenerator
   private:
   Canvas3D & _canvas;
 
-
   std::vector<Point3D >  * _points;
   std::vector<AbsFace *> * _faces;
 
   //Faces* _model; //model cached
+  bool _isWayClosed;
   
 
   QTime _chronometer;
@@ -39,14 +39,14 @@ class CylinderGenerator
 
   ~CylinderGenerator();
   
-
+  
+  void setWayClosed(bool wayStatus);
+  
   //returns the elpased time to generate the cylinder
   int  generate(const std::vector<Point3D> & wayPts,
                 const std::vector<Point3D> & sectionPts,
                 const std::vector<Point3D> & profilePts);
 
-
-  
   private:
 
   void generatePoints(const std::vector<Point3D> & wayPts,
