@@ -551,11 +551,8 @@
     {
       for(int j=i+1; j<(int)points.size();j++)
       {
-        //Est ce que la méthode isTheSame ne devrait elle pas etre utilisée plutot 
-        // que comparer valeur par valeur ?
-        if (isEqual(points[i][0], points[j][0]) &&
-            isEqual(points[i][1], points[j][1]) &&
-            isEqual(points[i][2], points[j][2]))
+
+        if (isTheSame(points[i], points[j]))
         {
           samePoints.push_back(i);
         }
@@ -696,7 +693,14 @@
                  null_value)
       )
     {
-      return false;
+      
+      // 1.5) Verification if the egde is not a edge of the plane of the considerate face
+      if (!onPlane(a, points) && !onPlane(b, points)) {
+	return false;
+      }
+
+      
+
     }
     
     // 2) If the edge is an edge of the face
@@ -706,18 +710,11 @@
     while ((!found1 || !found2 ) && i<points.size())
     {
       
-      // Mauvais d'ou la ligne commentee parce que :
-      //      1) epsilon non utilise
-      //      2) fonction isTheSame non utilisee
-      // if (points[i][0] == _data[0] && points[i][1] == _data[1] && points[i][2] == _data[2])
       if ( isTheSame(a, points[i]) ) 
       {
         found1 = true;
       }
-      // Mauvais d ou la ligne commentee parce que :
-      //      1) epsilon non utilise
-      //      2) fonction isTheSame non utilisee
-      // if (points[i][0] == point[0] && points[i][1] == point[1] && points[i][2] == point[2])
+            
       if ( isTheSame(b, points[i]) )
       {
         found2 = true;
@@ -725,6 +722,18 @@
       i++;
     }
     
+    if (!found1 && !found2) {
+      if (onFace(a, points)) {
+	*t=0.0;
+	return true;
+      }
+      if (onFace(b, points)) {
+	*t=1.0;
+	return true;
+      }
+    }
+	
+
     if (found1 && found2)
     {
       return false;
@@ -747,220 +756,256 @@
       //TODO : check more accurately
       gml::Point3D interPoint = a.collinear(b, (*t).doubleValue() );
 #endif
-      //CE Test sert vraiment ???
       if (! onFace(interPoint, points))
-      {
-        return false;
-      }
+	{
+	  return false;
+	}
       else
-      {
-        return true;
-      }
+	{
+	  return true;
+	}
     }
   }
 
-  //THIS FUNCTION MUST BE SPLIT INTO THREE SUBFUNCTIONS
-  // ONE SUBFUNCTION FOR EACH TEST !!!!
-  static void validateModel(Faces & facesToBeValidated )
-  {
 
-    std::vector<AbsFace*> faces      = facesToBeValidated.faces();
-    std::vector<gml::Point3D> points = facesToBeValidated.points();
-    
-    double one = 1;
-    double null_value = 0;
+
+// Verification if there is edges intersections
+static void edgesIntersections(std::vector< std::vector<gml::Point3D> > & edges) {
+  
+  int nbVerif = 0;
+  int nbValid = 0;
+  int nbNotValid = 0;
+
+  double one = 1;
+  double null_value = 0;
+  
+  std::ostringstream oss;
+  
+  //Test intersections between egdes
+  for (int i=0 ; i<(int)edges.size() ; i++)
+    {
+      for (int j=i+1 ; j<(int)edges.size() ; j++)
+	{
+	  std::vector <gml::Point3D> temp;
+	  temp.push_back(edges[i][1]);
+	  temp.push_back(edges[j][0]);
+	  temp.push_back(edges[j][1]);
+	  nbVerif++;
+	  double t1, t2;
+	  int value = inter( edges[i][0], temp, &t1, &t2);
+	  
+	  if (value == 1)
+	    {
+	      if ( ( isEqual(t1, null_value) || isEqual(t1, one) ) &&
+		   ( isEqual(t2, null_value) || isEqual(t2, one) )    )
+		{
+		  nbValid ++;
+		}
+	      else
+		{
+		  nbNotValid++;
+		}
+	    }
+	  else
+	    {
+	      nbValid++;
+	    }
+	}
+    } //end of double loop to test edges intersection
   
   
-    std::vector< std::vector<gml::Point3D> > edges; 
-    int nbEdges;
-    
-    int nbVerif = 0;
-    int nbValid = 0;
-    int nbNotValid = 0;
+  //Display the results !!
+  oss << "Number of edges : " << edges.size() << std::endl
+      << "Number of verifications : " << nbVerif << std::endl
+      << "Number of valid intersections : " << nbValid << std::endl
+      << "Number of not valid intersections : " << nbNotValid << std::endl;
+  
+  QMessageBox::information(0, "Validation 1 :", oss.str());
+}
 
-    std::ostringstream oss1;
-    std::ostringstream oss2;
-    std::ostringstream oss3;
+// Verification if each faces are in the same plane
+static void facesOnSamePlan(std::vector<AbsFace*> & faces, std::vector<gml::Point3D> & points) {
+  
+  int nbVerif = 0;
+  int nbValid = 0;
+  int nbNotValid = 0;
 
-    
-    // Verification if there is not edges intersection
-    
-    //Construction des edges
-    for (int i=0 ; i<(int) faces.size() ; i++)
+  double one = 1;
+  double null_value = 0;
+  
+  std::ostringstream oss;  
+
+  for (int i=0 ; i<(int)faces.size(); i++)
+    {
+      nbVerif++;
+      
+      std::vector <int> & indexes =  *( faces[i]->getIndexes() );
+      
+      gml::Point3D firstPoint = points[ indexes[0] ];
+      
+      // The verification is necessary only if the face owns more of three points
+      if ( (int)( indexes.size()) > 3)
+	{
+	  std::vector <gml::Point3D> temp;
+	  
+	  for (int j=1; j<(int)(indexes.size()); j++)
+	    {
+	      temp.push_back( points[ indexes[j] ] );
+	    }
+        
+	  if ( ! onPlane(firstPoint, temp) )
+	    {
+	      nbNotValid++;
+	    }
+	  else
+	    {
+	      nbValid++;
+	    }
+	}
+      else
+	{
+	  nbValid++;
+	}
+    } //end of for loop to test planarity of each face
+  
+  //Print the results !
+  oss << "Number of faces : " << faces.size() << std::endl
+      << "Number of verifications : " << nbVerif << std::endl
+      << "Number of valid faces : " << nbValid << std::endl
+      << "Number of not valid faces : " << nbNotValid << std::endl;
+  QMessageBox::information(0, "Validation 2 :", oss.str());
+}
+
+static void edgesCutFaces(std::vector<AbsFace*> & faces, std::vector< std::vector<gml::Point3D> > & edges, std::vector<gml::Point3D> points) 
+{
+
+  int nbVerif = 0;
+  int nbValid = 0;
+  int nbNotValid = 0;
+  
+  double one = 1;
+  double null_value = 0;
+
+  std::ostringstream oss;
+  
+  // Verification if each edge doesn't cut a face
+  for (int i=0 ; i<(int)edges.size() ; i++)
+    {
+      for (int j=0 ; j<(int)faces.size() ; j++)
+	{
+	  std::vector <gml::Point3D> temp;
+	  nbVerif++;
+	  
+	  std::vector <int> & indexes =  *( faces[j]->getIndexes() );
+	  
+	  for (int k=0 ; k<(int)indexes.size() ; k++)
+	    {
+	      temp.push_back( points[indexes[k]] );
+	    }
+	  
+	  double t;
+	  
+	  if (interPlan(edges[i][0], edges[i][1], temp, &t) )
+	    {
+	      if ( isEqual(t, null_value) || isEqual(t, one) )
+		{
+		  nbValid ++;
+		}
+	      else
+		{
+		  nbNotValid++;
+		}
+	    }
+	  else
+	    {
+	      nbValid++;
+	    }
+	}
+    }//end of double loop for. Last test edge versus face
+  
+  //Print the results 
+  oss << "Number of faces : " << faces.size() << std::endl
+      << "Number of edges : " << edges.size() << std::endl
+      << "Number of verifications : " << nbVerif << std::endl
+      << "Number of valid faces : " << nbValid << std::endl
+      << "Number of not valid faces : " << nbNotValid << std::endl;
+  
+  QMessageBox::information(0, "Validation 3 :", oss.str());
+  
+}//end of validate method
+
+static void validateModel(Faces & facesToBeValidated )
+{
+  
+  std::vector<AbsFace*> faces      = facesToBeValidated.faces();
+  std::vector<gml::Point3D> points = facesToBeValidated.points();
+  
+  bool find=false;
+  
+  std::vector< std::vector<gml::Point3D> > edges; 
+
+  // Edges' construction
+  for (int i=0 ; i<(int) faces.size() ; i++)
     { 
       std::vector <int> & indexes =  *( faces[i]->getIndexes() );
       
       for (int j=0 ; j< (int) indexes.size(); j++)
-      {
-        std::vector <gml::Point3D> temp;
+	{
+	  std::vector <gml::Point3D> temp;
+	  
+	  temp.push_back( points[ indexes[j] ] );
+	  
+	  if (j+1 == (int) (indexes.size()) )
+	    {
+	      temp.push_back( points[indexes[0]] );
+	    }
+	  else
+	    {
+	      temp.push_back( points[indexes[j+1]] );
+	    }
 
-        temp.push_back( points[ indexes[j] ] );
-      
-        if (j+1 == (int) (indexes.size()) )
-        {
-          temp.push_back( points[indexes[0]] );
-        }
-        else
-        {
-          temp.push_back( points[indexes[j+1]] );
-        }
-        edges.push_back(temp);
-      }
+	  // Test if the found edge is not already in the vector edges
+	  int k=0;
+	  while (k<(int)edges.size() && !find) 
+	    {
+	      // Exact comparaison
+	      if ((edges[k][0][0] == temp[0][0] && 
+		   edges[k][0][1] == temp[0][1] &&
+		   edges[k][0][2] == temp[0][2] &&
+		   edges[k][1][0] == temp[1][0] &&
+		   edges[k][1][1] == temp[1][1] &&
+		   edges[k][1][2] == temp[1][2]) ||
+		  (edges[k][0][0] == temp[1][0] && 
+		   edges[k][0][1] == temp[1][1] &&
+		   edges[k][0][2] == temp[1][2] &&
+		   edges[k][1][0] == temp[0][0] &&
+		   edges[k][1][1] == temp[0][1] &&
+		   edges[k][1][2] == temp[0][2])) {
+		   
+		find = true;
+		
+	      }
+	      else 
+		{
+		
+		  k++;
+		}
+	    }
+	  k=0;
+	  if (!find) {
+	    edges.push_back(temp);
+	  }
+	  else {
+	    find = false;
+	  }
+	}
     }
 
-    //Test des intersections entre egdes
-    for (int i=0 ; i<(int)edges.size() ; i++)
-    {
-      for (int j=i+1 ; j<(int)edges.size() ; j++)
-      {
-        std::vector <gml::Point3D> temp;
-        temp.push_back(edges[i][1]);
-        temp.push_back(edges[j][0]);
-        temp.push_back(edges[j][1]);
-        nbVerif++;
-        double t1, t2;
-        int value = inter( edges[i][0], temp, &t1, &t2);
-        
-        if (value == 1)
-        {
-          //    if (((t1 > -TOLERANCE && t1 < TOLERANCE) ||
-//              (t1 > 1.0-TOLERANCE && t1 < 1.0+TOLERANCE)) &&
-//             ((t2 > -TOLERANCE && t2 < TOLERANCE) ||
-//                 (t2 > 1.0-TOLERANCE && t2 < 1.0+TOLERANCE)))
-          // Ligne commentees dessus correspondent au test en bas non ?
-          // Test (t1 == 0 ou t1 == 1) et ( t2 ==0 ou t2 == 1)
-          // LE TEST EST - IL VALIDE ?
-          // POUR MOI c est
-          //  (t1 == 0 et t2 ==0) OU (t1 == 0 et t2 ==1)
-          //  mais c est pe un test equivalent....
-          if ( ( isEqual(t1, null_value) || isEqual(t1, one) ) &&
-               ( isEqual(t2, null_value) || isEqual(t2, one) )    )
-          {
-            nbValid ++;
-          }
-          else
-          {
-            nbNotValid++;
-          }
-        }
-        else
-        {
-          nbValid++;
-        }
-      }
-    } //end of double loop to test edges intersection
+  edgesIntersections(edges);
+  facesOnSamePlan(faces, points);
+  edgesCutFaces(faces, edges, points);
 
 
-    //Display the results !!
-    oss1 << "Number of edges : " << edges.size() << std::endl
-         << "Number of verifications : " << nbVerif << std::endl
-         << "Number of valid intersections : " << nbValid << std::endl
-         << "Number of not valid intersections : " << nbNotValid << std::endl;
-
-    QMessageBox::information(0, "Validation 1 :", oss1.str());
-
-    //Reset the counters
-    nbVerif = 0;
-    nbValid = 0;
-    nbNotValid = 0;
-    
-    // Verification if each faces are in the same plane
-    for (int i=0 ; i<(int)faces.size(); i++)
-    {
-      nbVerif++;
-
-      std::vector <int> & indexes =  *( faces[i]->getIndexes() );
-      
-      gml::Point3D firstPoint = points[ indexes[0] ];
-       
-      // The verification is necessary only if the face owns more of three points
-      if ( (int)( indexes.size()) > 3)
-      {
-        std::vector <gml::Point3D> temp;
-        
-        for (int j=1; j<(int)(indexes.size()); j++)
-        {
-          temp.push_back( points[ indexes[j] ] );
-        }
-        
-        if ( ! onPlane(firstPoint, temp) )
-        {
-          nbNotValid++;
-        }
-        else
-        {
-          nbValid++;
-        }
-      }
-      else
-      {
-        nbValid++;
-      }
-    } //end of for loop to test planarity of each face
-
-    //Print the results !
-    oss2 << "Number of faces : " << faces.size() << std::endl
-         << "Number of verifications : " << nbVerif << std::endl
-         << "Number of valid faces : " << nbValid << std::endl
-         << "Number of not valid faces : " << nbNotValid << std::endl;
-    QMessageBox::information(0, "Validation 2 :", oss2.str());
-
-    //Reset the counters !
-    nbVerif = 0;
-    nbValid = 0;
-    nbNotValid = 0;
-
-    // Verification if each edge doesn't cut a face
-    for (int i=0 ; i<(int)edges.size() ; i++)
-    {
-      for (int j=0 ; j<(int)faces.size() ; j++)
-      {
-        std::vector <gml::Point3D> temp;
-        nbVerif++;
-
-        std::vector <int> & indexes =  *( faces[j]->getIndexes() );
-        
-        for (int k=0 ; k<(int)indexes.size() ; k++)
-        {
-          temp.push_back( points[indexes[k]] );
-        }
-        
-        double t;
-        
-        if (  interPlan(edges[i][0], edges[i][1], temp, &t) )
-        {
-          //   if (((t > -TOLERANCE && t < TOLERANCE) ||
-//              (t > 1.0-TOLERANCE && t < 1.0+TOLERANCE)))
-          //TEst commente (t == 0) ou (t ==1)
-          if ( isEqual(t, null_value) || isEqual(t, one) )
-          {
-            nbValid ++;
-          }
-          else
-          {
-            nbNotValid++;
-          }
-        }
-        else
-        {
-          nbValid++;
-        }
-      }
-    }//end of double loop for. Last test edge versus face
-    
-    //Print the results 
-    oss3 << "Number of faces : " << faces.size() << std::endl
-         << "Number of edges : " << edges.size() << std::endl
-         << "Number of verifications : " << nbVerif << std::endl
-         << "Number of valid faces : " << nbValid << std::endl
-         << "Number of not valid faces : " << nbNotValid << std::endl;
-
-    QMessageBox::information(0, "Validation 3 :", oss3.str());
-    
-  }//end of validate method
-  
-  
-//}
-//end of namespace
+}  
 
 #endif
