@@ -222,18 +222,22 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
 {
   _w3d = new Window3D();
   Canvas3D* _canvas3d = new Canvas3D(_w3d);
+  _canvas3d->setCaption("Perspective");
   _w3d->attachCanvas(_canvas3d);
 
   _wChemin = new Window3D();
   Canvas2D* _canvasChemin = new Canvas2D(_wChemin);
+  _canvasChemin->setCaption("Chemin");
   _wChemin->attachCanvas(_canvasChemin);
 
   _wProfil = new Window3D();
   Canvas2D* _canvasProfil = new Canvas2D(_wProfil);
+  _canvasProfil->setCaption("Profil");
   _wProfil->attachCanvas(_canvasProfil);
 
   _wSection = new Window3D();
   Canvas2D* _canvasSection = new Canvas2D(_wSection);
+  _canvasSection->setCaption("Section");
   _wSection->attachCanvas(_canvasSection);
      
   qDebug("Inside initViewFrames");
