@@ -130,9 +130,9 @@ int load(MainWindow *mainW){
 
 
   // User chooses a file in order to load a VRML model
-  QString fileName = QFileDialog::getSaveFileName(
+  QString fileName = QFileDialog::getOpenFileName(
     ".",
-    "",
+    "*.wrl",
     mainW,
     "VRML load dialog box",
     "choose a name for VRML load" );
@@ -265,6 +265,35 @@ int load(MainWindow *mainW){
 
     // If there are more one index declaration
     if (awaitedSequence2.empty()) {
+
+
+      //nbPointsIndex--;
+      // Management of the last index
+      if (nbPointsIndex < 3) {
+	return EXIT_FAILURE;
+      }
+      
+      // Moving of indexes
+      for (int i=0; i<=nbPointsIndex;i++) {
+	indexValues[i] += indexesTranslation;
+      }
+      
+      if (nbPointsIndex == 3) {
+	t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
+	listFaces->push_back(t);
+      }
+      else {
+	if (nbPointsIndex == 4) {
+	  q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
+	  listFaces->push_back(q);
+	}
+	else {
+	  f = new Face(&indexValues, listPoint, nbPointsIndex);
+	  listFaces->push_back(f);
+	}
+      }
+
+
       // Indexes management
       indexesTranslation = indexesTranslation + listPoint->size();
     
@@ -305,7 +334,7 @@ int save(MainWindow *mainWin){
   //user chooses a name for wrl file
   QString fileName = QFileDialog::getSaveFileName(
     ".",
-    "",
+    "*.wrl",
     mainWin,
     "VRML save dialog box",
     "choose a name for VRML save" );
