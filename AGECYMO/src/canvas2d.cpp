@@ -1,6 +1,7 @@
 #include "canvas2d.hpp"
 #include "abscurve.hpp"
 #include "polyline.hpp"
+#include "polygone.hpp"
 #include "circle.hpp"
 #include "quadri.hpp"
 #include "nurbscurve.hpp"
@@ -42,6 +43,7 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
   if((_canvasType == SECTION_CANVAS) || 
      (_canvasType == CHEMIN_CANVAS)) {
     _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
+    _fileMenu->insertItem( "Polygone", this, SLOT(setPolygMode()) );
     _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()) );
     _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()) );
     _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
@@ -216,8 +218,6 @@ int cpt = 3;
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
-  bool flagPolyNurbs = false;
-
   //display toolMenu popup with right button
   if(event->button() == Qt::RightButton){
     _fileMenu->exec(mapToGlobal(QPoint(event->x(),event->y())));
@@ -232,7 +232,10 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  if(_toolMode == POLY_MODE){
 	    cout<<"creation polyline !!!!"<<endl;
 	    _figure = new Polyline(this);
-	    flagPolyNurbs = true;
+	  }
+	  if(_toolMode == POLYG_MODE){
+	    cout<<"creation polygone !!!!"<<endl;
+	    _figure = new Polygone(this);
 	  }
 	  if(_toolMode == CIRCLE_MODE){
 	    cout<<"creation dun cercle !!!!"<<endl;
@@ -245,23 +248,8 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  if(_toolMode == NURBS_MODE){
 	    cout<<"creation nurbs !!!!"<<endl;
 	    _figure = new NurbsCurve(this);
-	    flagPolyNurbs = true;
 	  }
 	}
-	/*else {
-	  if (_toolMode == POLY_MODE && flagPolyNurbs) {
-	    _figure = new NurbsCurve(this);
-	  }
-	  else {
-	    if (_toolMode == NURBS_MODE && flagPolyNurbs) {
-	      _figure = new Polyline(this);
-	    }
-	    else {
-	      flagPolyNurbs = false;
-	    }
-	  }
-	  }*/
-
       }
       
       if(_figure != NULL){
@@ -308,33 +296,43 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 
     //avoid point out of profil canvas
     //creation only with control button
-    if(((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0)) &&
-       (event->state() == Qt::ControlButton)){
+    if(((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0))) {
 
-      //if figure not exists
-      if(_figure == NULL){
-	if(_toolMode == POLY_MODE){
-	  //here a polyline creation
-	  _figure = new Polyline(this);
-	}
-	if(_toolMode == CIRCLE_MODE){
-	  //here a circle creation
-	  _figure = new Circle(this);
-	}
-	if(_toolMode == REC_MODE){
-	  //here a rectangle creation
-	  _figure = new Quadri(this);
-	}
-	if(_toolMode == NURBS_MODE){
-	  //here a nurb creation
-	  _figure = new NurbsCurve(this);
+      if (event->state() == Qt::ControlButton){
+
+	//if figure not exists
+	if(_figure == NULL){
+	  if(_toolMode == POLY_MODE){
+	    //here a polyline creation
+	    _figure = new Polyline(this);
+	  }
+	  if(_toolMode == POLYG_MODE){
+	    //here a polyline creation
+	    _figure = new Polygone(this);
+	  }
+	  if(_toolMode == CIRCLE_MODE){
+	    //here a circle creation
+	    _figure = new Circle(this);
+	  }
+	  if(_toolMode == REC_MODE){
+	    //here a rectangle creation
+	    _figure = new Quadri(this);
+	  }
+	  if(_toolMode == NURBS_MODE){
+	    //here a nurb creation
+	    _figure = new NurbsCurve(this);
+	  }
 	}
       }
+    
       
       //if a figure has been created
       if(_figure != NULL){
 	_figure->manageDbClickEvent(event,_toolMode,_canvasType);
 	updateGL();
+      }
+      else {
+	cout<<"figure not exists"<<endl;
       }
     }
   }
@@ -355,6 +353,11 @@ void Canvas2D::setSquareNumber(int newValue)
 void Canvas2D::setPolyMode()
 {
   _toolMode = POLY_MODE;
+}
+
+void Canvas2D::setPolygMode()
+{
+  _toolMode = POLYG_MODE;
 }
 
 void Canvas2D::setCircleMode()

@@ -26,6 +26,7 @@ const unsigned short CHEMIN_CANVAS = 0;
 const unsigned short W3D_CANVAS = 3;
 
 const unsigned short POLY_MODE = 1;
+const unsigned short POLYG_MODE = 5;
 const unsigned short CIRCLE_MODE = 2;
 const unsigned short REC_MODE = 3;
 const unsigned short NURBS_MODE = 4;
@@ -72,6 +73,7 @@ class Canvas2D : public AbsCanvas
   public slots:
 
   void setPolyMode();
+  void setPolygMode();
   void setCircleMode();
   void setRecMode();
   void setNurbsMode();
