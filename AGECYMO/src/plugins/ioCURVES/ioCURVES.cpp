@@ -20,16 +20,17 @@
 #include "quad.hpp"
 #include "absface.hpp"
 #include "faces.hpp"
+#include "canvas2d.hpp"
+#include "abscurve.hpp"
 
 using namespace std;
 using namespace gml;
 
 //Tokens for VRML load and save
-const char* L_BRACE               = "{";
-const char* R_BRACE               = "}";
 const char* L_SBRACKET            = "[";
 const char* R_SBRACKET            = "]";
 const char* SPACE                 = " ";
+const char* COMA                  = ",";
 
 /***************************************************************
  *  Fonction query for curves
@@ -109,5 +110,119 @@ int load(MainWindow *mainW){
  ***************************************************************/
 extern "C"
 int save(MainWindow *mainWin){
+
+  AbsCurve *figure;
+  gml::Point3D point;
+
+  //user chooses a name for wrl file
+  QString fileName = QFileDialog::getSaveFileName(
+    ".",
+    "*.wrl",
+    mainWin,
+    "VRML save dialog box",
+    "choose a name for VRML save" );
+
+  //if no name defined exit
+  if(fileName.isEmpty()){
+    return EXIT_FAILURE;
+  }
+
+  //opening file for writing
+  ofstream file(fileName.latin1());
+
+
+  /************ chemin canvas **********************/
+  
+  figure = (mainWin->getCheminCanvas()).getFigure();
+  if(figure != NULL){
+    if((mainWin->getCheminCanvas()).getToolMode() == CIRCLE_MODE){
+      file<<CIRCLE_MODE<<SPACE;
+    }
+    else if((mainWin->getCheminCanvas()).getToolMode() == NURBS_MODE){
+      file<<NURBS_MODE<<SPACE;
+    }
+    else if((mainWin->getCheminCanvas()).getToolMode() == REC_MODE){
+      file<<REC_MODE<<SPACE;
+    }
+    else{
+      file<<POLY_MODE<<SPACE;
+    }
+  }
+  else{
+    file<<NO_TOOL_MODE<<SPACE;
+  }
+  
+  if(figure != NULL){
+    for(int i = 0; i<figure->getNbPoints(); i++){
+      point = figure->getPoint(i);
+      file<<point[0]<<SPACE<<point[1]<<SPACE;
+    }
+  }
+  file<<COMA<<endl;
+
+
+
+  /************ section canvas **********************/
+  figure = (mainWin->getSectionCanvas()).getFigure();
+  if(figure != NULL){
+    if((mainWin->getSectionCanvas()).getToolMode() == CIRCLE_MODE){
+      file<<CIRCLE_MODE<<SPACE;
+    }
+    else if((mainWin->getSectionCanvas()).getToolMode() == NURBS_MODE){
+      file<<NURBS_MODE<<SPACE;
+    }
+    else if((mainWin->getSectionCanvas()).getToolMode() == REC_MODE){
+      file<<REC_MODE<<SPACE;
+    }
+    else{
+      file<<POLY_MODE<<SPACE;
+    }
+  }
+  else{
+    file<<NO_TOOL_MODE<<SPACE;
+  }
+  
+  if(figure != NULL){
+    for(int i = 0; i<figure->getNbPoints(); i++){
+      point = figure->getPoint(i);
+      file<<point[0]<<SPACE<<point[1]<<SPACE;
+    }
+  }
+  file<<COMA<<endl;
+
+
+
+  /************ profil canvas **********************/
+  figure = (mainWin->getProfilCanvas()).getFigure();
+  if(figure != NULL){
+    if((mainWin->getProfilCanvas()).getToolMode() == CIRCLE_MODE){
+      file<<CIRCLE_MODE<<SPACE;
+    }
+    else if((mainWin->getProfilCanvas()).getToolMode() == NURBS_MODE){
+      file<<NURBS_MODE<<SPACE;
+    }
+    else if((mainWin->getProfilCanvas()).getToolMode() == REC_MODE){
+      file<<REC_MODE<<SPACE;
+    }
+    else{
+      file<<POLY_MODE<<SPACE;
+    }
+  }
+  else{
+    file<<NO_TOOL_MODE<<SPACE;
+  }
+  
+  if(figure != NULL){
+    for(int i = 0; i<figure->getNbPoints(); i++){
+      point = figure->getPoint(i);
+      file<<point[0]<<SPACE<<point[1]<<SPACE;
+    }
+  }
+  file<<COMA<<endl;
+
+  
+  //file closing
+  file.close();
+
   return EXIT_SUCCESS;
 }
