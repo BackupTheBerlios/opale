@@ -14,6 +14,7 @@ HEADERS		= ../../point.hpp \
             ../../tria.hpp \
             ../../quad.hpp \
             ../../faces.hpp \
+            ../../eventswindow.hpp \
             ../../renderer.hpp
 
 SOURCES		=  ../../absface.cpp \
@@ -21,6 +22,7 @@ SOURCES		=  ../../absface.cpp \
              ../../tria.cpp \
              ../../quad.cpp \
              ../../faces.cpp \
+             ../../eventswindow.cpp \
              ../../renderer.cpp \
              ioVRML.cpp
 
