@@ -9,6 +9,9 @@ HEADERS		= absVector.hpp \
             abscurve.hpp \
             point.hpp \
             polyline.hpp \
+            nurbscurve.hpp \
+            circle.hpp \
+            quadri.hpp \
             vector.hpp \
             matrix.hpp \
             absface.hpp \
@@ -16,7 +19,6 @@ HEADERS		= absVector.hpp \
             tria.hpp \
             quad.hpp \
             faces.hpp \
-            nurbscurve.hpp \
             renderer.hpp \
             testVector.hpp \
             camera.hpp \
@@ -30,13 +32,15 @@ HEADERS		= absVector.hpp \
 SOURCES		= testVector.cpp \
             abscurve.cpp \
             polyline.cpp \
+            circle.cpp \
+            nurbscurve.cpp \
+            quadri.cpp \
             matrix.cpp \
             absface.cpp \
             face.cpp \
             tria.cpp \
             quad.cpp \
             faces.cpp \
-            nurbscurve.cpp \
             renderer.cpp \
             camera.cpp \
             abscanvas.cpp \
