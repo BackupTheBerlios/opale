@@ -127,6 +127,8 @@ class MainWindow : public QMainWindow
 
   void adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor);
   
+  void adjustWay(std::vector<Point3D> & ptsChemin, double scaleFactor);
+  
   
   protected:
   virtual void moveEvent(QMoveEvent* event);

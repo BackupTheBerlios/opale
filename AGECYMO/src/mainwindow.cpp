@@ -531,10 +531,12 @@ MainWindow::generateCylinder()
   
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
-  adjustSection(ptsSection, _controlPanel->scaleFactor() );
+  adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
   
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
-
+  adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
+  
+  
   std::vector<Point3D> ptsProfile = profil->discretize(paramDiscretisationPROFIL);
 
   
@@ -545,6 +547,24 @@ MainWindow::generateCylinder()
 
   displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);
 }
+
+void
+MainWindow::adjustWay(std::vector<Point3D> & ptsChemin, double scaleFactor)
+{
+  Point3D temp;
+
+  qDebug("Dans adjustWay scale factor = : %f", scaleFactor);
+  
+  Matrix3D scaleMatrix = Matrix3D::scale(scaleFactor, scaleFactor, scaleFactor);
+  
+  for (unsigned int i = 0; i< ptsChemin.size(); i++)
+  {
+    temp = ptsChemin[i];
+    ptsChemin[i] = scaleMatrix * temp;
+  }
+  
+}
+                      
 
 void
 MainWindow::adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor)
