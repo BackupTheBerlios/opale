@@ -1,13 +1,9 @@
 #include <iostream>
 #include <qapplication.h>
-
 #include "mainwindow.hpp"
-
 #include "testVector.hpp"
-
 #include "hpoint_nd.h"
 #include "vector.h"
-#include "nurbs.h"
 
 
 const double W_RATIO = 0.8; //how many of the screen's width we use for our application
