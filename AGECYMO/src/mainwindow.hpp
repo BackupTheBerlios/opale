@@ -27,9 +27,6 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
   private:
-
-
-  
   
   const char* TITLE;
     
@@ -64,6 +61,13 @@ class MainWindow : public QMainWindow
 
   ~MainWindow();
 
+
+  //This is the main method which update the GUI
+  //according to the plugin's data
+  void updateGUIWithPluginData(PluginType type,
+                               std::vector<MenuAddOn *> & infos);
+  
+    
   //methods used by plugins !
 
   //Those functions return a pointer to manipulate the canvas
@@ -76,9 +80,6 @@ class MainWindow : public QMainWindow
   Faces& model();
 
   void setModel(Faces & faces);
-  
-  
-  
   
   
   private:

@@ -26,7 +26,7 @@ MainWindow::MainWindow(int screen_w,
 
   //Tell the plugin manager to load and unload the available plugins
   //Plugins will be loaded on demand
-  _pluginManager->readAvailablePlugins();
+  _pluginManager->recordAvailablePlugins();
 
   addStaticMenuBarContent();
   
@@ -43,6 +43,13 @@ MainWindow::~MainWindow()
   delete _wChemin;
   delete _w3d;
   delete _pluginManager;
+}
+
+void
+MainWindow::updateGUIWithPluginData(PluginType type,
+                                    std::vector<MenuAddOn *> & infos)
+{
+
 }
 
 void
