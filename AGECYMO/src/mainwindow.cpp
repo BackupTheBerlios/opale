@@ -360,7 +360,7 @@ MainWindow::about()
   
   QMessageBox::about( this,
                       "About AGECYMO",
-                      "Another Generalize Cylinder Modeler\n"
+                      "Another Generalized Cylinder Modeler\n"
                       "\t developed by \n"
                       "\tAlexis Derrien \n"
                       "\tRomain Pacanowski \n"
