@@ -30,6 +30,12 @@ CylinderGenerator::setWayClosed(bool wayStatus)
   _isWayClosed = wayStatus;
 }
 
+void
+CylinderGenerator::setTorsionEnabled(bool torsion)
+{
+  _torsionEnabled = torsion;
+}
+
 int
 CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
                             const std::vector<Point3D> & sectionPts,
@@ -366,6 +372,35 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
     }
   }
 
+
+//   //Shall we close the cylinder
+  if ( _isWayClosed)
+  {
+    int i1 = _points->size() - nbPtSection;
+    int i2 = _points->size();
+
+
+    for (int i=(nbPtWay-1); i<nbPtWay; i++)
+    {
+      for (int j=0; j<nbPtSection; j++)
+      {
+        t1 = i * nbPtSection + j;
+        t2 = (t1+1)%nbPtSection + i*nbPtSection;
+        t3 = j ;
+        t4 = t2;
+        t5 = (t2+ nbPtSection)%nbPtSection;
+        t6 = t3;
+        
+      Tria* triangle1 = new Tria(_points, t1, t2, t3);
+      Tria* triangle2 = new Tria(_points, t4, t5, t6);
+
+      _faces->push_back(triangle1);
+      _faces->push_back(triangle2);
+      }
+    }
+  }
+  
+  
   //TODO: Add a connexion between last section and the first
   // if the way curve is closed
 

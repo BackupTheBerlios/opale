@@ -29,8 +29,9 @@ class CylinderGenerator
 
   //Faces* _model; //model cached
   bool _isWayClosed;
-  
 
+  bool _torsionEnabled;
+  
   QTime _chronometer;
   
   
@@ -41,6 +42,9 @@ class CylinderGenerator
   
   
   void setWayClosed(bool wayStatus);
+
+  void setTorsionEnabled(bool torsion);
+
   
   //returns the elpased time to generate the cylinder
   int  generate(const std::vector<Point3D> & wayPts,
