@@ -5,7 +5,7 @@ CONFIG		=  qt opengl thread warn_on debug
 MOC_DIR = moc
 OBJECTS_DIR = obj
 
-INCLUDEPATH=../../
+INCLUDEPATH =../../
 
 HEADERS		= ../../point.hpp \
             ../../vector.hpp \
@@ -14,7 +14,6 @@ HEADERS		= ../../point.hpp \
             ../../tria.hpp \
             ../../quad.hpp \
             ../../faces.hpp \
-            ../../nurbscurve.hpp \
             ../../renderer.hpp
 
 SOURCES		=  ../../absface.cpp \
@@ -22,7 +21,6 @@ SOURCES		=  ../../absface.cpp \
              ../../tria.cpp \
              ../../quad.cpp \
              ../../faces.cpp \
-             ../../nurbscurve.cpp \
              ../../renderer.cpp \
              ioOBJ.cpp
 
