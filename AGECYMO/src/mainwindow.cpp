@@ -16,7 +16,6 @@ MainWindow::MainWindow(int screen_w,
 {
   _pluginManager = new PluginManager(this);
   
-  
   resize(w_app, h_app);
   move(x_app, y_app);
   setCaption(TITLE);
@@ -34,10 +33,6 @@ MainWindow::MainWindow(int screen_w,
 
 MainWindow::~MainWindow()
 {
-//   delete _wYZ;
-//   delete _wXZ;
-//   delete _wXY;
-
   delete _wSection;
   delete _wProfil;
   delete _wChemin;
@@ -46,20 +41,106 @@ MainWindow::~MainWindow()
 }
 
 void
-MainWindow::updateGUIWithPluginData(PluginType type,
+MainWindow::updateGUIWithPluginData(const QString & pluginID,
+                                    PluginType type,
                                     std::vector<MenuAddOn *> & infos)
 {
 
+  std::cout << "Dans updateGUIWithPluginData "<< std::endl
+            << "taille d infos transmis " << infos.size() << std::endl;
+
+  const int nbArgs = infos.size();
+
+  //TODO : use Iterator instead of direct access
+  for(int i=0; i<nbArgs; i++)
+  {
+
+    MenuAddOn* infoMenu = infos[i];
+
+    QString emplacement(infoMenu->emplacement->c_str());
+    qDebug("emplacement = %s ", emplacement.latin1());
+    
+    QStringList decomposition = QStringList::split(INPUT_COMPONENT_SEPARATOR, emplacement);
+    
+    QString component = decomposition[0];
+    qDebug("Compoment = %s ", component.latin1());
+
+    
+    //TODO: to change the test
+    if (component == "Menu")
+    {
+      QPopupMenu* aMenu = _menus.find(decomposition[1]);
+      
+      if(!aMenu)
+      {
+        QPopupMenu * aMenu = new QPopupMenu( this );
+        _menus.insert(decomposition[1], aMenu);
+        menuBar()->insertItem( decomposition[1], _menus[decomposition[1]]);
+      }
+
+      
+      QAction* aAction = new QAction(this);
+      aAction->setText(decomposition[2]);
+      aAction->setMenuText(decomposition[2]);
+      
+      QSignalMapper* _signalMapper = new QSignalMapper(this);
+      _signalMapper->setMapping(aAction, pluginID);
+      
+      connect( aAction, SIGNAL(activated() ),
+               _signalMapper, SLOT(map()) );
+
+
+      switch(infoMenu->typeAppel)
+      {
+        case LOAD_CALL:
+        {
+          connect( _signalMapper, SIGNAL(mapped(const QString &) ),
+                   _pluginManager, SLOT(executeLoad(const QString &)) );
+          break;
+        }
+        
+        case SAVE_CALL:
+        {
+          connect( _signalMapper, SIGNAL(mapped(const QString &) ),
+                   _pluginManager, SLOT(executeSave(const QString &)) );
+          break;
+        }
+
+        case ACTION_CALL:
+        {
+          break;
+        }
+        
+        default:
+          break;
+      }
+      
+      
+      aAction->addTo(_menus[decomposition[decomposition.size() - 2]]);
+      
+    }
+    else if (component == "Tool")
+    {
+      
+    }
+    
+  }//end of for loop
+  
+  
 }
 
 void
 MainWindow::addStaticMenuBarContent()
 {
+  qDebug("Beginning addStaticMenuBarContent");
+  
   //File
   QPopupMenu* fileMenu = _menus.find(FILE_KEY);
 
   if(!fileMenu)
   {
+    std::cout <<  "PROUT" << std::endl;
+    
     QPopupMenu * file = new QPopupMenu( this );
     _menus.insert(FILE_KEY, file);
     menuBar()->insertItem( FILE_KEY, _menus[FILE_KEY]);
@@ -67,7 +148,8 @@ MainWindow::addStaticMenuBarContent()
 
   _menus[FILE_KEY]->insertSeparator();
   _menus[FILE_KEY]->insertItem( "&Quit", qApp, SLOT(quit()), CTRL+Key_Q);
-
+  
+  
   //Help Menu with about
   QPopupMenu* helpMenu =  _menus.find(HELP_KEY);
 

@@ -2,13 +2,15 @@
 #define CLASS_MAINWINDOW
 
 #include <qdict.h>
+#include <qstringlist.h>
 
+#include <qaction.h>
 #include <qmenubar.h>
 #include <qpopupmenu.h>
 #include <qmessagebox.h>
 #include <qmainwindow.h>
 #include <qapplication.h>
-
+#include <qsignalmapper.h>
 
 
 #include "pluginmanager.hpp"
@@ -19,8 +21,11 @@
 
 class PluginManager;
 
+const QString INPUT_COMPONENT_SEPARATOR = "/";
+
 const QString FILE_KEY = "&File";
 const QString HELP_KEY = "&Help";
+
 
 class MainWindow : public QMainWindow
 {
@@ -37,14 +42,8 @@ class MainWindow : public QMainWindow
   Window3D* _wChemin;
   Window3D* _wSection;
   Window3D* _wProfil;
-  
-//   Window3D* _wXY;
-//   Window3D* _wXZ;
-//   Window3D* _wYZ;
-
 
   QDict<QPopupMenu> _menus;
-  
   
   PluginManager*  _pluginManager;
   
@@ -64,7 +63,8 @@ class MainWindow : public QMainWindow
 
   //This is the main method which update the GUI
   //according to the plugin's data
-  void updateGUIWithPluginData(PluginType type,
+  void updateGUIWithPluginData(const QString & pluginID,
+                               PluginType type,
                                std::vector<MenuAddOn *> & infos);
   
     
