@@ -90,17 +90,18 @@
 	\end{itemize}
 
 	Dans le but de parfaire notre projet de \emph{construction de cylindre
-		généralisé}, nous avons choisi d'intégrer complétement le test de
-	validité comme une nouvelle fonction.  Ainsi, les modèles chargés,
+		généralisé}, nous avons choisi d'ajouter le test de validité
+	sous la forme de deux plugins indépendants (l'un pour \textbf{core} l'autre
+		pour \textbf{mantyla}).  Ainsi, les modèles chargés,
 	ainsi que les modèles construits via le moteur du cylindre généralisé
 	peuvent être soumis au test de validité. 
 
 
-	\section{Modèles testés et Résultats}
+	\section{Modèles testés, résultats et interprétations}
 
 	Nous avons effectué les tests de validation sur les modèles suivants :
 	\begin{itemize}
-	\item Un cube (cf figure~\ref{cube} avec deux faces non  coplanaires)
+	\item Un cube (cf figure~\ref{cube}) avec deux faces non  coplanaires
 	\item Un vase (cf figure~\ref{vase})
 	\item Le lapin simplifé de Standford (cf figure~\ref{bunny})
 	\item Le dragon simplifé de Standford (cf figure~\ref{dragon})
@@ -109,6 +110,11 @@
 	\item Des pièces d'échecs (cf figures~\ref{chess1},\ref{chess2},
 	\ref{chess3} et~\ref{chess4}).
 	\end{itemize}
+
+	Chaque tableau contient les informations géométriques de l'objet
+	testé, le dénombrement des cas dégénérés pour chacun des 3 tests et
+	ce pour \textbf{mantyla} et pour \textbf{core}. Le nombre de cas non-dégénérés est
+	donc égal au nombre de vérifications moins le nombre de cas dégénérés.
 
 %	\begin{figure}[h]
 %		\begin{center}
