@@ -5,35 +5,31 @@
 
 #include "testVector.hpp"
 
-const double W_RATIO = 0.7; //how many of the screen's width we use for our application
-const double H_RATIO = 0.15; //how many of the screen's height we use for our application
+const double W_RATIO = 0.8; //how many of the screen's width we use for our application
+const double H_RATIO = 0.07; //how many of the screen's height we use for our application
 
 /**
  * Compute the application size according to the
  * two constants defined upper
  */
 void
-initApplicationSizeAndPosition(int  &w,
-                               int &h,
-                               int &w_app,
-                               int &h_app,
-                               int &x_app,
-                               int &y_app)
+initApplicationSizeAndPosition(int w_application, int &w_frame)
 {
   QDesktopWidget *d = QApplication::desktop();
-  w = d->width();     // returns desktop width
-  h = d->height();    // returns desktop height
+  int w = d->width();     // returns desktop width
+  int h = d->height();    // returns desktop height
 
-  w_app = static_cast<int>(w * W_RATIO);
-  h_app = static_cast<int>(h * H_RATIO);
 
-  x_app = static_cast<int>( (w - w_app) / 2.0 );
-  y_app = 0;
+  w_frame = min ( (w - w_application), (h - 40));
+
+  w_frame = w_frame / 2;
   
-  qDebug("application width = %d\n", w_app);
-  qDebug("application height = %d\n", h_app);
-  qDebug("application x = %d\n", x_app);
-  qDebug("application y = %d\n", y_app);
+  
+  
+  qDebug("Screen w = %d\n", w);
+  qDebug("Screen h = %d\n", h);
+  qDebug("Width frame = %d\n", w_frame);
+
 }
 
 int
@@ -46,11 +42,12 @@ main(int argc, char **argv)
   // creation of an application (handle main loop event)
   QApplication application(argc, argv);
 
-  int w, h, w_app, h_app, x_app, y_app;
-  initApplicationSizeAndPosition(w, h, w_app, h_app, x_app, y_app); 
-
+  int w_app;
+  initApplicationSizeAndPosition(55, w_app); 
+  
   // creation of the central window...
-  MainWindow   mainWindow(w, h, w_app, h_app, x_app, y_app);
+  MainWindow   mainWindow(w_app, w_app, 85, 130, 0, 0);
+
   // connected the main window to the application
   application.setMainWidget(&mainWindow);
   //mainWindow.show();

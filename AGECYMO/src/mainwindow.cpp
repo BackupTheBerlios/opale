@@ -19,17 +19,20 @@ MainWindow::MainWindow(int screen_w,
   _toolBar = new QToolBar("Operations", this);
   
   resize(w_app, h_app);
-  move(x_app, y_app);
+  move(0, 0);
   setCaption(TITLE);
+
+
+  initViewFrames(800, screen_w, w_app);
+
   show();
-
-  initViewFrames();
-
+  
   //Tell the plugin manager to load and unload the available plugins
   //Plugins will be loaded on demand
   _pluginManager->recordAvailablePlugins();
 
   addStaticMenuBarContent();
+  moveDockWindow(_toolBar, Qt::DockLeft);
   
 }
 
@@ -195,6 +198,8 @@ MainWindow::addStaticMenuBarContent()
           SLOT( quit() ) );
 
   quitAction->addTo(_menus[FILE_KEY]);
+
+  _toolBar->addSeparator();
   quitAction->addTo(_toolBar);
   
 
@@ -213,7 +218,7 @@ MainWindow::addStaticMenuBarContent()
 }
 
 void
-MainWindow::initViewFrames()
+MainWindow::initViewFrames(int screen_height, int frame_width, int application_width)
 {
   _w3d = new Window3D();
   Canvas3D* _canvas3d = new Canvas3D(_w3d);
@@ -231,43 +236,22 @@ MainWindow::initViewFrames()
   Canvas2D* _canvasSection = new Canvas2D(_wSection);
   _wSection->attachCanvas(_canvasSection);
      
-  int mw_w = width();
-  int mw_h = height();
-  int mw_w2 = mw_w / 2;
-  
-  int h2 = frameGeometry().height();
-  int h3 = geometry().height();
-
   qDebug("Inside initViewFrames");
-  qDebug("mw_h =  %d\n", mw_h);
-  qDebug("h2 =  %d\n", h2);
-  qDebug("h3 =  %d\n", h3);
+
+  _w3d->resize(frame_width, frame_width);
+  _wChemin->resize(frame_width, frame_width);
+  _wSection->resize(frame_width, frame_width);
+  _wProfil->resize(frame_width, frame_width);
   
-  int f_h = (_screen_h - mw_h) / 2;
-  int w_h = (f_h < mw_w2)? (f_h) : (mw_w2);
-
-  _w3d->resize(w_h, w_h);
-  _wChemin->resize(w_h, w_h);
-  _wSection->resize(w_h, w_h);
-  _wProfil->resize(w_h, w_h);
-
-  
-  if (w_h != mw_w2)
-  {
-    resize(2*w_h, mw_h);
-    move(((_screen_w - 2*w_h)/2), 0);
-  }
-
   //Set title for each frame !!
   _wChemin->setCaption("Chemin");
   _wSection->setCaption("Section");
   _wProfil->setCaption("Profil");
   
-  //Move the frames !
-  _wChemin->move(x(), h2);
-  _wSection->move(x() + w_h, h2);
-  _wProfil->move(x(), h2 + w_h);
-  _w3d->move(x() + w_h, h2 + w_h);
+   _wChemin->move(x() + application_width, 0);
+   _wSection->move(x() + frame_width + application_width, 0);
+   _wProfil->move(x() + application_width, frame_width + 20 );
+   _w3d->move(x() + frame_width + application_width, frame_width + 20 );
   
   //ok show the frames !
   _wChemin->show();

@@ -61,9 +61,9 @@ class MainWindow : public QMainWindow
   public:
   MainWindow( int screen_w,
               int screen_h,
-              int w_app = 800,
-              int h_app = 50,
-              int x_app = 20,
+              int w_app = 50,
+              int h_app = 70,
+              int x_app = 10,
               int y_app = 0,
               QWidget* parent = 0,
               const char* name = 0);
@@ -94,7 +94,8 @@ class MainWindow : public QMainWindow
   
   private:
 
-  void initViewFrames();
+  void initViewFrames(int screen_height, int frame_width, int application_width = 50);
+  
   void updateViewFramesPosition();
 
   void addStaticMenuBarContent();
