@@ -6,7 +6,10 @@
 
 const int squareNumber = 50;
 const double glOrthoParameter = 4.0;
-
+const QString sectionS("section");
+const QString cheminS("chemin");
+const QString profilS("profil");
+const QString window3dS("window3D");
 
 class Canvas2D : public AbsCanvas
 {
@@ -17,8 +20,26 @@ class Canvas2D : public AbsCanvas
   private:
   
   Polyline _polyline;
+  Polyline _symetrique;
+
   void buildAxesDPL();
   void drawAxes();
+  void sectionClickEvent(QMouseEvent* event);
+  void profilClickEvent(QMouseEvent* event);
+  void cheminClickEvent(QMouseEvent* event);
+  void window3dClickEvent(QMouseEvent* event);
+  void sectionMoveEvent(QMouseEvent* event);
+  void profilMoveEvent(QMouseEvent* event);
+  void cheminMoveEvent(QMouseEvent* event);
+  void window3dMoveEvent(QMouseEvent* event);
+  void sectionReleaseEvent(QMouseEvent* event);
+  void profilReleaseEvent(QMouseEvent* event);
+  void cheminReleaseEvent(QMouseEvent* event);
+  void window3dReleaseEvent(QMouseEvent* event);
+  void sectionDoubleClickEvent(QMouseEvent* event);
+  void profilDoubleClickEvent(QMouseEvent* event);
+  void cheminDoubleClickEvent(QMouseEvent* event);
+  void window3dDoubleClickEvent(QMouseEvent* event);
     
   protected:
   virtual void initializeGL     ();
