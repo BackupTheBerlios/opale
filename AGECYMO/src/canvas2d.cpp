@@ -44,8 +44,8 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
 
   if(_canvasType == PROFIL_CANVAS){
     
-    getPopupMenu()->setItemEnabled(0,false);
-    getPopupMenu()->setItemEnabled(1,false);
+    getPopupMenu()->setItemEnabled(2,false);
+    getPopupMenu()->setItemEnabled(3,false);
     
   }
 
