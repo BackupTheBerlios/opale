@@ -187,6 +187,32 @@ MainWindow::addStaticMenuBarContent()
 
   _menus[FILE_KEY]->insertSeparator();
 
+  //Cylinder Menu
+  QPopupMenu* cylinderMenu =  _menus.find(CYLINDER_KEY);
+  if (!cylinderMenu)
+  {
+    QPopupMenu * help = new QPopupMenu( this );
+    _menus.insert(CYLINDER_KEY, help);
+    menuBar()->insertItem( CYLINDER_KEY, _menus[CYLINDER_KEY]);
+  }
+  
+  
+  QAction* generateCylinderAction = new QAction("generate",
+                                                QIconSet( QPixmap(IMAGES_DIR + CYLINDER_IMAGE) ),
+                                                "&Generate",
+                                                CTRL+Key_G,
+                                                this);
+  
+  connect(generateCylinderAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT( generateCylinder() ) );
+
+  generateCylinderAction->addTo(_menus[CYLINDER_KEY]);
+  _toolBar->addSeparator();
+  generateCylinderAction->addTo(_toolBar);
+
+
   QAction* quitAction = new QAction("quit",
                                     QIconSet( QPixmap(IMAGES_DIR + QUIT_IMAGE) ),
                                     "&Quit",
@@ -201,7 +227,6 @@ MainWindow::addStaticMenuBarContent()
 
   _toolBar->addSeparator();
   quitAction->addTo(_toolBar);
-  
 
   //Help Menu with about
   QPopupMenu* helpMenu =  _menus.find(HELP_KEY);
@@ -224,7 +249,10 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
   Canvas3D* _canvas3d = new Canvas3D(_w3d);
   _canvas3d->setCaption("Perspective");
   _w3d->attachCanvas(_canvas3d);
-
+  
+  _cylGenerator = new CylinderGenerator(*_canvas3d);
+  
+  
   _wChemin = new Window3D();
   Canvas2D* _canvasChemin = new Canvas2D(_wChemin,"Chemin");
   _canvasChemin->setCaption("Chemin");
@@ -304,10 +332,12 @@ MainWindow::model()
 void
 MainWindow::setModel(Faces& faces)
 {
+  qDebug("MainWindow : beginning setModel ");
+    
   Canvas3D& c3d = dynamic_cast<Canvas3D &>( _w3d->canvas() );
   
-    
   c3d.renderer().setModel(faces);
+
   c3d.updateGL();
 }
 
@@ -338,3 +368,117 @@ MainWindow::about()
 
 }
 
+
+
+// void
+// MainWindow::generateCylinder()
+// {
+
+//   qDebug("Mainwindow : Dans generateCylinder ");
+  
+//   std::vector<Point3D> ptsSection;
+//   std::vector<Point3D> ptsProfile;
+//   std::vector<Point3D> ptsChemin;
+
+
+//   Point3D s1, s2, s3, s4;
+//   Point3D s5, s6, s7, s8;
+  
+//   Point3D c1, c2, c3, c4 , c5, c6 ;
+
+//   s1[0] = -1.0; s1[1] = 0;  s1[2] = 1.0;
+//   s2[0] = 1.0; s2[1] = 0;  s2[2] = 1.0;
+//   s3[0] = 1.0; s3[1] = 0;  s3[2] = -1.0;
+//   s4[0] = -1.0; s4[1] = 0;  s4[2] = -1.0;
+
+  
+//   s5[0] = 0.0; s5[1] = 0;  s5[2] = 1.4;
+//   s6[0] = 1.4; s6[1] = 0;  s6[2] = 0;
+//   s7[0] = 0; s7[1] = 0;  s7[2] = -1.4;
+//   s8[0] = -1.4; s8[1] = 0;  s8[2] = 0;
+
+//   ptsSection.push_back(s1);
+//   ptsSection.push_back(s5);
+//   ptsSection.push_back(s2);
+//   ptsSection.push_back(s6);
+//   ptsSection.push_back(s3);
+//   ptsSection.push_back(s7);
+//   ptsSection.push_back(s4);
+//   ptsSection.push_back(s8);
+  
+//   c1[0] = 0; c1[1] = 0; c1[2] = 0;
+//   c2[0] = 0; c2[1] = 5; c2[2] = 0;
+//   c3[0] = 5; c3[1] = 8; c3[2] = 0;
+
+//   c4[0] = 0; c4[1] = 4; c4[2] = 0;
+//   c5[0] = 0.1; c5[1] = 8; c5[2] = 0;
+//   c6[0] = 1.75; c6[1] = 1.75; c6[2] = 0;
+  
+
+//   ptsChemin.push_back(c1);
+//   ptsChemin.push_back(c4);
+//   ptsChemin.push_back(c2);
+//   ptsChemin.push_back(c5);
+//   ptsChemin.push_back(c3);
+// //  ptsChemin.push_back(c4);
+// //  ptsChemin.push_back(c5);
+// //  ptsChemin.push_back(c6);
+  
+//   _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
+
+// }
+
+void
+MainWindow::generateCylinder()
+{
+
+  qDebug("Mainwindow : Dans generateCylinder ");
+  
+  std::vector<Point3D> ptsSection;
+  std::vector<Point3D> ptsProfile;
+  std::vector<Point3D> ptsChemin;
+
+
+  Point3D s1, s2, s3, s4;
+  Point3D s5, s6, s7, s8;
+  
+  Point3D c1, c2, c3, c4;
+
+  s1[0] = -1.0; s1[1] = 0;  s1[2] = 1.0;
+  s2[0] = 1.0; s2[1] = 0;  s2[2] = 1.0;
+  s3[0] = 1.0; s3[1] = 0;  s3[2] = -1.0;
+  s4[0] = -1.0; s4[1] = 0;  s4[2] = -1.0;
+
+  
+
+  s5[0] = 0.0; s5[1] = 0;  s5[2] = 1.4;
+  s6[0] = 1.4; s6[1] = 0;  s6[2] = 0;
+  s7[0] = 0; s7[1] = 0;  s7[2] = -1.4;
+  s8[0] = -1.4; s8[1] = 0;  s8[2] = 0;
+
+
+  ptsSection.push_back(s1);
+  ptsSection.push_back(s5);
+  ptsSection.push_back(s2);
+  ptsSection.push_back(s6);
+  ptsSection.push_back(s3);
+  ptsSection.push_back(s7);
+  ptsSection.push_back(s4);
+  ptsSection.push_back(s8);
+  
+  c1[0] = 0; c1[1] = 1; c1[2] = 0;
+  c2[0] = 0; c2[1] = 2; c2[2] = 0;
+  c3[0] = 0; c3[1] = 3; c3[2] = 0;
+  c4[0] = 0; c4[1] = 4; c4[2] = 0;
+  
+
+  ptsChemin.push_back(c1);
+  ptsChemin.push_back(c2);
+  ptsChemin.push_back(c3);
+  ptsChemin.push_back(c4);
+
+  _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
+
+}
+
+  
