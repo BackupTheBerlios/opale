@@ -44,23 +44,21 @@ void Polyline::render(){
 
   glColor3f(_redComponent, _greenComponent, _blueComponent);
   bool selected;
+
   //we draw the control points
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
-    
-    selected = false;
-    for(int j = 0; j<int(_isSelected.size()); j++){
-      if(i == _isSelected[j]){
-	std::cout<<"est selectionne : "<<_isSelected[j]<<std::endl;
-	selected = true;
-      }
-    }
 
-    if(selected){
-      glColor3f(1.0, 0.0, 0.0);
+    if(isSelected(i)){
+       glColor3f(_redComponentSelect,
+		 _greenComponentSelect, 
+		 _blueComponentSelect);
     }
     else{
-      glColor3f(_redComponent, _greenComponent, _blueComponent);
+      glColor3f(_redComponent, 
+		_greenComponent, 
+		_blueComponent);
     }
+
     glBegin(GL_POLYGON);
     glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]-increment);
     glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]+increment);
@@ -83,33 +81,130 @@ void Polyline::manageEvent(QMouseEvent* event,
 			   unsigned short canvasType)
 {
   gml::Point3D position;
-  AbsCurve::calculateQtToOpenGL(event,&position);
+  calculateQtToOpenGL(event,&position);
+  int index;
 
-  //mouse buttons management
+  /**************** BOUTON PRESSED *********************************/
   if(event->type() == QEvent::MouseButtonPress){
     
-    if(event->button() == Qt::RightButton){
-
-    }
-    if(event->button() == Qt::LeftButton){
+    /***************** creation mode **********************************/
+    if(event->state() == Qt::ControlButton){
       addPoint(position);
+      noSelection();
+      select(isExistingPoint(position));
+      _startMovePoint[0] = position[0];
+      _startMovePoint[1] = position[1];
+    }
+    else{
+      /***************** selection mode **********************************/
+      //add to selection group with shift
+      if(event->state() == Qt::ShiftButton){
+	if(!isSelected(index)){
+	  if((index=isExistingPoint(position)) != NO_EXIST){
+	    select(index);
+	  }
+	}
+	_startMovePoint[0] = position[0];
+	_startMovePoint[1] = position[1];
+      }
+
+      else if(event->state() == Qt::Keypad){
+	if((index=isExistingPoint(position)) != NO_EXIST){
+	  deletePoint(index);
+	}
+      }
+
+      //deselect and add without shift
+      else{
+	if((index=isExistingPoint(position)) != NO_EXIST){
+	  if(!isSelected(index)){
+	    noSelection();
+	    select(index);
+	  }
+	  _startMovePoint[0] = position[0];
+	  _startMovePoint[1] = position[1];
+
+	}
+	else{
+	  noSelection();
+	}
+      }
     }
   }
-
-  if(event->type() == QEvent::MouseButtonRelease){
     
-  }
+  
+  /**************** BOUTON MOVED *********************************/
   
   if(event->type() == QEvent::MouseMove){
-
+    cout<<"move"<<endl;
+    /***************** creation mode **********************************/
+    if(event->state() == Qt::ControlButton){
+    }
+    /***************** selection mode **********************************/
+    else{
+      gml::Point3D newPos;
+      for(unsigned i = 0; i<_pointsVector.size(); i++){
+	if(isSelected((int)i)){
+	  newPos[0] = _pointsVector[i][0] 
+	    + (position[0] - _startMovePoint[0]);
+	  newPos[1] = _pointsVector[i][1]
+	    + (position[1] - _startMovePoint[1]);
+	  movePoint((int)i, newPos);
+	}
+      }
+       _startMovePoint[0] = position[0];
+       _startMovePoint[1] = position[1];
+    }
   }
-
-  if(event->type() == QEvent::MouseButtonDblClick){
-    close();
-  }
-
   
-
+  
+  
+  
+  
+  /**************** BOUTON DOUBLECLICKED ***********************/  
+  
+  if(event->type() == QEvent::MouseButtonDblClick){
+    /***************** creation mode **********************************/
+    if(event->state() == Qt::ControlButton){
+      addPoint(position);
+      close();
+      _startMovePoint[0] = position[0];
+      _startMovePoint[1] = position[1];
+    }
+    /***************** selection mode **********************************/
+    else{
+      
+    }
+  }
+  
+  
+  
+  
+  
+  /**************** BOUTON RELEASED *********************************/
+  
+  if(event->type() == QEvent::MouseButtonRelease){
+    /***************** creation mode **********************************/
+    if(event->state() == Qt::ControlButton){
+      
+    }
+    /***************** selection mode **********************************/
+    else{
+      
+    }
+  } 
 }
 
 
+void Polyline::manageKeyEvent(QKeyEvent * event,
+			      unsigned short toolType,
+			      unsigned short canvasType)
+{
+  cout<<"dans key event"<<endl;
+  if(event->key() == Qt::Key_Return){
+    cout<<"return ok"<<endl;
+    for(int i = 0; i<_isSelected.size(); i++){
+      deletePoint(_isSelected[i]);
+    }
+  }
+}

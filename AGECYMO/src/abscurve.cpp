@@ -18,7 +18,6 @@ AbsCurve::AbsCurve(Canvas2D *parent)
 
   //no selection
   _isSelected.clear();
-
   _parent = parent;
 }
 
@@ -43,7 +42,6 @@ AbsCurve::AbsCurve(std::vector <gml::Point3D> pointsVector,
 
   //no selection
   _isSelected.clear();
-
   _parent = parent;
 }
 
@@ -54,7 +52,7 @@ AbsCurve::AbsCurve(const AbsCurve &source)
     _pointsVector[i] = source.getPoint(i);
   }
   _isClosed = source.isClosed();
-  _isSelected = source.isSelected();
+  _isSelected = source._isSelected;
 
   _redComponent = source.getRed();
   _greenComponent = source.getGreen() ;
@@ -77,18 +75,14 @@ void AbsCurve::manageEvent(QMouseEvent* event,
 			   unsigned short canvasType)
 {}
 
+void AbsCurve::manageKeyEvent(QKeyEvent* event,
+			   unsigned short toolType,
+			   unsigned short canvasType)
+{}
+
 
 void AbsCurve::addPoint(gml::Point3D newPoint){
     _pointsVector.push_back(newPoint);
-}
-
-void AbsCurve::addPointAtIndex(gml::Point3D newPoint, int index){
-  std::vector<gml::Point3D>::iterator it;
-  if(((unsigned)index <= _pointsVector.size()) || (index >= 0)){
-    it = _pointsVector.begin();
-    it += index;
-    _pointsVector.insert(it,newPoint);
-  }
 }
 
 int AbsCurve::getNbPoints() const{
@@ -99,7 +93,6 @@ gml::Point3D AbsCurve::getPoint(int index) const{
   if(((unsigned)index < _pointsVector.size()) || (index >=0)){
     return _pointsVector[index];
   }
-  exit(EXIT_FAILURE);
 }
 
 bool AbsCurve::isClosed() const{
@@ -116,9 +109,9 @@ int AbsCurve::isExistingPoint(gml::Point3D point) const{
   double increment; 
   increment = Control_point_size / 2.0;
   for(unsigned i = 0; i<_pointsVector.size(); i++){
-    if(((_pointsVector[i])[0] <= point[0] + increment) ||
-       ((_pointsVector[i])[0] >= point[0] - increment) ||
-       ((_pointsVector[i])[1] <= point[1] + increment) ||
+    if(((_pointsVector[i])[0] <= point[0] + increment) &&
+       ((_pointsVector[i])[0] >= point[0] - increment) &&
+       ((_pointsVector[i])[1] <= point[1] + increment) &&
        ((_pointsVector[i])[1] >= point[1] - increment)){
       return i;
     }
@@ -132,6 +125,18 @@ void AbsCurve::deletePoint(int index){
     it =_pointsVector.begin();
     it += index;
     _pointsVector.erase(it);
+  }
+}
+
+bool AbsCurve::isEmpty()
+{
+  return _pointsVector.empty();
+}
+
+void AbsCurve::deleteSelected()
+{
+  for(unsigned i = 0; i<_isSelected.size(); i++){
+    deletePoint(_isSelected[(int)i]);
   }
 }
 
@@ -150,37 +155,29 @@ void AbsCurve::setSelectionColor(double red, double green, double blue){
 void AbsCurve::render()
 {}
 
-void AbsCurve::selection(double xUpLeft, 
-			 double yUpLeft,
-			 double xDownRight, 
-			 double yDownRight){
-  _isSelected.clear();
-
-  //we define the selected points
-  for(unsigned int i = 0; i<_pointsVector.size(); i++){
-    if((_pointsVector[i][0] >= xUpLeft ) || 
-       (_pointsVector[i][0] <= xDownRight ) ||
-       (_pointsVector[i][1] <= yUpLeft ) || 
-       (_pointsVector[i][1] >= yDownRight )){
-      
-      //we select the point
-      _isSelected.push_back(i);
-    }
-  }
-}
-
 void AbsCurve::noSelection(){
   _isSelected.clear();
 }
 
-std::vector<int> AbsCurve::isSelected() const{
-  return _isSelected;
-}
-
 void AbsCurve::select(unsigned short index){
-  if(index<_pointsVector.size()){ 
+  bool alreadySelected = false;
+  for(unsigned i = 0; i<_isSelected.size(); i++){
+    if(_isSelected[i] == index){
+      alreadySelected = true;
+    }
+  }
+  if((index<_pointsVector.size()) && (!alreadySelected)){ 
     _isSelected.push_back(index);
   }
+}
+
+bool AbsCurve::isSelected(int index){
+  for(unsigned i = 0; i<_isSelected.size(); i++){
+    if(index == _isSelected[i]){
+      return true;
+    }
+  }
+  return false;
 }
 
 double AbsCurve::getRed() const{

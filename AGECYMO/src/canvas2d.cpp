@@ -14,22 +14,12 @@ int mode = CREATION_MODE;
 
 Canvas2D::Canvas2D(QWidget* parent, const char* name)
     : AbsCanvas(parent, name)
-{
-  QString type(name);
-
-  _toolMenuBar = new QMenuBar(this,"the Tools");
-  _fileMenu = new QPopupMenu(this);
-
-  _toolMenuBar->insertItem( "Tools", _fileMenu );
-
-  _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
-  _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()) );
-  _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()) );
-  _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
-
-
+{ 
+  //set square number to default
   _squareNumber = SQUARE_NUMBER_DEFAULT; 
 
+  //define canvas2D type
+  QString type(name);
   if((type.compare(sectionS))==0){
     _canvasType = SECTION_CANVAS;
   }
@@ -43,7 +33,28 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
     _canvasType = W3D_CANVAS;
   }
 
+  //popup menu building (differs from canvas type)
+  _fileMenu = new QPopupMenu(this);
+
+  if((_canvasType == SECTION_CANVAS) || 
+     (_canvasType == CHEMIN_CANVAS)) {
+    _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
+    _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()) );
+    _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()) );
+    _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
+
+    _fileMenu->insertSeparator();
+    _fileMenu->insertItem( "delete selected", this, SLOT(deleteSelectedPoints()) );
+    _fileMenu->insertItem( "delete all points", this, SLOT(deleteAllPoints()) );
+  }
+  else{
+    _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
+    _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
+  }
+  
+  //polyline default tool
   _toolMode = POLY_MODE;
+  //no figure at start
   _figure = NULL;
 }
 
@@ -70,6 +81,7 @@ Canvas2D::buildAxesDPL()
 
     glBegin(GL_LINES);
 
+    //if it's the profil canvas, we adapt the grid
     if(_canvasType == PROFIL_CANVAS){
 
       xposition += glOrthoParameter;
@@ -159,7 +171,7 @@ Canvas2D::paintGL()
 
   drawAxes();
   
-  //we draw the polyline
+  //we draw the figure
   if(_figure != NULL){
     _figure->render();
   }
@@ -187,31 +199,49 @@ Canvas2D::resizeGL(int width, int height)
 
 int cpt = 3;
 
+//mouse press management
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
-  if(_canvasType != PROFIL_CANVAS || event->x()>width()/2.0){
-    if(_figure == NULL){
-      if(_toolMode == POLY_MODE){
-	_figure = new Polyline(this);
-      }
-      if(_toolMode == CIRCLE_MODE){
-	cout<<"creation dun cercle !!!!"<<endl;
-      }
-      if(_toolMode == REC_MODE){
+  //display toolMenu popup with right button
+  if(event->button() == Qt::RightButton){
+    _fileMenu->exec(mapToGlobal(QPoint(event->x(),event->y())));
+  }
+  else{
+    if((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0)){
+       
+      if(event->state() == Qt::ControlButton){
 	
+	//if figure not exists
+	if(_figure == NULL){
+	  if(_toolMode == POLY_MODE){
+	    cout<<"creation polyline !!!!"<<endl;
+	    _figure = new Polyline(this);
+	  }
+	  if(_toolMode == CIRCLE_MODE){
+	    cout<<"creation dun cercle !!!!"<<endl;
+	  }
+	  if(_toolMode == REC_MODE){
+	    cout<<"creation rectangle !!!!"<<endl;
+	  }
+	  if(_toolMode == NURBS_MODE){
+	    cout<<"creation nurbs !!!!"<<endl;
+	  }
+	}
       }
-      if(_toolMode == NURBS_MODE){
-	
+      
+      if(_figure != NULL){
+	_figure->manageEvent(event,_toolMode,_canvasType);
+	updateGL();
+      }
+      else{
+	cout<<"figure not exists"<<endl;
       }
     }
-    
-    _figure->manageEvent(event,_toolMode,_canvasType);
-    updateGL();
   }
 }
 
-
+//move mouse management
 void
 Canvas2D::mouseMoveEvent(QMouseEvent* event)
 {
@@ -221,6 +251,7 @@ Canvas2D::mouseMoveEvent(QMouseEvent* event)
   }
 }
 
+//realease mouse management
 void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -230,29 +261,53 @@ Canvas2D::mouseReleaseEvent(QMouseEvent* event)
   }
 }
 
+
+//double click management
 void
 Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 {
-  //profil frame division
-  if(_canvasType != PROFIL_CANVAS || event->x()>width()/2.0){
-    if(_figure == NULL){
-      if(_toolMode == POLY_MODE)
-	_figure = new Polyline(this);
-    }
-    
-    if(_toolMode == CIRCLE_MODE){
-      cout<<"creation dun cercle !!!!"<<endl;
-    }
-    if(_toolMode == REC_MODE){
+  //display toolMenu popup with right button
+  if(event->button() == Qt::RightButton){
+    _fileMenu->exec(mapToGlobal(QPoint(event->x(),event->y())));
+  }
+  else{
+
+    //avoid point out of profil canvas
+    //creation only with control button
+    if(((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0)) &&
+       (event->state() == Qt::ControlButton)){
+
+      //if figure not exists
+      if(_figure == NULL){
+	if(_toolMode == POLY_MODE){
+	  //here a polyline creation
+	  _figure = new Polyline(this);
+	}
+	if(_toolMode == CIRCLE_MODE){
+	  //here a circle creation
+	}
+	if(_toolMode == REC_MODE){
+	  //here a rectangle creation
+	}
+	if(_toolMode == NURBS_MODE){
+	  //here a nurb creation
+	}
+      }
       
+      //if a figure has been created
+      if(_figure != NULL){
+	_figure->manageEvent(event,_toolMode,_canvasType);
+	updateGL();
+      }
     }
-    if(_toolMode == NURBS_MODE){
-    
-    }
-    
-    _figure->manageEvent(event,_toolMode,_canvasType);
+  }
+}
+
+void Canvas2D::keyPressEvent (QKeyEvent *event)
+{
+  if(_figure!=NULL){
+    _figure->manageKeyEvent(event,_toolMode,_canvasType);
     updateGL();
-    
   }
 }
 
@@ -268,29 +323,44 @@ void Canvas2D::setSquareNumber(int newValue)
 
 
 //SLOTS
-
 void Canvas2D::setPolyMode()
 {
-  cout<<"hourra"<<endl;
   _toolMode = POLY_MODE;
 }
 
 void Canvas2D::setCircleMode()
 {
-  cout<<"hourra"<<endl;
   _toolMode = CIRCLE_MODE;
 }
 
 void Canvas2D::setRecMode()
 {
-  cout<<"hourra"<<endl;
   _toolMode = REC_MODE;
 }
 
 void Canvas2D::setNurbsMode()
 {
-  cout<<"hourra"<<endl;
   _toolMode = NURBS_MODE;
 }
 
+void Canvas2D::deleteAllPoints()
+{
+  //delete the entire figure
+  if(_figure!=NULL){
+    delete(_figure);
+    _figure = NULL;
+  }
+}
 
+void Canvas2D::deleteSelectedPoints()
+{
+  //delete selected points and figure if no points
+  if(_figure!=NULL){
+    _figure->deleteSelected();
+    _figure->noSelection();
+    if(_figure->isEmpty()){
+      delete(_figure);
+      _figure = NULL;
+    }
+  }
+}

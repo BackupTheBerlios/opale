@@ -20,7 +20,9 @@ public:
 		   unsigned short toolType,
 		   unsigned short canvasType);
   std::vector<gml::Point3D> discretize();
-  void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
+  void manageKeyEvent(QKeyEvent * event,
+		      unsigned short toolType,
+		      unsigned short canvasType);
 };
 
 #endif
