@@ -12,9 +12,9 @@
 #include "faces.hpp"
 #include "point.hpp"
 
-//#ifdef CORE_LEVEL
-//#include "CORE/CORE.h"
-//#endif
+#ifdef CORE_LEVEL
+#include "CORE/CORE.h"
+#endif
 
 
 //namespace gml 
