@@ -1,13 +1,20 @@
+#include "abscurve.hpp"
 #include "polyline.hpp"
+#include <iostream>
+#include "canvas2d.hpp"
 
-Polyline::Polyline()
+using namespace std;
+
+Polyline::Polyline(Canvas2D *parent)
   :
-  AbsCurve()
+  AbsCurve(parent)
 {}
 
-Polyline::Polyline(std::vector<gml::Point3D> pointsVector, bool isClosed)
+Polyline::Polyline(std::vector<gml::Point3D> pointsVector, 
+		   bool isClosed,
+		   Canvas2D *parent)
   :
-  AbsCurve(pointsVector, isClosed)
+  AbsCurve(pointsVector, isClosed, parent)
 {}
 
 Polyline::Polyline(const Polyline &source)
@@ -70,3 +77,39 @@ std::vector<gml::Point3D> Polyline::discretize()
 
   return pointsList;
 }
+
+void Polyline::manageEvent(QMouseEvent* event,
+			   unsigned short toolType,
+			   unsigned short canvasType)
+{
+  gml::Point3D position;
+  AbsCurve::calculateQtToOpenGL(event,&position);
+
+  //mouse buttons management
+  if(event->type() == QEvent::MouseButtonPress){
+    
+    if(event->button() == Qt::RightButton){
+
+    }
+    if(event->button() == Qt::LeftButton){
+      addPoint(position);
+    }
+  }
+
+  if(event->type() == QEvent::MouseButtonRelease){
+    
+  }
+  
+  if(event->type() == QEvent::MouseMove){
+
+  }
+
+  if(event->type() == QEvent::MouseButtonDblClick){
+    close();
+  }
+
+  
+
+}
+
+
