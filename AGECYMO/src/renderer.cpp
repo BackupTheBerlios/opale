@@ -4,21 +4,10 @@
 Renderer::Renderer()
 {
   _faces = NULL;
-
-  //setFaces(thefaces);
-}
-
-Renderer::~Renderer()
-{
-  //TODO: should we delete the faces????
-}
-
-void
-Renderer::render()
-{
   
-  std::vector<gml::Point3D> mypoints;
-  std::vector<AbsFace*> myfaces;
+  std::vector<gml::Point3D>* mypoints = new std::vector<gml::Point3D>();
+
+  std::vector<AbsFace*>* myfaces = new std::vector<AbsFace*>();
 
   gml::Point3D p1, p2, p3, p4, p5;
   p1[0] = 1;  p1[1] = 0.0; p1[2] = 0.0;
@@ -27,34 +16,46 @@ Renderer::render()
   p4[0] = -1; p4[1] = 0.0; p4[2] = 1;
   p5[0] = 1; p5[1] = 0.0; p5[2] = 1;
   
-  mypoints.push_back(p1);
-  mypoints.push_back(p2);
-  mypoints.push_back(p3);
-  mypoints.push_back(p4);
-  mypoints.push_back(p5);
+  mypoints->push_back(p1);
+  mypoints->push_back(p2);
+  mypoints->push_back(p3);
+  mypoints->push_back(p4);
+  mypoints->push_back(p5);
   
-  myfaces.push_back( new Tria(&mypoints) );
-  myfaces.push_back( new Quad(&mypoints, 0, 2, 3, 4) );
+  myfaces->push_back( new Tria(mypoints) );
+  myfaces->push_back( new Quad(mypoints, 0, 2, 3, 4) );
   
-  Faces thefaces(&mypoints, &myfaces);
+  Faces* thefaces = new Faces(mypoints, myfaces);
 
-//  std::cout << thefaces << std::endl;
+  setModel(*thefaces);  
+}
+
+Renderer::~Renderer()
+{
+  //TODO: should we delete the faces????
+  delete _faces;
+}
+
+void
+Renderer::render()
+{
   
-  setModel(thefaces);
-    
   assert(_faces != NULL);
     
   glPolygonMode(GL_FRONT, GL_FILL);
   
   _faces->render();
-  //thefaces.render();
-  
-  
+
+    
 }
 
 void
 Renderer::setModel(Faces & faces)
 {
+  if (_faces != NULL)
+  {
+    delete _faces;
+  }
   _faces = &faces;
 }
 
