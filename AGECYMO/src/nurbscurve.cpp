@@ -105,7 +105,7 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbDiscretizedPoints)
   std::vector<gml::Point3D> pointsList;
   gml::Point3D p3D;
   
-  nbDiscretizedPoints *= (_pointsVector.size()-1);
+  //nbDiscretizedPoints *= (_pointsVector.size()-1);
 
   // New table in order to get the points
   Vector_HPoint3Df ctrlpoints(getNbPoints());
@@ -133,7 +133,9 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbDiscretizedPoints)
   
   PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
   
-  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+(((float)getNbPoints()-(float)_nbPointsDefine+1)/(float)nbDiscretizedPoints)) {
+  for (float i=0;
+       i<getNbPoints()-_nbPointsDefine+1;
+       i = i + (((float)getNbPoints()-(float)_nbPointsDefine+1)/(float)nbDiscretizedPoints)) {
     PLib::HPoint3Df p = curve(i);  
     p3D[0] = p.x() / p.w();
     p3D[1] = p.y() / p.w();
@@ -166,5 +168,7 @@ int NurbsCurve::addPoint(gml::Point3D *point)
  *************************************************************/
 int NurbsCurve::getNumberOfSegments()
 {
-  return _pointsVector.size()-1;
+//  return _pointsVector.size()-1;
+  return 1;
+  
 }
