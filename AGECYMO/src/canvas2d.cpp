@@ -164,7 +164,7 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 
   //ajout du point openGl
   _polyline.addPoint(point);
-  paintGL();
+  updateGL();
 }
 
 void
@@ -195,5 +195,5 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
   _polyline.addPoint(point);
   //polyline closing
   _polyline.close();
-  paintGL();
+  updateGL();
 }
