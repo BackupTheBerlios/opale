@@ -75,13 +75,109 @@ int load(MainWindow *mainWin)
   qDebug("Dans load du PLUGIN ioOBJ ");
   QMessageBox::information( mainWin, "NOT IMPLEMETED YET",
                             "Sorry this functionnality is not yet implemented .\n");
+  return EXIT_FAILURE;
 }
 
+
+void
+writeVertices( ostream & file,
+               const std::vector<gml::Point3D> & points)
+{
+
+  for (unsigned int i=0; i<(points.size()-1); i++)
+  {
+    file << "v "
+         << points[i][0] << " "
+         << points[i][1] << " "
+         << points[i][2] << " " << std::endl;
+  }
+  
+
+}
+
+void
+writeNormals( ostream &file,
+              const std::vector<gml::Vector3D> & normals)
+{
+
+  for (unsigned int i=0; i<(normals.size()-1); i++)
+  {
+    file << "vn "
+         << normals[i][0] << " "
+         << normals[i][1] << " "
+         << normals[i][2] << " " << std::endl;
+  }
+}
+
+void
+writeFaces( ostream & file,
+            const std::vector<AbsFace*> & faces)
+{
+
+  for (unsigned int i=0; i<(faces.size()-1); i++)
+  {
+    std::vector<int> indices = *(faces[i]->getIndexes());
+
+    file << "f " ;
+    
+    for (unsigned int j=0; j<(indices.size()-1) ;j++)
+    {
+      file << (indices[j]+1) << " ";
+    }
+
+    file << std::endl;
+  }
+
+
+}
 
 extern "C"
 int save(MainWindow *mainWin)
 {
   qDebug("Dans save du PLUGIN ioOBJ ");
-  QMessageBox::information( mainWin, "NOT IMPLEMETED YET",
-                            "Sorry this functionnality is not yet implemented .\n");
+
+  //QMessageBox::information( mainWin, "NOT IMPLEMETED YET",
+  //                          "Sorry this functionnality is not yet implemented .\n");
+
+  //user chooses a name for wrl file
+  QString fileName = QFileDialog::getSaveFileName(
+    ".",
+    "*.obj",
+    mainWin,
+    "OBJ save dialog box",
+    "choose a name" );
+
+  //if no name defined we exit
+  if(fileName.isEmpty())
+  {
+    return EXIT_FAILURE;
+  }
+  //opening file for writing
+  ofstream file(fileName.latin1());
+
+  //file control
+  if(!file.is_open())
+  {
+    QMessageBox::information( mainWin, "Generalized cylinder",
+                              "Unable to open file for save.\n");
+    return EXIT_FAILURE;
+  }
+
+  //we retrieve the faces to be written in the file
+  Faces *faces_to_write;
+  faces_to_write = new Faces(mainWin->model());
+
+
+  file << "# AGECYMO OBJ Exporter " << std::endl;
+  
+  std::vector<gml::Point3D> points;
+  std::vector<AbsFace*> faces;
+    
+  writeVertices( file, faces_to_write->points() );
+
+  writeFaces( file, faces_to_write->faces() );
+
+
+  
+  return EXIT_SUCCESS;
 }
