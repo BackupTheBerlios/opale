@@ -1,0 +1,55 @@
+#ifndef CLASS_POLYLINE
+#define CLASS_POLYLINE
+
+#include <vector>
+#include "point.hpp"
+#include "qgl.h"
+
+#define NO_EXIST -1;
+#define NO_SELECTION -1;
+
+class Polyline
+{
+private:
+  std::vector <gml::Point3D> _pointsVector;
+  bool _isClosed;
+  double _redComponent, _greenComponent, _blueComponent;
+  int _isSelected;
+
+public:
+  Polyline();
+  Polyline(std::vector<gml::Point3D> pointsVector, bool isClosed);
+  Polyline(const Polyline &source);
+
+  //add a point to the polyline
+  void addPoint(gml::Point3D newPoint);
+  //add a point at index
+  void addPointAtIndex(gml::Point3D newPoint, int index);
+  //return the number of points in the polyline
+  int getNbPoints() const;
+  //return the point at index
+  gml::Point3D getPoint(int index) const;
+  //true if the polyline is closed
+  bool isClosed() const;
+  //move the index point at newPosition
+  void movePoint(int index, gml::Point3D newPosition);
+  //return the index of the point if defined, -1 else
+  int isExistingPoint(gml::Point3D point) const;
+  //delete the index point
+  void deletePoint(int index);
+  //define if a point is selected
+  int isSelected() const;
+  //selection of a point
+  void select(int index);
+  //define the color of the polyline
+  void setColor(double red, double green, double blue);
+  //draw the polyline
+  void render();
+  //get the color values
+  double getRed() const;
+  double getGreen() const;
+  double getBlue() const;
+  
+};
+
+#endif
