@@ -3,7 +3,7 @@
 
 #include <qdict.h>
 #include <qstringlist.h>
-
+#include <qkeysequence.h>
 #include <qaction.h>
 #include <qmenubar.h>
 #include <qpopupmenu.h>

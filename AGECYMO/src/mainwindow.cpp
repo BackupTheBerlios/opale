@@ -70,7 +70,7 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
 
 
     //Which component ?
-    //TODO: to change the test
+    //TODO: To IMPROVE the test
     if (component == "Menu")
     {
       QPopupMenu* aMenu = _menus.find(decomposition[1]);
@@ -87,10 +87,20 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
         }
       }
       
-      
       QAction* aAction = new QAction(this);
       aAction->setText    ( decomposition[decomposition.size() -1] );
       aAction->setMenuText( decomposition[decomposition.size() -1] );
+
+      if( infoMenu->texte != NULL )
+      {
+        aAction->setAccel( QKeySequence( QString(infoMenu->texte->c_str()) ) );
+      }
+
+      if( infoMenu->image != NULL )
+      {
+      }
+      
+
       
       QSignalMapper* _signalMapper = new QSignalMapper(this);
       _signalMapper->setMapping(aAction, pluginID);
@@ -130,7 +140,7 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
     }
     else if (component == "Tool")
     {
-      
+      //TODO : to implement it !!!
     }
     
   }//end of for loop
