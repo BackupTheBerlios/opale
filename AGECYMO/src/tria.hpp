@@ -13,9 +13,9 @@ class Tria : public AbsFace
   int _i2;
   int _i3;
 
-  gml::Vector3D _normal;
-  gml::Point3D _n1; //n1 - center = normalized normal of the triangle 
-  gml::Point3D _center;
+//   gml::Vector3D _normal;
+//   gml::Point3D _n1; //n1 - center = normalized normal of the triangle 
+//   gml::Point3D _center;
   
   
   public:
@@ -29,6 +29,7 @@ class Tria : public AbsFace
 
   void renderWithNormal();
   
+  bool containVertex(int vertexIndex) const;
   
   std::vector<int> *Tria::getIndexes();
 

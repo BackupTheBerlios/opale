@@ -5,11 +5,13 @@
 
 #include "qgl.h"
 
+
 #include "absface.hpp"
 #include "tria.hpp"
 #include "quad.hpp"
 
 #include "point.hpp"
+#include "vector.hpp"
 
 class Faces
 {
@@ -24,9 +26,12 @@ class Faces
   int _nbOthers;
   
   
-  std::vector<gml::Point3D> *_points; //All points
+  std::vector<gml::Point3D> *_points; //All vertices
   std::vector<AbsFace*>      *_faces; // Each face indexes its points
 
+  std::vector<gml::Vector3D> _normals; //All vertices' normal
+
+  
   //Points to define the bounding box
   gml::Point3D              _min;
   gml::Point3D              _max;
@@ -67,6 +72,11 @@ class Faces
   void updateBoundingBox();
 
   void updateDataInfo();
+
+  //use to compute each vertex normal
+  void updateVertexNormals();
+  
+  gml::Vector3D computeAverageNormal(const std::vector<gml::Vector3D> & normals);
   
   
 };

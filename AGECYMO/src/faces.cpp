@@ -16,6 +16,7 @@ Faces::Faces(std::vector<gml::Point3D> *points,
 {
   updateBoundingBox();
   updateDataInfo();
+  updateVertexNormals();
 }
 
 
@@ -262,4 +263,76 @@ Faces::updateDataInfo()
   qDebug("Found %d quads \n", _nbQuads);
   qDebug("Found %d other polygons \n", _nbOthers);
   
+}
+
+void
+Faces::updateVertexNormals()
+{
+  qDebug("FACES : BEGINNING  updateVertexNormal ");
+
+  std::vector<gml::Vector3D> currentNormals;
+
+  std::vector<AbsFace*> lesfaces  = *_faces;
+
+  _normals.reserve( _points->size() );
+  
+  
+  for (unsigned int i=0; i < _points->size(); i++)
+  {
+    qDebug(" i  = %d", i);
+    
+    for (unsigned int j=0; j<_faces->size(); j++)
+    {
+      qDebug(" j  = %d", j);
+      
+      if ( (lesfaces[j])->containVertex(i) )
+      {
+        currentNormals.push_back( lesfaces[j]->normal() );
+      }
+    }
+    
+    _normals[i] = computeAverageNormal( currentNormals );
+
+    currentNormals.clear();
+
+  }
+
+  qDebug("fin premiere bouvcle");
+  
+  
+  for (unsigned int j=0; j < _faces->size(); j++)
+  {
+    lesfaces[j]->setNormals( &_normals);
+  }
+
+  qDebug("normals address is %p", &_normals);
+  
+  qDebug("FACES : end of updateVertexNormal ");
+}
+
+gml::Vector3D
+Faces::computeAverageNormal(const std::vector<gml::Vector3D> & normals)
+{
+  gml::Vector3D result;
+
+  double mx = 0.0;
+  double my = 0.0;
+  double mz = 0.0;
+
+  for (unsigned int i=0; i<normals.size(); i++)
+  {
+    mx += normals[i][0];
+    my += normals[i][1];
+    mz += normals[i][2];
+  }
+
+  mx = mx / normals.size();
+  my = my / normals.size();
+  mz = mz / normals.size();
+
+  result[0] = mx;
+  result[1] = my;
+  result[2] = mz;
+
+  return result;
 }

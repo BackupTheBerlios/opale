@@ -13,27 +13,38 @@ Quad::Quad(std::vector<gml::Point3D> *points, int i1, int i2, int i3, int i4)
 void
 Quad::render()
 {
+  
+  qDebug("Dans QUAD render");
+  
   std::vector<gml::Point3D> tpoints = *_points;
-    
-//  qDebug("Dans QUAD render");
-
+  std::vector<gml::Vector3D> & tnormals = *_normals;
+  
   
   glBegin(GL_QUADS);
-  
-  glNormal3f(_normal[0], _normal[1], _normal[2]);
 
   glColor3f(0.0, 1.0, 0.0);
+
+  //glNormal3f(_normal[0], _normal[1], _normal[2]);
+  
+  glNormal3f(tnormals[_i1][0], tnormals[_i1][1], tnormals[_i1][2]);
+
   glVertex3d(tpoints[_i1][0],
              tpoints[_i1][1],
              tpoints[_i1][2]);
+
+  glNormal3f(tnormals[_i2][0], tnormals[_i2][1], tnormals[_i2][2]);
   
   glVertex3d(tpoints[_i2][0],
              tpoints[_i2][1],
              tpoints[_i2][2]);
+
+  glNormal3f(tnormals[_i3][0], tnormals[_i3][1], tnormals[_i3][2]);
   
   glVertex3d(tpoints[_i3][0],
              tpoints[_i3][1],
              tpoints[_i3][2]);
+
+  glNormal3f(tnormals[_i4][0], tnormals[_i4][1], tnormals[_i4][2]);
   
   glVertex3d(tpoints[_i4][0],
              tpoints[_i4][1],
@@ -69,6 +80,20 @@ Quad::renderWithNormal()
   renderNormal();
 }
 
+
+bool
+Quad::containVertex(int vertexIndex) const
+{
+  if ( (vertexIndex == _i1) ||
+       (vertexIndex == _i2) ||
+       (vertexIndex == _i3) ||
+       (vertexIndex == _i4) )
+  {
+    return true;
+  }
+
+  return false;
+}
 
 std::vector<int>*
 Quad::getIndexes()

@@ -16,9 +16,9 @@ class Quad : public AbsFace
 
   //See updateNormal for computing details
   //Quad is not necessarly a planar surface
-  gml::Vector3D _normal;
-  gml::Point3D _n1; //n1 - center = normalized normal of the triangle 
-  gml::Point3D _center;
+//   gml::Vector3D _normal;
+//   gml::Point3D _n1; //n1 - center = normalized normal of the triangle 
+//   gml::Point3D _center;
 
   public:
   Quad(std::vector<gml::Point3D> *points,
@@ -32,6 +32,9 @@ class Quad : public AbsFace
   void renderWithNormal();
 
   void updateNormal();
+
+  
+  bool containVertex(int vertexIndex) const;
   
   virtual std::vector<int> *getIndexes();
 
