@@ -15,9 +15,12 @@ MainWindow::MainWindow(int screen_w,
       _screen_h(screen_h)
 {
   _labelStatus = NULL;
-
+  
   _controlPanel = new ControlPanel(this);
 
+  _helpFrame = new HelpWindow( "./manual/index.html");
+
+  
   setCentralWidget(_controlPanel);
   
     
@@ -259,6 +262,7 @@ MainWindow::addStaticMenuBarContent()
   }
   
   _menus[HELP_KEY]->insertItem( "&About", this, SLOT(about()));
+  _menus[HELP_KEY]->insertItem( "Getting &Started", this, SLOT(manual()));
   
 }
 
@@ -386,7 +390,8 @@ void
 MainWindow::about()
 {
 
-  std::cout << "dans ABOUT" << std::endl;
+  qDebug("dans ABOUT");
+  
   
   QMessageBox::about( this,
                       "About AGECYMO",
@@ -398,6 +403,13 @@ MainWindow::about()
 
 }
 
+void
+MainWindow::manual()
+{
+  qDebug("Dans manual");
+
+  _helpFrame->show();
+}
 
 
 // void
@@ -467,7 +479,7 @@ MainWindow::generateCylinder()
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
   canvas.makeCurrent();
 
-  int paramDiscretisationCHEMIN  = 18;
+  int paramDiscretisationCHEMIN  = 20;
   int paramDiscretisationSECTION = 15;
 
   Canvas2D & canvasSection =  dynamic_cast<Canvas2D &>(_wSection->canvas());
@@ -485,6 +497,7 @@ MainWindow::generateCylinder()
     return;
   }
   
+
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
   adjustSection(ptsSection);
