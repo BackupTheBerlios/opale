@@ -43,6 +43,8 @@ const QString INPUT_COMPONENT_SEPARATOR = "/";
 const QString FILE_KEY = "&File";
 const QString HELP_KEY = "&Help";
 const QString CYLINDER_KEY = "&Cylinder";
+const QString TOOLS_KEY = "&Tools";
+
 const QString MANUAL_DIR = "./manual/";
 const QString MANUAL_INDEX= "index.html";
 const QString IMAGES_DIR = "../images/";
