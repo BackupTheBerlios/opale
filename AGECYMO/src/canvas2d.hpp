@@ -1,9 +1,7 @@
 #ifndef CLASS_CANVAS2D_H
 #define CLASS_CANVAS2D_H
 
-#include "abscanvas.hpp"
-#include "point.hpp"
-#include "mainwindow.hpp"
+#include <qstring.h>
 #include <qdict.h>
 #include <qmenubar.h>
 #include <qpopupmenu.h>
@@ -12,6 +10,9 @@
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 
+#include "abscanvas.hpp"
+#include "point.hpp"
+#include "mainwindow.hpp"
 
 const int squareNumber = 50;
 const double glOrthoParameter = 1.0;

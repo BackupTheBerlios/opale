@@ -561,7 +561,7 @@ void Canvas2D::deleteAllPoints()
   _toolMode = POLY_MODE;
 
 
-  QString message("all points deleted");
+  QString message("all points deleted in ");
   message += this->caption();
   _mw->getEventsWindow().writeComments( message );
 }
@@ -581,7 +581,7 @@ void Canvas2D::selectAllPoints()
   }
 
 
-  QString message("all points selected") ;
+  QString message("all points selected in ") ;
   message += this->caption();
   _mw->getEventsWindow().writeComments(message);
 
@@ -596,7 +596,7 @@ void Canvas2D::deselectAllPoints()
 {
   _figure->noSelection();
 
-  QString message("all points deselected");
+  QString message("all points deselected in ");
   message += this->caption();
   _mw->getEventsWindow().writeComments(message);
 
