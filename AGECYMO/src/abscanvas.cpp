@@ -45,6 +45,9 @@ AbsCanvas::drawFps()
       _chronometer.restart();
     }
 
+    glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHT0);
+
     glColor3f(0.0 , 0.0, 1.0);
     
     renderText(FPS_X_OFFSET,

@@ -157,6 +157,9 @@ Canvas3D::drawInfo()
     int nother  = _renderer.model().numberOfOthers();
     int nvertex = _renderer.model().numberOfVertex();
     
+    glDisable(GL_LIGHTING);
+    glDisable(GL_LIGHT0);
+
     glColor3f(0.0 , 0.0, 1.0);
     renderText(5,
                10,
@@ -280,7 +283,7 @@ Canvas3D::resizeGL(int width, int height)
   glLoadIdentity();
   gluPerspective(_camera._fovy,
                  (double)width/(double)height,
-                 0.1,
+                 0.01,
                  200.0);
 }
 
