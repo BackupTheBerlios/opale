@@ -1,6 +1,7 @@
 #include "abscurve.hpp"
+#include "canvas2d.hpp"
 
-AbsCurve::AbsCurve()
+AbsCurve::AbsCurve(Canvas2D *parent)
 {
   _pointsVector.clear();
   _isClosed = false;
@@ -17,9 +18,13 @@ AbsCurve::AbsCurve()
 
   //no selection
   _isSelected.clear();
+
+  _parent = parent;
 }
 
-AbsCurve::AbsCurve(std::vector <gml::Point3D> pointsVector, bool isClosed){
+AbsCurve::AbsCurve(std::vector <gml::Point3D> pointsVector, 
+		   bool isClosed,
+		   Canvas2D *parent){
   _pointsVector.clear();
   for(unsigned i=0; i<pointsVector.size(); i++){
     _pointsVector[i] = pointsVector[i];
@@ -38,6 +43,8 @@ AbsCurve::AbsCurve(std::vector <gml::Point3D> pointsVector, bool isClosed){
 
   //no selection
   _isSelected.clear();
+
+  _parent = parent;
 }
 
 
@@ -55,6 +62,7 @@ AbsCurve::AbsCurve(const AbsCurve &source)
   _redComponentSelect = source.getRedSelect();
   _greenComponentSelect = source.getGreenSelect() ;
   _blueComponentSelect = source.getBlueSelect();
+  _parent = source._parent;
 }
 
 
@@ -62,6 +70,13 @@ AbsCurve::~AbsCurve()
 {
   _pointsVector.clear();
 }
+
+//for events management
+void AbsCurve::manageEvent(QMouseEvent* event,
+			   unsigned short toolType,
+			   unsigned short canvasType)
+{}
+
 
 void AbsCurve::addPoint(gml::Point3D newPoint){
     _pointsVector.push_back(newPoint);
@@ -135,10 +150,6 @@ void AbsCurve::setSelectionColor(double red, double green, double blue){
 void AbsCurve::render()
 {}
 
-
-std::vector<gml::Point3D> AbsCurve::discretize()
-{}
-
 void AbsCurve::selection(double xUpLeft, 
 			 double yUpLeft,
 			 double xDownRight, 
@@ -162,7 +173,7 @@ void AbsCurve::noSelection(){
   _isSelected.clear();
 }
 
-std::vector<unsigned short> AbsCurve::isSelected() const{
+std::vector<int> AbsCurve::isSelected() const{
   return _isSelected;
 }
 
@@ -202,4 +213,15 @@ void AbsCurve::close(){
 
 void AbsCurve::open(){
   _isClosed = false;
+}
+
+void AbsCurve::calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point)
+{
+  //coordinate calcul for qt/openGl traduction
+  (*point)[0] =
+    -glOrthoParameter + 
+    ((double)event->x() * ((glOrthoParameter*2)/(double)_parent->width()));
+  (*point)[1] =
+    glOrthoParameter - 
+    ((double)event->y() * ((glOrthoParameter*2)/(double)_parent->height()));
 }
