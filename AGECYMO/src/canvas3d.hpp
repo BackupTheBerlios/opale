@@ -9,6 +9,11 @@
 #include "abscanvas.hpp"
 #include "renderer.hpp"
 
+#include "cylinderGenerator.hpp"
+
+class CylinderGenerator;
+
+
 class Canvas3D : public AbsCanvas   //public QGLWidget
 {
   Q_OBJECT
