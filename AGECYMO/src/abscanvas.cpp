@@ -6,9 +6,9 @@ AbsCanvas::AbsCanvas(QWidget* parent, const char* name)
       _nFps(0),
       _fpsEnabled(true)
 {
-  _camera.setCameraPosition(0, 0, 2);
-  _camera.setCameraUp(0, 1, 0);
-  _camera.setCameraLookAt(0, 0, 0);
+//   _camera.setCameraPosition(0, 0, 2);
+//   _camera.setCameraUp(0, 1, 0);
+//   _camera.setCameraLookAt(0, 0, 0);
 }
 
 AbsCanvas::~AbsCanvas()
@@ -45,6 +45,8 @@ AbsCanvas::drawFps()
       _chronometer.restart();
     }
 
+    glPushAttrib(GL_LIGHTING_BIT);
+    
     glDisable(GL_LIGHTING);
     glDisable(GL_LIGHT0);
 
@@ -54,5 +56,9 @@ AbsCanvas::drawFps()
                height() - FPS_Y_OFFSET,
                QString("FPS : ").append(QString::number(fps)) );
 
+    
+    glPopAttrib();
+    
+    
   }
 }
