@@ -21,12 +21,24 @@ Canvas3D::Canvas3D(MainWindow* mw, QWidget* parent, const char* name)
   //Camera stuffs
   _accel->insertItem(Key_Left,  CAMERA_TURN_LEFT);
   _accel->insertItem(Key_Right, CAMERA_TURN_RIGHT);
+
+  _accel->insertItem(SHIFT + Key_Left,  CAMERA_TURN_AROUND_LEFT);
+  _accel->insertItem(SHIFT + Key_Right, CAMERA_TURN_AROUND_RIGHT);
+
   _accel->insertItem(Key_Up,    CAMERA_TURN_UPPER);
   _accel->insertItem(Key_Down,  CAMERA_TURN_DOWN);
+
   _accel->insertItem(SHIFT + Key_Down,  CAMERA_MOVE_AWAY);
   _accel->insertItem(SHIFT + Key_Up,    CAMERA_MOVE_CLOSER);
 
-  //
+  //TODO: to implement it
+//   _accel->insertItem(CTRL + Key_Left,  CAMERA_MOVE_LEFT);
+//   _accel->insertItem(CTRL + Key_Right, CAMERA_MOVE_RIGHT);
+  
+//   _accel->insertItem(CTRL + Key_Up,  CAMERA_MOVE_UP);
+//   _accel->insertItem(CTRL + Key_Down, CAMERA_MOVE_DOWN);
+
+  //Info keys
   _accel->insertItem(Key_F1, ENABLE_DRAW_AXES);
   _accel->insertItem(Key_F2, ENABLE_DRAW_FPS);
   _accel->insertItem(Key_F3, ENABLE_DRAW_BOUNDING_BOX);
@@ -160,6 +172,8 @@ Canvas3D::drawInfo()
     int nquad   = _renderer.model().numberOfQuads();
     int nother  = _renderer.model().numberOfOthers();
     int nvertex = _renderer.model().numberOfVertex();
+
+    glPushAttrib(GL_LIGHTING_BIT);
     
     glDisable(GL_LIGHTING);
     glDisable(GL_LIGHT0);
@@ -184,6 +198,9 @@ Canvas3D::drawInfo()
                55,
                QString("Vertices  : ").append(QString::number(nvertex)) );  
     
+//     glEnable(GL_LIGHTING);
+//     glEnable(GL_LIGHT0);
+    glPopAttrib();
     
   }
   
@@ -340,14 +357,14 @@ Canvas3D::accelEvent(int id)
   {
     case CAMERA_TURN_RIGHT:
     {
-      _camera.incrementPhi();
+      _camera.incrementPsi();
       updateGL();
       break;
     }
 
     case CAMERA_TURN_LEFT:
     {
-      _camera.decrementPhi();
+      _camera.decrementPsi();
       updateGL();
       break;
     }
@@ -358,10 +375,24 @@ Canvas3D::accelEvent(int id)
       updateGL();
       break;
     }
-
+            
     case CAMERA_TURN_UPPER:
     {
       _camera.decrementTheta();
+      updateGL();
+      break;
+    }
+
+    case CAMERA_TURN_AROUND_RIGHT:
+    {
+      _camera.incrementPhi();
+      updateGL();
+      break;
+    }
+
+    case CAMERA_TURN_AROUND_LEFT:
+    {
+      _camera.decrementPhi();
       updateGL();
       break;
     }
@@ -475,5 +506,7 @@ Canvas3D::accelEvent(int id)
     default:
       break;
   }
+
+  std::cout << _camera << std::endl;
 }
 
