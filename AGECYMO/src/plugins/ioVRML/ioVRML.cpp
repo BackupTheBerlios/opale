@@ -11,6 +11,7 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 
+
 //Our stuff
 #include "mainwindow.hpp"
 //#include "plugin.hpp"
@@ -176,6 +177,9 @@ static vector<string> searchWords(string & text) {
 extern "C"
 int load(MainWindow *mainW){
 
+  QTime _chronometer;
+  _chronometer.start();
+  
   // Variable declaration
   string allFile, word;
   bool stillPoints = true, stillIndexes = true;
@@ -361,8 +365,14 @@ int load(MainWindow *mainW){
       
   }
 
-
+  
+  int timeToRead = _chronometer.restart();
+  mainW->displayTimeStatus( "Model read in %1", timeToRead);
+  
   Faces* faces = new Faces(listPoint, listFaces);
+  int timeToBuild = _chronometer.elapsed();
+  mainW->displayTimeStatus( "Model built in %1", timeToBuild);
+
   //cout << "La face :" << endl << *faces;
   mainW->setModel(*faces);
       
