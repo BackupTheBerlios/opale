@@ -8,6 +8,10 @@
 
 using namespace std;
 
+Polygone::Polygone()
+{}
+
+/* mauvais constructeur
 Polygone::Polygone(Canvas2D *parent) {
 
   bool ok;
@@ -29,12 +33,14 @@ Polygone::Polygone(Canvas2D *parent) {
   _blue_circle = BLUE_CIRCLE;
 
 }
+*/
 
 Polygone::~Polygone() {
 } 
  
  
 void Polygone::render(){
+
 
   double increment; 
   increment = Control_point_size / 2.0;
@@ -69,7 +75,7 @@ void Polygone::render(){
     glEnd();
     
     
-    glColor3f(_red_circle, _green_circle, _blue_circle);
+    //glColor3f(_red_circle, _green_circle, _blue_circle);
     
     glBegin(GL_POLYGON);
     for ( int i = 0 ; i < 360 ; i++ ) {
@@ -80,6 +86,7 @@ void Polygone::render(){
     }
     glEnd();
   }
+
 }
 
   

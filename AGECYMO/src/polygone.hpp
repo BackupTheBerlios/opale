@@ -17,16 +17,26 @@ class Polygone : public AbsCurve
 private:
 
   int _nbPoints;
-  Canvas2D *_parent;
+
+  /* le canvas parent est défini dans curves.hpp */
+  //Canvas2D *_parent;
   
+  /* la couleur de la courbe est définie dans abscurve.hpp */
   //color for figure render
-  double _red_circle;
-  double _green_circle;
-  double _blue_circle;
+  
+  //double _red_circle;
+  //double _green_circle;
+  //double _blue_circle;
+
+  //PS : si c'est une classe pour les polygones, circle ??
 
 public:
 
-  Polygone(Canvas2D *parent);
+  /*le constructeur de polygone ne prend pas ce parametre
+    c'est la classe Curves qui s'en charge*/
+  //Polygone(Canvas2D *parent);
+
+  Polygone();
 
   ~Polygone();
   
