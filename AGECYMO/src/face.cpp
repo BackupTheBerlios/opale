@@ -22,6 +22,8 @@ Face::render()
 {
   std::vector<gml::Point3D> tpoints = *_points;
 
+  glColor3f(1.0, 0.0, 0.0);
+  
   glBegin(GL_POLYGON);
 
   for (int i=0; i< _numberOfPts; i++)
