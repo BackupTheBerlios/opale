@@ -25,10 +25,10 @@ const unsigned short PROFIL_CANVAS = 1;
 const unsigned short CHEMIN_CANVAS = 2;
 const unsigned short W3D_CANVAS = 3;
 
-const unsigned short POLY_MODE = 0;
-const unsigned short CIRCLE_MODE = 1;
-const unsigned short REC_MODE = 2;
-const unsigned short NURBS_MODE = 3;
+const unsigned short POLY_MODE = 1;
+const unsigned short CIRCLE_MODE = 2;
+const unsigned short REC_MODE = 3;
+const unsigned short NURBS_MODE = 4;
 
 class AbsCurve;
 
@@ -46,7 +46,6 @@ class Canvas2D : public AbsCanvas
   AbsCurve *_figure;
   unsigned short _toolMode;
   unsigned short _canvasType;
-  QMenuBar *_toolMenuBar;
   QPopupMenu *_fileMenu;
   
 
@@ -63,6 +62,7 @@ class Canvas2D : public AbsCanvas
   virtual void mouseMoveEvent   (QMouseEvent*);
   virtual void mouseReleaseEvent(QMouseEvent*);
   virtual void mouseDoubleClickEvent(QMouseEvent*);
+  virtual void keyPressEvent (QKeyEvent *);
 
   void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
 
@@ -72,6 +72,8 @@ class Canvas2D : public AbsCanvas
   void setCircleMode();
   void setRecMode();
   void setNurbsMode();
+  void deleteAllPoints();
+  void deleteSelectedPoints();
 
 };
 
