@@ -395,19 +395,6 @@ std::vector<gml::Point3D> Curves::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
   std::vector<gml::Point3D> tmp;
-  int nbCurves = getNbCurves();
-  int result;
-
-  //find a multiple
-
-  result = nbSegments/nbCurves;
-  result = nbCurves*result;
-  while(result<nbSegments){
-    nbSegments+=1;
-    result = nbSegments/nbCurves;
-    result = nbCurves*result;
-  }
-  nbSegments = nbSegments/nbCurves;
 
   for(int i = 0; i<getNbCurves(); i++){
     tmp = _listOfCurves[i]->discretize(nbSegments);
