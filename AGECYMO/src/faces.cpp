@@ -213,6 +213,16 @@ Faces::numberOfOthers() const
   return _nbOthers;
 }
 
+
+
+int
+Faces::numberOfFaces() const
+{
+  return _faces->size();
+}
+
+
+
 /**************************************************************
  *
  *  redefine the display stream operator for debug
