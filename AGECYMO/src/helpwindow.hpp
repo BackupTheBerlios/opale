@@ -77,6 +77,7 @@ class HelpWindow : public QMainWindow
    *
    *************************************************************/
   void sourceChanged( const QString& url ); 
+
 };
 
 #endif
