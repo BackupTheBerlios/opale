@@ -94,28 +94,27 @@ namespace gml
     return result;
   }
   
-
-  // Compute the middle of an edge
+  ////////////////////////////////////////////////////
+  //middle of an edge defined by two points ok
   template<typename T, int N>
   template <typename T2>
   Point<T, N> Point<T, N>::middle(Point<T2,N> const &p2) const
   {
-    
     Point<T, N> result;
-    
+    double two=2.0;
+    double one=1.0;
+   
     for (int i=0; i<3 ;i++) {
-      result[i] = (p2[i] + _data[i])/2;
+      result[i] = (p2[i] + _data[i])/two;
     }
-    
     for (int i=3; i<N ;i++) {
-      result[i] = 1.0;
+      result[i] = one;
     }
-
     return result;
   }
 
-
-  // Compute a point on a edge
+  /////////////////////////////////////////////////////
+  // Compute a point along an edge 
   template<typename T, int N>
   template <typename T2>
   Point<T, N> Point<T, N>::collinear(Point<T2,N> const &p2, double t) const
@@ -127,12 +126,12 @@ namespace gml
   }
 
 
-  // 
+  /////////////////////////////////////////////////////
+  // Define if the point is at the same place of another point ok
   template<typename T, int N>
   template <typename T2>
   bool Point<T, N>::isTheSame(Point<T2, N> const &p2, double tolerance) const
   {
-    
     for (int i=0; i<N ; i++)
     {
       double delta = fabs( this->_data[i] -  p2[i] );
@@ -144,15 +143,15 @@ namespace gml
     return true;
   }
   
-
-
+  /////////////////////////////////////////////////////
+  // Define if the point is on an edge ok
   template<typename T, int N>
   template <typename T2>
   bool Point<T, N>::isOnEdge(Point<T2, N> const & p1, Point<T2, N> const & p2,
                              double tolerance, double * t) const
   {
     
-    // Edge reduces point
+    // two points of the edge are at the same place
     if (p1.isTheSame(p2, tolerance))
     {
       if ( this->isTheSame(p1, tolerance) )
@@ -166,16 +165,19 @@ namespace gml
       }
     }
 
+    // point at the same place as p1
     if ( this->isTheSame(p1, tolerance) )
     {
       *t = 0.0;
       return true;      
     }
+    // point at the same place as p2
     else if ( this->isTheSame(p2, tolerance) )
     {
       *t = 1.0;
       return true;
     }
+    //test if the point is between the two points on the edge
     else
     {
       double deltaX, deltaY, deltaZ;
@@ -197,6 +199,9 @@ namespace gml
     return false;
   }
   
+
+  /////////////////////////////////////////////////////
+  // défine a plane with given points 
   template<typename T, int N>
   inline vector<double> definePlane(std::vector < Point<T,N> > const &points,
                                     double tolerance)
@@ -206,12 +211,13 @@ namespace gml
     double xi, yi, zi, xj, yj, zj, xc, yc, zc;
     int i= 0;
     vector<double> result;
-    
+    int iNxt;
+
     a = b = c = xc = yc = zc = 0.0;
     do
     {
-      int iNxt;
-      
+      iNxt = 0;
+
       xi = points[i][0];
       yi = points[i][1];
       zi = points[i][2];
@@ -233,19 +239,23 @@ namespace gml
     while( i < (int)points.size() );
     
     norm = sqrt( a * a + b * b + c * c );
+    double w = (-len);
+
     if(!isEqual(norm, 0.0, tolerance))
     {
       result.push_back(a / norm);
       result.push_back(b / norm);
       result.push_back(c / norm);
-      result.push_back((result[0] * xc + result[1] * yc + result[2] * zc) / (double)(-len));
+      result.push_back((result[0] * xc + result[1] * yc + result[2] * zc) 
+		       / w);
       return result;
     }
     
     return result;
   }
 
-  // Returns true if the given point is in the same plane of the current point
+  ///////////////////////////////////////////////////////
+  //Returns true if the given points is in the same plane of the current point
   template<typename T, int N>
   template <typename T2>
   bool Point<T,N>::onPlane(vector < Point<T2,N> > const & points,
@@ -304,21 +314,23 @@ namespace gml
 
     if (N==3)
     {
-      dist = _data[0]*plane[0] + _data[1]*plane[1] + _data[2]*plane[2] + plane[3];
+      dist = _data[0]*plane[0] + _data[1]*plane[1] + 
+	_data[2]*plane[2] + plane[3];
     }
     else {
-      dist = _data[0]*plane[0] + _data[1]*plane[1] + _data[2]*plane[2] + _data[3]*plane[3];
+      dist = _data[0]*plane[0] + _data[1]*plane[1] + 
+	_data[2]*plane[2] + _data[3]*plane[3];
     }
     
     if(isEqual(dist, 0.0, tolerance))
     {
       return true;
     }
-
     return false;
   }
 
-
+  /////////////////////////////////////////////////////////////////
+  //check if the point is on the face
   template<typename T, int N>
   template <typename T2>
   bool Point<T,N>::onFace(vector < Point<T2,N> > const & points,
@@ -330,7 +342,8 @@ namespace gml
     vector <int> samePoints;
     vector < Point<T2,N> > allPoints;
     
-    // Firstly copy of the vector points in the vector samePoints, if all the points are different
+    // Firstly copy of the vector points in the vector 
+    // samePoints, if all the points are different
     for(int i=0; i<(int)points.size(); i++)
     {
       for(int j=i+1; j<(int)points.size();j++)
@@ -443,6 +456,9 @@ namespace gml
     return false; 
   }
 
+
+  ////////////////////////////////////////////////////////////
+  // intersection segment(this-1erpoint vector)/segment(2e3epoint)
   template<typename T, int N>
   template <typename T2>
   int Point<T, N>::inter(vector< Point<T2, N> > const &points,
@@ -458,6 +474,7 @@ namespace gml
     allPoints.push_back(points[2]);
  
 
+    //define if all the points are on the plane
     if(!allPoints[0].onPlane(allPoints, tolerance))
     {
       return 0;
@@ -515,15 +532,20 @@ namespace gml
     return 0;
   }
   
-
+  ////////////////////////////////////////////////////////////
+  // define if a segment intersect a plane
   template<typename T, int N>
   template <typename T2>
-  bool Point<T,N>::interPlan(Point<T2,N> point, vector < Point<T2,N> > const & points,
-                             double *t, double tolerance) const
+  bool Point<T,N>::interPlan(Point<T2,N> point, 
+			     vector < Point<T2,N> > const & points,
+			     double *t, double tolerance) const
   {
     vector<double> plane;
+    double null_value = 0.0;
+    double one = 1.0;
 
-    // 1) If the normal of the plan and the vector of the edge are perpendicular, then there is no verification
+    // 1) If the normal of the plan and the vector of the 
+    //edge are perpendicular, then there is no verification
     double vectorEdgeX = _data[0] - point[0];
     double vectorEdgeY = _data[1] - point[1];
     double vectorEdgeZ = _data[2] - point[2];
@@ -534,22 +556,25 @@ namespace gml
       return false;
     }
 
-    if (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + plane[2]*vectorEdgeZ == 0.0)
+    if (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + 
+	plane[2]*vectorEdgeZ == null_value)
     {
       return false;
     }
     
-    // 2) If the edge is a edge of the face
+    // 2) If the edge is an edge of the face
     bool found1 = false;
     bool found2 = false;
     int i=0;
     while ((!found1 || !found2 ) && i<points.size())
     {
-      if (points[i][0] == _data[0] && points[i][1] == _data[1] && points[i][2] == _data[2])
+      if (points[i][0] == _data[0] && points[i][1] 
+	  == _data[1] && points[i][2] == _data[2])
       {
         found1 = true;
       }
-      if (points[i][0] == point[0] && points[i][1] == point[1] && points[i][2] == point[2])
+      if (points[i][0] == point[0] && points[i][1] 
+	  == point[1] && points[i][2] == point[2])
       {
         found2 = true;
       }
@@ -562,10 +587,11 @@ namespace gml
     }
 
     // 3) Compute of t
-    *t = (-plane[0]*_data[0] - plane[1]*_data[1] - plane[2]*_data[2] - plane[3]) /
+    *t = (-plane[0]*_data[0] - plane[1]*_data[1] 
+	  - plane[2]*_data[2] - plane[3]) /
       (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + plane[2]*vectorEdgeZ);
     
-    if (*t < -tolerance || *t > 1.0+tolerance)
+    if (*t < -tolerance || *t > one+tolerance)
     {
       return false;
     }
@@ -581,21 +607,25 @@ namespace gml
         return true;
       }
     }
-
   }
 
-
+  ///////////////////////////////////////////////////////////
+  //define the equality with a tolerance
   inline bool isEqual(double a, double b, double tolerance)
   {
     double delta = fabs(a-b);
     return (delta <= tolerance);
   }
   
+  ///////////////////////////////////////////////////////////
+  //define the greater operator with a tolerance
   inline bool isGreaterOrEqual(double a, double b, double tolerance)
   {
     return (a > b - tolerance);
   }
   
+  ///////////////////////////////////////////////////////////
+  //define the inferior operator with a tolerance
   inline bool isLesserOrEqual(double a, double b, double tolerance)
   {
     return (a < b + tolerance);
