@@ -22,6 +22,7 @@ HEADERS		= absVector.hpp \
             canvas2d.hpp \
             canvas3d.hpp \
             window3d.hpp \
+            pluginmanager.hpp \
             mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
@@ -38,11 +39,12 @@ SOURCES		= testVector.cpp \
             canvas2d.cpp \
             canvas3d.cpp \
             window3d.cpp \
+            pluginmanager.cpp \
             mainwindow.cpp \
             main.cpp
 
 TARGET		= modeler
-LIBS      = -lm
+LIBS      = -lm -Wl,-E -ldl -rdynamic
 
 #Optimisation for Pentium 4
 #QMAKE_CFLAGS= -O4 -march=pentium4 -fomit-frame-pointer -ffast-math -fforce-addr -falign-functions=4 -fprefetch-loop-arrays -funroll-loops -pipe -fforce-mem
