@@ -2,6 +2,8 @@
 #define CLASS_CANVAS3D
 
 
+#include <qaccel.h>
+
 #include "point.hpp"
 #include "camera.hpp"
 #include "abscanvas.hpp"
@@ -11,6 +13,19 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
 {
   Q_OBJECT
   
+  //Public Members/Attributes
+  public:
+
+  enum AccelKey
+  {
+    CAMERA_TURN_RIGHT ,
+    CAMERA_TURN_LEFT  ,
+    CAMERA_TURN_DOWN  ,
+    CAMERA_TURN_UPPER ,
+    CAMERA_MOVE_AWAY  ,
+    CAMERA_MOVE_CLOSER,
+  };
+
   private:
 
   Renderer _renderer;
@@ -19,10 +34,14 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
 
   //int _axesIndexDPL; //indexe of the display list containing the axes.
   
+  QAccel*  _accel;
+  
   
   public:
   Canvas3D(QWidget* parent = 0, const char* name = 0);
-
+  ~Canvas3D();
+  
+  
   Renderer& renderer();
   
   
@@ -30,15 +49,23 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   virtual void initializeGL     ();
   virtual void paintGL          ();
   virtual void resizeGL         (int, int);  
-  virtual void mousePressEvent  (QMouseEvent*);
-  virtual void mouseMoveEvent   (QMouseEvent*);
-  virtual void mouseReleaseEvent(QMouseEvent*);
+  
+  virtual void mousePressEvent  (QMouseEvent *);
+  virtual void mouseMoveEvent   (QMouseEvent *);
+  virtual void mouseReleaseEvent(QMouseEvent *);
+
   
   private:
 
   void buildAxesDPL();
   void drawAxes();
+
+
+  private slots:
+
+  void accelEvent(int id);
   
+ 
 };
 
 
