@@ -247,7 +247,7 @@ void Quadri::manageDbClickEvent(QMouseEvent* event,
   }
 }
 
-std::vector<gml::Point3D> Quadri::discretize()
+std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> listPoints;
 
