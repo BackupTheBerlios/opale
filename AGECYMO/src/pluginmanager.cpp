@@ -21,12 +21,22 @@ const QString PluginManager::PLUGIN_EXT("plg");
 const QString PluginManager::PLUGIN_DIR("./plugins/");
 
 
-
+/**************************************************************
+ *
+ *  PluginManager constructor
+ *  @param parent the parent canvas
+ *
+ *************************************************************/
 PluginManager::PluginManager(MainWindow* appli)
 {
   _mw = appli;  
 }
 
+/**************************************************************
+ *
+ *  PluginManager destructor
+ *
+ *************************************************************/
 PluginManager::~PluginManager()
 {
 
@@ -36,6 +46,11 @@ PluginManager::~PluginManager()
   //TODO : destroy the QDict one way or the other...
 }
 
+/**************************************************************
+ *
+ *  record the plugins
+ *
+ *************************************************************/
 void
 PluginManager::recordAvailablePlugins()
 {
@@ -68,13 +83,25 @@ PluginManager::recordAvailablePlugins()
   }
     
 }
-    
+ 
+/**************************************************************
+ *
+ *  launch the plugin's run function
+ *  @param pluginFullName the full name of the plugin
+ *
+ *************************************************************/
 void
 PluginManager::executeRun(const QString & pluginFullName)
 {
   
 }
 
+/**************************************************************
+ *
+ *  launch the plugin's load function
+ *  @param pluginFullName the full name of the plugin
+ *
+ *************************************************************/
 void
 PluginManager::executeLoad(const QString & pluginID)
 {
@@ -94,6 +121,12 @@ PluginManager::executeLoad(const QString & pluginID)
   
 }
 
+/**************************************************************
+ *
+ *  launch the plugin's save function
+ *  @param pluginFullName the full name of the plugin
+ *
+ *************************************************************/
 void
 PluginManager::executeSave(const QString & pluginID)
 {
@@ -113,11 +146,10 @@ PluginManager::executeSave(const QString & pluginID)
   
 }
 
-
-void
-PluginManager::executePlugin(const QString & pluginFullName)
-{
- //TODO : UPDATE THE CODE 
+//void
+//PluginManager::executePlugin(const QString & pluginFullName)
+//{
+ //TODO : to implement to allow action plugin
 
 //   //Maybe this test should be removed in the future...
 //   if ( !( _actionPlugins.contains(pluginFullName) ) )
@@ -153,12 +185,20 @@ PluginManager::executePlugin(const QString & pluginFullName)
 //     qWarning("FAILED TO LAUNCH Plugin %s !!!", pluginFullName.latin1());
 //   }
     
-}
+//}
 
 
 //We load only once after we reload once for action plugin every time for io plugins
 //Loading a plugin implies to record it
 // and to call MainWindow  methods to update the GUI
+
+
+/**************************************************************
+ *
+ *  load a plugin
+ *  @param pluginFullName the full name of the plugin
+ *
+ *************************************************************/
 void
 PluginManager::loadPlugin(const QString & pluginFullName)
 {
@@ -301,6 +341,13 @@ PluginManager::loadPlugin(const QString & pluginFullName)
   
 }
 
+/**************************************************************
+ *
+ *  reload a plugin
+ *  @param pluginFullName the full name of the plugin
+ *  @return the pluginHandler (plugin's properties)
+ *
+ *************************************************************/
 PluginHandler*
 PluginManager::reloadPlugin(const QString & pluginID)
 {
@@ -367,7 +414,12 @@ PluginManager::reloadPlugin(const QString & pluginID)
   return plgh;
 }
 
-
+/**************************************************************
+ *
+ *  unload a plugin
+ *  @param pluginID the id of the plugin
+ *
+ *************************************************************/
 void
 PluginManager::unloadPlugin(QString const & pluginID)
 {
