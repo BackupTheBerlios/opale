@@ -21,10 +21,6 @@ Nous sommes parfaitement conscients des bugs suivants :
  segments non horizontaux.
 
 
-Enfin, la principale cause de présence de ces bugs est le fait d'avoir pris
-conscience trop tard qu'il fallait gerer plusieurs types de courbes
-par Canvas.
-
 Bien sûr d'autre peuvent ne pas avoir encore été détectés.
 
 Cordialement
