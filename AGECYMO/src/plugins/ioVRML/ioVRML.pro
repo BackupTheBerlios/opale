@@ -14,7 +14,6 @@ HEADERS		= ../../point.hpp \
             ../../tria.hpp \
             ../../quad.hpp \
             ../../faces.hpp \
-            ../../nurbscurve.hpp \
             ../../renderer.hpp
 
 SOURCES		=  ../../absface.cpp \
@@ -22,7 +21,6 @@ SOURCES		=  ../../absface.cpp \
              ../../tria.cpp \
              ../../quad.cpp \
              ../../faces.cpp \
-             ../../nurbscurve.cpp \
              ../../renderer.cpp \
              ioVRML.cpp
 
