@@ -3,9 +3,9 @@
 Polyline::Polyline(){
   _pointsVector.clear();
   _isClosed = false;
-  _redComponent = 1.0;
+  _redComponent = 0.0;
   _greenComponent = 0.0;
-  _blueComponent = 0.0;
+  _blueComponent = 1.0;
   _isSelected = NO_SELECTION;
 }
 
@@ -16,9 +16,9 @@ Polyline::Polyline(std::vector <gml::Point3D> pointsVector, bool isClosed){
   }
   _isClosed = isClosed;
 
-  _redComponent = 1.0;
+  _redComponent = 0.0;
   _greenComponent = 0.0;
-  _blueComponent = 0.0;
+  _blueComponent = 1.0;
   _isSelected = NO_SELECTION;
 }
 
@@ -98,21 +98,33 @@ void Polyline::setColor(double red, double green, double blue){
 }
 
 void Polyline::render(){
+
+  double increment; 
+  increment = Control_point_size / 2.0;
   
   glColor3f(_redComponent, _greenComponent, _blueComponent);
+  glBegin(GL_LINE_STRIP);
 
-  for(int i = 0 ; i < int(_pointsVector.size()-1); i++){
-    std::cout<<"Dx"<<_pointsVector[i][0]<<std::endl;
-    std::cout<<"Dy"<<_pointsVector[i][1]<<std::endl;
-    
-    std::cout<<"Fx"<<_pointsVector[i+1][0]<<std::endl;
-    std::cout<<"Fy"<<_pointsVector[i+1][1]<<std::endl;
+  for(int i = 0 ; i < int(_pointsVector.size()); i++){
+    glVertex2f(_pointsVector[i][0], _pointsVector[i][1]);
+  }
 
-    glBegin(GL_LINES);
-        glVertex2f(_pointsVector[i][0], _pointsVector[i][1]);
-        glVertex2f(_pointsVector[i+1][0], _pointsVector[i+1][1]);
+  if(_isClosed){
+    glVertex2f(_pointsVector[0][0], _pointsVector[0][1]);
+  }
+
+  glEnd();
+
+  //we draw the control points
+  for(int i = 0 ; i < int(_pointsVector.size()); i++){
+    glBegin(GL_POLYGON);
+    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]-increment);
+    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]+increment);
+    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]+increment);
+    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]-increment);
     glEnd();
   }
+  glEnd();
 
 }
 
@@ -136,4 +148,12 @@ double Polyline::getGreen() const{
 
 double Polyline::getBlue() const{
   return _blueComponent;
+}
+
+void Polyline::close(){
+  _isClosed = true;
+}
+
+void Polyline::open(){
+  _isClosed = false;
 }

@@ -7,6 +7,7 @@
 
 #define NO_EXIST -1;
 #define NO_SELECTION -1;
+const double Control_point_size = 0.10;
 
 class Polyline
 {
@@ -31,6 +32,10 @@ public:
   gml::Point3D getPoint(int index) const;
   //true if the polyline is closed
   bool isClosed() const;
+  //close the polyline
+  void close();
+  //open the polyline
+  void open();
   //move the index point at newPosition
   void movePoint(int index, gml::Point3D newPosition);
   //return the index of the point if defined, -1 else
