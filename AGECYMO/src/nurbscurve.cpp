@@ -59,21 +59,19 @@ void NurbsCurve::render(){
   glEnd();
 
   
-  /*QMessageBox::information(_parent, "Application name",
-			    "Unable to find the user preferences file.\n"
-			    "The factory default will be used instead." );*/  
-  
+   
   // If the number of points it's enough to define the curve
   if (getNbPoints() >= nbPointsDefine) {
   
     // New table in order to get the points
-    GLfloat ctrlpoints[getNbPoints()][3];
+    GLfloat ctrlpoints[getNbPoints()][4];
   
     // Construction of this new table
     for (int i=0; i < getNbPoints() ;i++) {
       ctrlpoints[i][0] = _pointsVector[i][0];
       ctrlpoints[i][1] = _pointsVector[i][1];
       ctrlpoints[i][2] = 0.0;
+      ctrlpoints[i][3] = 1.0;
     }
   
     //glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, nbPointsDefine, &ctrlpoints[0][0]);
@@ -99,9 +97,9 @@ void NurbsCurve::render(){
     }
 
     gluBeginCurve(nobj);
-    gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_TEXTURE_COORD_2);
-    gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_NORMAL);
-    gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_VERTEX_3);
+    //gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_TEXTURE_COORD_2);
+    //gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_NORMAL);
+    gluNurbsCurve(nobj, nknots, knots, 4, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_VERTEX_4);
     gluEndCurve(nobj);
     
   }
