@@ -60,6 +60,7 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
 
 int Polyline::addPoint(gml::Point3D *point)
 {
+  cout<<"point ajoute dans addPoint"<<endl;
   _pointsVector.push_back(point);
   return ADDED;
 }
