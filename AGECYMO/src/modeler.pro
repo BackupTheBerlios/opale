@@ -20,7 +20,6 @@ HEADERS		= absVector.hpp \
             quad.hpp \
             faces.hpp \
             cylinderGenerator.hpp \
-            nurbscurve.hpp \
             renderer.hpp \
             testVector.hpp \
             camera.hpp \
@@ -44,7 +43,6 @@ SOURCES		= testVector.cpp \
             quad.cpp \
             faces.cpp \
             cylinderGenerator.cpp \
-            nurbscurve.cpp \
             renderer.cpp \
             camera.cpp \
             abscanvas.cpp \
