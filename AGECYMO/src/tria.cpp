@@ -21,7 +21,7 @@ Tria::render()
 {
   assert(_points != NULL);
 
-  std::cout << "Dans Tria render" << std::endl;
+//  qDebug("Dans Tria render");
 
   std::vector<gml::Point3D> tpoints = *_points;
   

@@ -14,14 +14,8 @@ Quad::render()
 {
   std::vector<gml::Point3D> tpoints = *_points;
     
-  std::cout << "Dans QUAD render" << std::endl;
+//  qDebug("Dans QUAD render");
 
-
-
-  std::cout << tpoints[_i1]
-            << tpoints[_i2]
-            << tpoints[_i3]
-            << tpoints[_i4] << std::endl;
   
   glBegin(GL_QUADS);
 
