@@ -7,11 +7,15 @@ Faces::Faces(std::vector<gml::Point3D> *points,
              std::vector<AbsFace*> *faces)
     : _nbPoints(points->size()),
       _nbFaces((*faces).size()),
+      _nbTriangles(0),
+      _nbQuads(0),
+      _nbOthers(0),
       _points(points),
       _faces(faces)
   
 {
   updateBoundingBox();
+  updateDataInfo();
 }
 
 
@@ -195,3 +199,42 @@ Faces::updateBoundingBox()
     
 }
 
+void
+Faces::updateDataInfo()
+{  
+  std::vector<AbsFace*> lesfaces = *(_faces);
+
+  //TODO: Change this and use iterators
+  for (unsigned int i=0; i<_faces->size(); i++)
+  {
+
+//     std::string type = typeid(*lesfaces[i]).name();
+//     std::cout << type << std::endl;
+//     qDebug("Type = %s \n", type.c_str());
+
+
+    Tria* t = dynamic_cast<Tria *>(lesfaces[i]);
+
+    if (t)
+    {
+      _nbTriangles++;
+    }
+    else
+    {
+      Quad* q = dynamic_cast<Quad *>(lesfaces[i]);
+      if (q)
+      {
+        _nbQuads++;
+      }
+      else
+      {
+        _nbOthers++;
+      }
+    }
+  }
+
+  qDebug("Found %d triangles \n", _nbTriangles);
+  qDebug("Found %d quads \n", _nbQuads);
+  qDebug("Found %d other polygons \n", _nbOthers);
+  
+}

@@ -7,6 +7,8 @@
 
 #include "absface.hpp"
 #include "tria.hpp"
+#include "quad.hpp"
+
 #include "point.hpp"
 
 class Faces
@@ -16,6 +18,12 @@ class Faces
   int _nbPoints;
   int _nbFaces;
 
+  //Information about the model 
+  int _nbTriangles;
+  int _nbQuads;
+  int _nbOthers;
+  
+  
   std::vector<gml::Point3D> *_points; //All points
   std::vector<AbsFace*>      *_faces; // Each face indexes its points
 
@@ -51,6 +59,8 @@ class Faces
   private:
 
   void updateBoundingBox();
+
+  void updateDataInfo();
   
   
 };
