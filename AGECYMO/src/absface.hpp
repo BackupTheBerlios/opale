@@ -29,6 +29,10 @@ class AbsFace
   
   virtual void render() = 0;
 
+  virtual void renderWithNormal() = 0;
+
+  virtual void renderNormal() = 0;
+    
   virtual std::vector<int> *getIndexes()=0;
   
 //   {
