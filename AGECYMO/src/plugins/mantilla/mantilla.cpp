@@ -45,7 +45,7 @@ void** query(void){
   MenuAddOn *menuLoadAdd = new MenuAddOn();
   menuLoadAdd->typeAppel = LOAD_CALL;
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuLoadAdd->emplacement->append("/&File/set mantilla Epsilon");
+  menuLoadAdd->emplacement->append("/&Tools/set mantilla Epsilon");
   menuLoadAdd->image = new string("epsilon.png");
   menuLoadAdd->texte = new string("CTRL+E");
   
@@ -54,7 +54,7 @@ void** query(void){
   MenuAddOn *menuSaveAdd = new MenuAddOn();
   menuSaveAdd->typeAppel = SAVE_CALL;
   menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuSaveAdd->emplacement->append("/&File/mantilla validity");
+  menuSaveAdd->emplacement->append("/&Tools/mantilla validity");
   menuSaveAdd->image = new string("validity.png");
   menuSaveAdd->texte = new string("CTRL+V");
 
