@@ -113,10 +113,10 @@ int load(MainWindow *mainWin){
   // The user chooses a file in order to load a VRML model
   QString fileName = 
     QFileDialog::getOpenFileName(".",
-				 "*.cur",
-				 mainWin,
-				 "CURVES load dialog box",
-				 "choose a name for CURVES load" );
+                                 "*.cur",
+                                 mainWin,
+                                 "CURVES load dialog box",
+                                 "choose a name for CURVES load" );
 
   // If no name defined exit
   if(fileName.isEmpty()){
@@ -186,23 +186,23 @@ int load(MainWindow *mainWin){
 
 
       if(curveType == POLY_MODE){
-	curve = new Polyline();
+        curve = new Polyline();
       }
       else if(curveType == REC_MODE){
-	curve = new Quadri();
+        curve = new Quadri();
       }
       else if(curveType == POLYG_MODE){
-	curve = new Polygone();
+        curve = new Polygone();
       }
       else if(curveType == CIRCLE_MODE){
-	curve = new Circle();
+        curve = new Circle();
       }
       else if(curveType == NURBS_MODE){
-	curve = new NurbsCurve();
+        curve = new NurbsCurve();
       }
       if(curve == NULL){
         message = "error in curves loading : curves type not recognized";
-	  mainWin->getEventsWindow().writeComments( message );
+        mainWin->getEventsWindow().writeComments( message );
       }
 
       file>>indexCurve;
@@ -210,9 +210,9 @@ int load(MainWindow *mainWin){
 
       //add the control points of the curve
       while(indexCurve != CURVE_END){
-	curve->addPoint(figure->getPointAtIndex((unsigned)indexCurve));
-	file>>indexCurve;
-	cout<<indexCurve<<endl;
+        curve->addPoint(figure->getPointAtIndex((unsigned)indexCurve));
+        file>>indexCurve;
+        cout<<indexCurve<<endl;
       }
       figure->addCurve(curve);
       file>>curveType;
@@ -298,10 +298,10 @@ int save(MainWindow *mainWin){
       
       //write the close parameter
       if(figure->isClosed()){
-	file<<1.0;
+        file<<1.0;
       }
       else{
-	file<<0.0;
+        file<<0.0;
       }
       file<<SPACE;
       
@@ -318,9 +318,9 @@ int save(MainWindow *mainWin){
       controlPoints = figure->getAllPoints();
       double x,y;
       for(unsigned z = 0; z<controlPoints.size(); z++){
-	x = (*controlPoints[z])[0];
-	y = (*controlPoints[z])[1];
-	file<<x<<SPACE<<y<<SPACE;
+        x = (*controlPoints[z])[0];
+        y = (*controlPoints[z])[1];
+        file<<x<<SPACE<<y<<SPACE;
       }
       file<<CONTROL_NETWORK_END<<SPACE;
 
@@ -329,37 +329,37 @@ int save(MainWindow *mainWin){
 
       for(unsigned z = 0; z<curves_list.size(); z++){
 	
-	//write the type of the curve
-	if(typeid(*curves_list[z]) == typeid(Polyline)){
-	  file<<POLY_MODE<<SPACE;
-	}
-	else if(typeid(*curves_list[z]) == typeid(NurbsCurve)){
-	  file<<NURBS_MODE<<SPACE;
-	}
-	else if(typeid(*curves_list[z]) == typeid(Polygone)){
-	  file<<POLYG_MODE<<SPACE;
-	}
-	else if(typeid(*curves_list[z]) == typeid(Circle)){
-	  file<<CIRCLE_MODE<<SPACE;
-	}
-	else if(typeid(*curves_list[z]) == typeid(Quadri)){
-	  file<<REC_MODE<<SPACE;
-	}
-	else{
-    message = "error in curves saving : curve type not recognized";
-    mainWin->getEventsWindow().writeComments( message );
-	}
+        //write the type of the curve
+        if(typeid(*curves_list[z]) == typeid(Polyline)){
+          file<<POLY_MODE<<SPACE;
+        }
+        else if(typeid(*curves_list[z]) == typeid(NurbsCurve)){
+          file<<NURBS_MODE<<SPACE;
+        }
+        else if(typeid(*curves_list[z]) == typeid(Polygone)){
+          file<<POLYG_MODE<<SPACE;
+        }
+        else if(typeid(*curves_list[z]) == typeid(Circle)){
+          file<<CIRCLE_MODE<<SPACE;
+        }
+        else if(typeid(*curves_list[z]) == typeid(Quadri)){
+          file<<REC_MODE<<SPACE;
+        }
+        else{
+          message = "error in curves saving : curve type not recognized";
+          mainWin->getEventsWindow().writeComments( message );
+        }
 
-	//write the index of the points
-	for(int j = 0; j<curves_list[z]->getNbPoints(); j++){
-	  for(unsigned k = 0; k<controlPoints.size(); k++){
-	    if(curves_list[z]->getPoint(j) == controlPoints[k]){
-	      file<<k<<SPACE;
-	    }
-	  }
-	}
+        //write the index of the points
+        for(int j = 0; j<curves_list[z]->getNbPoints(); j++){
+          for(unsigned k = 0; k<controlPoints.size(); k++){
+            if(curves_list[z]->getPoint(j) == controlPoints[k]){
+              file<<k<<SPACE;
+            }
+          }
+        }
 
-	file<<CURVE_END<<SPACE;
+        file<<CURVE_END<<SPACE;
       }
 
       file<<CANVAS_END<<SPACE;
