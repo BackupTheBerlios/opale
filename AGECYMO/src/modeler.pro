@@ -32,6 +32,7 @@ HEADERS		= absVector.hpp \
             canvas3d.hpp \
             window3d.hpp \
             pluginmanager.hpp \
+            controlpanel.hpp \
             mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
@@ -54,6 +55,7 @@ SOURCES		= testVector.cpp \
             canvas3d.cpp \
             window3d.cpp \
             pluginmanager.cpp \
+            controlpanel.cpp \
             mainwindow.cpp \
             main.cpp
 
