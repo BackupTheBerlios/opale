@@ -147,9 +147,9 @@ operator<<
 ( ostream& os, const Matrix3D &mat)
 {
  
-  os << mat.m[0] << " " << mat.m[1] << " " << mat.m[2] << " " << mat.m[3] << "|"
-     << mat.m[4] << " " << mat.m[5] << " " << mat.m[6] << " " << mat.m[7] << "|"
-     << mat.m[8] << " " << mat.m[9] << " " << mat.m[10] << " " << mat.m[11] << "|"
+  os << mat.m[0] << " " << mat.m[1] << " " << mat.m[2] << " " << mat.m[3] << "|" << std::endl
+     << mat.m[4] << " " << mat.m[5] << " " << mat.m[6] << " " << mat.m[7] << "|" << std::endl
+     << mat.m[8] << " " << mat.m[9] << " " << mat.m[10] << " " << mat.m[11] << "|" << std::endl
      << mat.m[12] << " " << mat.m[13] << " " << mat.m[14] << " " << mat.m[15];
   return os;
 }
