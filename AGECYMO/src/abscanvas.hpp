@@ -13,6 +13,10 @@ class AbsCanvas : public QGLWidget
 {
   Q_OBJECT
 
+  //Public Members/Attributes
+  public:
+  
+  //Protected Members/Attributes
   protected:
   
   static const int MIN_TIME_FOR_FPS_MEASURE = 2;
@@ -24,23 +28,16 @@ class AbsCanvas : public QGLWidget
   
   QTime _chronometer; // used to count the number of frames rendered. 
   gml::Camera _camera; //The Camera associated
-  
-  
+    
   int _axesIndexDPL; //indexe of the display list containing the axes.
 
-  
+
+  //Public Methods
   public:
   AbsCanvas(QWidget* parent = 0, const char* name = 0);
   virtual ~AbsCanvas();
 
-  
-  void setCameraPosition(gml::Point3D const& new_position);
-  void setCameraPosition(double px, double py, double pz);
-  
-  void setCameraUp(double upx, double upy, double upz);
-  void setCameraLookAt(double cx, double cy, double cz);
-  
-
+  //Protected Methods
   protected:
 
   virtual void buildAxesDPL() = 0;
