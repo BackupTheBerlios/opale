@@ -247,10 +247,30 @@ void Circle::manageDbClickEvent(QMouseEvent* event,
   }
 }
 
-std::vector<gml::Point3D> Circle::discretize()
+std::vector<gml::Point3D> Circle::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
-  pointsList.clear();
 
+  // Ray compute
+  float x = pow((float)_pointsVector[1][0] - (float)_pointsVector[0][0],2);
+  float y = pow((float)_pointsVector[1][1] - (float)_pointsVector[0][1],2);
+  
+  //cout << "x = " << x << endl;
+  
+  float r = sqrt(x + y);
+
+  int step = 360/nbSegments;
+  
+  for ( int i = 0 ; i < 360 ; i=i+step ) {
+    float angle = i * 3.14159F / 180 ;
+    float x = (float) (_pointsVector[0][0] + r*cos(angle)) ;
+    float y = (float) (_pointsVector[0][1] + r*sin(angle)) ;
+    Point3D p;
+    p[0] = x;
+    p[1] = y;
+    p[2] = 0.0;
+    pointsList.push_back(p);
+  }
+  
   return pointsList;
 }  

@@ -21,7 +21,7 @@ public:
 
   void render();
 
-  std::vector<gml::Point3D> discretize();
+  std::vector<gml::Point3D> discretize(int nbSegments);
 
   void managePressEvent(QMouseEvent* event,
 			unsigned short toolType,
