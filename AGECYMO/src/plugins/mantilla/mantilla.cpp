@@ -124,7 +124,7 @@ int save(MainWindow *mainWin){
   Faces *faces_to_write;
   faces_to_write = new Faces(mainWin->model());
 
-  QString message("Validity calcul launched on current model...");
+  QString message("Mantilla validity calcul launched on current model...");
   mainWin->getEventsWindow().writeComments( message );
 
   //here starts the validity calcul
