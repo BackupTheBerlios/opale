@@ -110,9 +110,9 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
   tplus  = next - current;
   tmoins = current - previous;
 
-
   test = cross(tplus, tmoins);
 
+  //Check this particular case
   if (test.norm() < EPSILON)
   {
     qDebug("PROOOOOOOOOOOOOOOOOOOOOOBLEM");
@@ -120,21 +120,6 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
     initFrenetFrame( current, next, newCurrentFrame);
     return;
   }
-
-  //Check this particular case
-  //
-//   if ( quasiNormale.norm() < EPSILON)
-//   {
-//     qDebug("CylinderGenerator : ComputFrenetFrame : Vecteur quasiNormal est null");
-    
-//     newCurrentFrame = previousFrame;
-//     newCurrentFrame.m[3]  = current[0];
-//     newCurrentFrame.m[7]  = current[1];
-//     newCurrentFrame.m[11] = current[2];
-
-//     initFrenetFrame( current, next, newCurrentFrame);
-//     return;
-//   }
 
   quasiNormale = tplus - tmoins;
   quasiNormale.normalize();
@@ -241,24 +226,6 @@ CylinderGenerator::computeProfileMatrix( const std::vector<Point3D> & profilePts
   //TODO: just do it !
   profileMatrix.loadIdentity();
 }
-
-// void
-// CylinderGenerator::updateFrenetFrame(const Point3D & origine, Matrix3D & frame)
-// {
-//   frame = Matrix3D::translation(origine[0],
-//                                 origine[1],
-//                                 origine[2]);
-// }
-
-
-// void
-// CylinderGenerator::moveFrenetFrame(const Point3D & origine, Matrix3D & frame)
-// {
-//   frame = Matrix3D::translation(origine[0],
-//                                 origine[1],
-//                                 origine[2]);
-// }
-
 
 void
 CylinderGenerator::computePointsAccordingToFrame( const std::vector<Point3D> & sectionPts,

@@ -71,10 +71,6 @@ class CylinderGenerator
                        const Point3D & p2,
                        Matrix3D & frame);
   
-  //void updateFrenetFrame(const Point3D & origine, Matrix3D & frame);
-
-  //void moveFrenetFrame(const Point3D & origine, Matrix3D & frame);
-  
   void computePointsAccordingToFrame( const std::vector<Point3D> & sectionPts,
                                       Matrix3D & currentFrame);
   
