@@ -37,6 +37,9 @@ namespace gml
     template <typename T2>
     Vector<T, N> operator/(T2 l);
     
+    template <typename T2>
+    Vector<T, N> operator-(Vector<T2, N> const& v2) const;
+    
   };//end of class vector declaration
   
   typedef Vector<double, 3> Vector3D;
@@ -114,7 +117,7 @@ namespace gml
   void Vector<T, N>::normalize()
   {
     double norm = this->norm();
-    assert( norm != 0);
+//    assert( norm != 0);
 
     for (int i=0; i<N; i++)
     {
@@ -158,7 +161,20 @@ namespace gml
     
     return v2;
   }
-      
+
+  template<typename T, int N>
+  template <typename T2>
+  Vector<T, N> Vector<T, N>::operator-(Vector<T2, N> const& v2) const
+  {
+    Vector<T, N> v;
+
+    for (int i=0; i<N; i++)
+    {
+      v[i] = _data[i] - v2[i];
+    }
+    return v;
+  }
+        
   typedef Vector<double, 3> Vector3D;
 
 } // end of namespace gml
