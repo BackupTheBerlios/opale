@@ -216,6 +216,8 @@ int cpt = 3;
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
+  bool flagPolyNurbs = false;
+
   //display toolMenu popup with right button
   if(event->button() == Qt::RightButton){
     _fileMenu->exec(mapToGlobal(QPoint(event->x(),event->y())));
@@ -230,6 +232,7 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  if(_toolMode == POLY_MODE){
 	    cout<<"creation polyline !!!!"<<endl;
 	    _figure = new Polyline(this);
+	    flagPolyNurbs = true;
 	  }
 	  if(_toolMode == CIRCLE_MODE){
 	    cout<<"creation dun cercle !!!!"<<endl;
@@ -241,9 +244,24 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  }
 	  if(_toolMode == NURBS_MODE){
 	    cout<<"creation nurbs !!!!"<<endl;
-	    //_figure = new NurbsCurve(this);
+	    _figure = new NurbsCurve(this);
+	    flagPolyNurbs = true;
 	  }
 	}
+	/*else {
+	  if (_toolMode == POLY_MODE && flagPolyNurbs) {
+	    _figure = new NurbsCurve(this);
+	  }
+	  else {
+	    if (_toolMode == NURBS_MODE && flagPolyNurbs) {
+	      _figure = new Polyline(this);
+	    }
+	    else {
+	      flagPolyNurbs = false;
+	    }
+	  }
+	  }*/
+
       }
       
       if(_figure != NULL){
@@ -309,7 +327,7 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 	}
 	if(_toolMode == NURBS_MODE){
 	  //here a nurb creation
-	  //_figure = new NurbsCurve(this);
+	  _figure = new NurbsCurve(this);
 	}
       }
       
