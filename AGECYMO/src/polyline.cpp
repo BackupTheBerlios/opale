@@ -32,6 +32,8 @@ void Polyline::render(){
 
   glBegin(GL_LINE_STRIP);
 
+  cout<<"RENDER POLYLINE"<<endl;
+
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
     glVertex2f(_pointsVector[i][0], _pointsVector[i][1]);
   }

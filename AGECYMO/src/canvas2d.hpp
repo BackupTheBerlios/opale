@@ -20,9 +20,9 @@ const QString profilS("Profil");
 const QString window3dS("window3D");
 const int SQUARE_NUMBER_DEFAULT = 50;
 
-const unsigned short SECTION_CANVAS = 0;
-const unsigned short PROFIL_CANVAS = 1;
-const unsigned short CHEMIN_CANVAS = 2;
+const unsigned short SECTION_CANVAS = 1;
+const unsigned short PROFIL_CANVAS = 2;
+const unsigned short CHEMIN_CANVAS = 0;
 const unsigned short W3D_CANVAS = 3;
 
 const unsigned short POLY_MODE = 1;
@@ -42,6 +42,7 @@ class Canvas2D : public AbsCanvas
   AbsCurve *getFigure();
   unsigned short getToolMode();
   unsigned short getCanvasType();
+  void setFigure(AbsCurve *figure);
 
   private:
   

@@ -241,7 +241,7 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  }
 	  if(_toolMode == NURBS_MODE){
 	    cout<<"creation nurbs !!!!"<<endl;
-	    _figure = new NurbsCurve(this);
+	    //_figure = new NurbsCurve(this);
 	  }
 	}
       }
@@ -309,7 +309,7 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 	}
 	if(_toolMode == NURBS_MODE){
 	  //here a nurb creation
-	  _figure = new NurbsCurve(this);
+	  //_figure = new NurbsCurve(this);
 	}
       }
       
@@ -403,4 +403,13 @@ unsigned short Canvas2D::getToolMode()
 unsigned short Canvas2D::getCanvasType()
 {
   return _canvasType;
+}
+
+void Canvas2D::setFigure(AbsCurve *figure)
+{
+  if(_figure!=NULL){
+    delete(_figure);
+  }
+  _figure = figure;
+  paintGL();
 }

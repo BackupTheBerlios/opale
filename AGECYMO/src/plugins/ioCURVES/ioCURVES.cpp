@@ -22,15 +22,19 @@
 #include "faces.hpp"
 #include "canvas2d.hpp"
 #include "abscurve.hpp"
+#include "circle.hpp"
+#include "quadri.hpp"
+#include "abscurve.hpp"
+#include "polyline.hpp"
 
 using namespace std;
 using namespace gml;
 
-//Tokens for VRML load and save
-const char* L_SBRACKET            = "[";
-const char* R_SBRACKET            = "]";
-const char* SPACE                 = " ";
-const char* COMA                  = ",";
+//Tokens for CURVES load and save
+
+const double END                  = -1.0;
+const int NB_FRAMES               = 3;
+const char * SPACE                = " ";
 
 /***************************************************************
  *  Fonction query for curves
@@ -72,8 +76,7 @@ void** query(void){
   menuSaveAdd->texte = new string("CTRL+P");
 
   qDebug("INSIDE PLUGIN : Query IOCURVES type  = %d", *type);
-  
-  
+    
   parameters[0] = type;
   parameters[1] = name;
   parameters[2] = nbEntries;
@@ -94,7 +97,126 @@ void** query(void){
  *
  ***************************************************************/
 extern "C"
-int load(MainWindow *mainW){
+int load(MainWindow *mainWin){
+  int frameCpt = 0;
+  unsigned short toolType;
+  AbsCurve *figure;
+  double xCoord, yCoord;
+  gml::Point3D point;
+
+  // The user chooses a file in order to load a VRML model
+  QString fileName = 
+    QFileDialog::getOpenFileName(".",
+				 "*.cur",
+				 mainWin,
+				 "CURVES load dialog box",
+				 "choose a name for CURVES load" );
+
+  // If no name defined exit
+  if(fileName.isEmpty()){
+    return EXIT_FAILURE;
+  }
+
+  //opening file for writing
+  ifstream file(fileName.latin1());
+
+
+  while(frameCpt != NB_FRAMES){
+    
+    file>>toolType;
+
+    if(frameCpt == CHEMIN_CANVAS){
+      
+      cout<<"chemin load"<<endl;
+
+      if(toolType == CIRCLE_MODE){
+	figure = new Circle(&mainWin->getCheminCanvas());
+      }
+      else if(toolType == REC_MODE){
+	figure = new Quadri(&mainWin->getCheminCanvas());
+      }
+      else if(toolType == NURBS_MODE){
+	figure = NULL;
+      }
+      else if(toolType == POLY_MODE){
+	figure = new Polyline(&mainWin->getCheminCanvas());
+      }
+      else{
+	figure = NULL;
+      }
+      
+      file>>point[0];
+      while(point[0] != -1.0){
+	file>>point[1];
+	figure->addPoint(point);
+	file>>point[0];
+      }
+
+      (mainWin->getCheminCanvas()).setFigure(figure);
+    }
+    
+    if(frameCpt == SECTION_CANVAS){
+
+      cout<<"section load"<<endl;
+
+      if(toolType == CIRCLE_MODE){
+	figure = new Circle(&mainWin->getSectionCanvas());
+      }
+      else if(toolType == REC_MODE){
+	figure = new Quadri(&mainWin->getSectionCanvas());
+      }
+      else if(toolType == NURBS_MODE){
+	figure = NULL;
+      }
+      else if(toolType == POLY_MODE){
+	figure = new Polyline(&mainWin->getSectionCanvas());
+      }
+      else{
+	figure = NULL;
+      }
+
+      file>>point[0];
+      while(point[0] != -1.0){
+	file>>point[1];
+	figure->addPoint(point);
+	file>>point[0];
+      }
+
+      (mainWin->getSectionCanvas()).setFigure(figure);
+    }
+
+    if(frameCpt == PROFIL_CANVAS){
+      
+      cout<<"profil load"<<endl;
+
+      if(toolType == NURBS_MODE){
+	figure = NULL;
+      }
+      else if(toolType == POLY_MODE){
+	cout<<"polyline profil created"<<endl;
+	figure = new Polyline(&mainWin->getProfilCanvas());
+      }
+      else{
+	figure = NULL;
+      }
+
+      file>>point[0];
+      while(point[0] != -1.0){
+	file>>point[1];
+	cout<<"add point to profil polyline"<<endl;
+	figure->addPoint(point);
+	file>>point[0];
+      }
+
+      (mainWin->getProfilCanvas()).setFigure(figure);
+    }
+
+
+    frameCpt++;
+  }
+
+  //file closing
+  file.close();
 
   return EXIT_SUCCESS;
 }
@@ -117,7 +239,7 @@ int save(MainWindow *mainWin){
   //user chooses a name for wrl file
   QString fileName = QFileDialog::getSaveFileName(
     ".",
-    "*.wrl",
+    "*.cur",
     mainWin,
     "VRML save dialog box",
     "choose a name for VRML save" );
@@ -126,6 +248,8 @@ int save(MainWindow *mainWin){
   if(fileName.isEmpty()){
     return EXIT_FAILURE;
   }
+
+  fileName = fileName + ".cur";
 
   //opening file for writing
   ofstream file(fileName.latin1());
@@ -158,7 +282,7 @@ int save(MainWindow *mainWin){
       file<<point[0]<<SPACE<<point[1]<<SPACE;
     }
   }
-  file<<COMA<<endl;
+  file<<END<<endl;
 
 
 
@@ -188,7 +312,7 @@ int save(MainWindow *mainWin){
       file<<point[0]<<SPACE<<point[1]<<SPACE;
     }
   }
-  file<<COMA<<endl;
+  file<<SPACE<<END<<endl;
 
 
 
@@ -218,7 +342,7 @@ int save(MainWindow *mainWin){
       file<<point[0]<<SPACE<<point[1]<<SPACE;
     }
   }
-  file<<COMA<<endl;
+  file<<END<<endl;
 
   
   //file closing
