@@ -349,7 +349,7 @@ int save(MainWindow *mainWin){
       <<R_BRACE<<endl
       <<GEOMETRY_PARAMETER<<SPACE<<INDEXED_FACE_SET_NODE<<SPACE<<L_BRACE<<endl
       <<COORD_PARAMETER<<SPACE<<COORDINATE_NODE<<SPACE<<L_BRACE<<endl
-      <<POINT_PARAMETER<<L_SBRACKET;
+      <<POINT_PARAMETER<<SPACE<<L_SBRACKET<<SPACE;
 
   //we write the points
   for(cpt = 0; cpt<nbPoints; cpt++){
@@ -362,10 +362,10 @@ int save(MainWindow *mainWin){
 
 
   //we write the faces (indexes) 
-  file<<endl<<COORD_INDEX_PARAMETER<<SPACE<<L_SBRACKET;
+  file<<endl<<COORD_INDEX_PARAMETER<<SPACE<<L_SBRACKET<<SPACE;
   for(cpt = 0; cpt<nbFaces; cpt++){
     if(cpt!=0){
-      file<<", ";
+      file<<SPACE;
     }
     workFace = faces[cpt];
     index_list = workFace->getIndexes();
@@ -376,14 +376,13 @@ int save(MainWindow *mainWin){
   }
 
   //braces closing
-  file<<R_SBRACKET<<endl
+  file<<SPACE<<R_SBRACKET<<endl
       <<R_BRACE<<endl<<R_BRACE<<endl
       <<R_SBRACKET<<endl
       <<R_BRACE<<endl;
 
   //file closing
   file.close();
-  delete faces_to_write;
 
   return EXIT_SUCCESS;
 }
