@@ -1,38 +1,36 @@
+//
+//  plugins load and save for the curves
+//  
+//
+
 #include <cstdlib>
 #include <stdlib.h>
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-
 //Qt stuff
 #include <qapplication.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-
 //Our stuff
 #include "mainwindow.hpp"
-//#include "plugin.hpp"
 #include "point.hpp"
-#include "face.hpp"
-#include "tria.hpp"
-#include "quad.hpp"
-#include "absface.hpp"
-#include "faces.hpp"
 #include "canvas2d.hpp"
+#include "polyline.hpp"
+#include "nurbscurve.hpp"
 #include "abscurve.hpp"
 #include "circle.hpp"
+#include "polygone.hpp"
 #include "quadri.hpp"
-//#include "abscurve.hpp"
-#include "polyline.hpp"
 
 using namespace std;
 using namespace gml;
 
 //Tokens for CURVES load and save
-
-const double END                  = -1.0;
+const double CONTROL_NETWORK_END  = -10.0;
+const double CURVE_END            = -20.0;
+const double CANVAS_END           = -30.0;
 const int NB_FRAMES               = 3;
 const char * SPACE                = " ";
 
@@ -98,11 +96,17 @@ void** query(void){
  ***************************************************************/
 extern "C"
 int load(MainWindow *mainWin){
-  int frameCpt = 0;
-  unsigned short toolType;
-  AbsCurve *figure;
+  Curves *figure;
   double xCoord, yCoord;
-  gml::Point3D point;
+  gml::Point3D *point;
+  double canvasType;
+  double closeParameter;
+  gml::Point3D colors;
+  double curveType;
+  AbsCurve *curve;
+  double indexCurve;
+
+  curve = NULL;
 
   // The user chooses a file in order to load a VRML model
   QString fileName = 
@@ -117,107 +121,111 @@ int load(MainWindow *mainWin){
     return EXIT_FAILURE;
   }
 
+
   //opening file for writing
   ifstream file(fileName.latin1());
+  
+  for(int i = 0; i<NB_FRAMES; i++){
+
+    //get the canvas type and create curves class
+    file>>canvasType;
+
+    if(canvasType == CHEMIN_CANVAS){
+      figure = new Curves(&mainWin->getCheminCanvas());
+    }
+    else if(canvasType == SECTION_CANVAS){
+      figure = new Curves(&mainWin->getSectionCanvas());
+    }
+    else if(canvasType == PROFIL_CANVAS){
+      figure = new Curves(&mainWin->getProfilCanvas());
+    }
+    else{
+      //here a log error
+    }
+
+    //get the close parameter
+    file>>closeParameter;
+    if(closeParameter){
+      figure->close();
+    }
+
+    //get the colors
+    file>>colors[0];
+    file>>colors[1];
+    file>>colors[2];
+    figure->setColor(colors[0], colors[1], colors[2]);
+    file>>colors[0];
+    file>>colors[1];
+    file>>colors[2];
+    figure->setSelectionColor(colors[0], colors[1], colors[2]);
+
+    //get the current tool type
+    unsigned short currentToolType;
+    file>>currentToolType;
+    figure->setCurrentToolType(currentToolType);
+
+    //get the control points
+    file>>xCoord;
+    while(xCoord != CONTROL_NETWORK_END){
+      file>>yCoord;
+      point = new gml::Point3D();
+      (*point)[0] = xCoord;
+      (*point)[1] = yCoord;
+      figure->addPoint(point);
+      file>>xCoord;
+    }
+ 
+    //get the curves
+    file>>curveType;
+    while(curveType != CANVAS_END){
 
 
-  while(frameCpt != NB_FRAMES){
+      if(curveType == POLY_MODE){
+	curve = new Polyline();
+      }
+      else if(curveType == REC_MODE){
+	curve = new Quadri();
+      }
+      else if(curveType == POLYG_MODE){
+	curve = new Polygone();
+      }
+      else if(curveType == CIRCLE_MODE){
+	curve = new Circle();
+      }
+      else if(curveType == NURBS_MODE){
+	curve = new NurbsCurve();
+      }
+      if(curve == NULL){
+	//here a log error
+      }
+
+      file>>indexCurve;
+      gml::Point3D *lepoint;
+
+      //add the control points of the curve
+      while(indexCurve != CURVE_END){
+	curve->addPoint(figure->getPointAtIndex((unsigned)indexCurve));
+	file>>indexCurve;
+	cout<<indexCurve<<endl;
+      }
+      figure->addCurve(curve);
+      file>>curveType;
+    }
     
-    file>>toolType;
-
-    if(frameCpt == CHEMIN_CANVAS){
-      
-      cout<<"chemin load"<<endl;
-
-      if(toolType == CIRCLE_MODE){
-	figure = new Circle(&mainWin->getCheminCanvas());
-      }
-      else if(toolType == REC_MODE){
-	figure = new Quadri(&mainWin->getCheminCanvas());
-      }
-      else if(toolType == NURBS_MODE){
-	figure = NULL;
-      }
-      else if(toolType == POLY_MODE){
-	figure = new Polyline(&mainWin->getCheminCanvas());
-      }
-      else{
-	figure = NULL;
-      }
-      
-      file>>point[0];
-      while(point[0] != -1.0){
-	file>>point[1];
-	figure->addPoint(point);
-	file>>point[0];
-      }
-
+    //update all the curves
+    if(canvasType == CHEMIN_CANVAS){
       (mainWin->getCheminCanvas()).setFigure(figure);
     }
-    
-    if(frameCpt == SECTION_CANVAS){
-
-      cout<<"section load"<<endl;
-
-      if(toolType == CIRCLE_MODE){
-	figure = new Circle(&mainWin->getSectionCanvas());
-      }
-      else if(toolType == REC_MODE){
-	figure = new Quadri(&mainWin->getSectionCanvas());
-      }
-      else if(toolType == NURBS_MODE){
-	figure = NULL;
-      }
-      else if(toolType == POLY_MODE){
-	figure = new Polyline(&mainWin->getSectionCanvas());
-      }
-      else{
-	figure = NULL;
-      }
-
-      file>>point[0];
-      while(point[0] != -1.0){
-	file>>point[1];
-	figure->addPoint(point);
-	file>>point[0];
-      }
-
+    else if(canvasType == SECTION_CANVAS){
       (mainWin->getSectionCanvas()).setFigure(figure);
     }
-
-    if(frameCpt == PROFIL_CANVAS){
-      
-      cout<<"profil load"<<endl;
-
-      if(toolType == NURBS_MODE){
-	figure = NULL;
-      }
-      else if(toolType == POLY_MODE){
-	cout<<"polyline profil created"<<endl;
-	figure = new Polyline(&mainWin->getProfilCanvas());
-      }
-      else{
-	figure = NULL;
-      }
-
-      file>>point[0];
-      while(point[0] != -1.0){
-	file>>point[1];
-	cout<<"add point to profil polyline"<<endl;
-	figure->addPoint(point);
-	file>>point[0];
-      }
-
+    else if(canvasType == PROFIL_CANVAS){
       (mainWin->getProfilCanvas()).setFigure(figure);
     }
-
-
-    frameCpt++;
   }
 
   //file closing
   file.close();
-
   return EXIT_SUCCESS;
 }
 
@@ -233,8 +241,9 @@ int load(MainWindow *mainWin){
 extern "C"
 int save(MainWindow *mainWin){
 
-  AbsCurve *figure;
-  gml::Point3D point;
+  Curves *figure;
+  std::vector<gml::Point3D*> controlPoints;
+  std::vector<AbsCurve*> curves_list;;
 
   //user chooses a name for wrl file
   QString fileName = QFileDialog::getSaveFileName(
@@ -255,96 +264,94 @@ int save(MainWindow *mainWin){
   ofstream file(fileName.latin1());
 
 
-  /************ chemin canvas **********************/
-  
-  figure = (mainWin->getCheminCanvas()).getFigure();
-  if(figure != NULL){
-    if((mainWin->getCheminCanvas()).getToolMode() == CIRCLE_MODE){
-      file<<CIRCLE_MODE<<SPACE;
+  for(int i = 0; i<NB_FRAMES; i++){
+    if(i == CHEMIN_CANVAS){
+      figure = (mainWin->getCheminCanvas()).getFigure();
     }
-    else if((mainWin->getCheminCanvas()).getToolMode() == NURBS_MODE){
-      file<<NURBS_MODE<<SPACE;
+    else if(i == SECTION_CANVAS){
+      figure = (mainWin->getSectionCanvas()).getFigure();
     }
-    else if((mainWin->getCheminCanvas()).getToolMode() == REC_MODE){
-      file<<REC_MODE<<SPACE;
+    else if(i == PROFIL_CANVAS){
+      figure = (mainWin->getProfilCanvas()).getFigure();
     }
-    else{
-      file<<POLY_MODE<<SPACE;
-    }
-  }
-  else{
-    file<<NO_TOOL_MODE<<SPACE;
-  }
-  
-  if(figure != NULL){
-    for(int i = 0; i<figure->getNbPoints(); i++){
-      point = figure->getPoint(i);
-      file<<point[0]<<SPACE<<point[1]<<SPACE;
-    }
-  }
-  file<<END<<endl;
 
+    //write the figure object
 
+    if(figure != NULL){
 
-  /************ section canvas **********************/
-  figure = (mainWin->getSectionCanvas()).getFigure();
-  if(figure != NULL){
-    if((mainWin->getSectionCanvas()).getToolMode() == CIRCLE_MODE){
-      file<<CIRCLE_MODE<<SPACE;
-    }
-    else if((mainWin->getSectionCanvas()).getToolMode() == NURBS_MODE){
-      file<<NURBS_MODE<<SPACE;
-    }
-    else if((mainWin->getSectionCanvas()).getToolMode() == REC_MODE){
-      file<<REC_MODE<<SPACE;
-    }
-    else{
-      file<<POLY_MODE<<SPACE;
+      //write the canvas type
+      file<<i<<SPACE;
+      
+      //write the close parameter
+      if(figure->isClosed()){
+	file<<1.0;
+      }
+      else{
+	file<<0.0;
+      }
+      file<<SPACE;
+      
+      //write color parameters
+      gml::Point3D colors = figure->getColor();
+      file<<colors[0]<<SPACE<<colors[1]<<SPACE<<colors[2]<<SPACE;
+      colors = figure->getSelectionColor();
+      file<<colors[0]<<SPACE<<colors[1]<<SPACE<<colors[2]<<SPACE;
+      
+      //write the current tool type
+      file<<figure->getCurrentToolType()<<SPACE;
+      
+      //write the network points
+      controlPoints = figure->getAllPoints();
+      double x,y;
+      for(unsigned z = 0; z<controlPoints.size(); z++){
+	x = (*controlPoints[z])[0];
+	y = (*controlPoints[z])[1];
+	file<<x<<SPACE<<y<<SPACE;
+      }
+      file<<CONTROL_NETWORK_END<<SPACE;
+
+      //write the curves
+      curves_list = figure->getAllCurves();
+
+      for(unsigned z = 0; z<curves_list.size(); z++){
+	
+	//write the type of the curve
+	if(typeid(*curves_list[z]) == typeid(Polyline)){
+	  file<<POLY_MODE<<SPACE;
+	}
+	else if(typeid(*curves_list[z]) == typeid(NurbsCurve)){
+	  file<<NURBS_MODE<<SPACE;
+	}
+	else if(typeid(*curves_list[z]) == typeid(Polygone)){
+	  file<<POLYG_MODE<<SPACE;
+	}
+	else if(typeid(*curves_list[z]) == typeid(Circle)){
+	  file<<CIRCLE_MODE<<SPACE;
+	}
+	else if(typeid(*curves_list[z]) == typeid(Quadri)){
+	  file<<REC_MODE<<SPACE;
+	}
+	else{
+	  //here a log error
+	}
+
+	//write the index of the points
+	for(int j = 0; j<curves_list[z]->getNbPoints(); j++){
+	  for(unsigned k = 0; k<controlPoints.size(); k++){
+	    if(curves_list[z]->getPoint(j) == controlPoints[k]){
+	      file<<k<<SPACE;
+	    }
+	  }
+	}
+
+	file<<CURVE_END<<SPACE;
+      }
+
+      file<<CANVAS_END<<SPACE;
+
     }
   }
-  else{
-    file<<NO_TOOL_MODE<<SPACE;
-  }
-  
-  if(figure != NULL){
-    for(int i = 0; i<figure->getNbPoints(); i++){
-      point = figure->getPoint(i);
-      file<<point[0]<<SPACE<<point[1]<<SPACE;
-    }
-  }
-  file<<SPACE<<END<<endl;
 
-
-
-  /************ profil canvas **********************/
-  figure = (mainWin->getProfilCanvas()).getFigure();
-  if(figure != NULL){
-    if((mainWin->getProfilCanvas()).getToolMode() == CIRCLE_MODE){
-      file<<CIRCLE_MODE<<SPACE;
-    }
-    else if((mainWin->getProfilCanvas()).getToolMode() == NURBS_MODE){
-      file<<NURBS_MODE<<SPACE;
-    }
-    else if((mainWin->getProfilCanvas()).getToolMode() == REC_MODE){
-      file<<REC_MODE<<SPACE;
-    }
-    else{
-      file<<POLY_MODE<<SPACE;
-    }
-  }
-  else{
-    file<<NO_TOOL_MODE<<SPACE;
-  }
-  
-  if(figure != NULL){
-    for(int i = 0; i<figure->getNbPoints(); i++){
-      point = figure->getPoint(i);
-      file<<point[0]<<SPACE<<point[1]<<SPACE;
-    }
-  }
-  file<<END<<endl;
-
-  
   //file closing
   file.close();
 
