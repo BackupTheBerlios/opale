@@ -5,200 +5,20 @@
 
 using namespace std;
 
-Polyline::Polyline(Canvas2D *parent)
-  :
-  AbsCurve(parent)
+Polyline::Polyline()
 {}
 
-Polyline::Polyline(std::vector<gml::Point3D> pointsVector, 
-		   bool isClosed,
-		   Canvas2D *parent)
-  :
-  AbsCurve(pointsVector, isClosed, parent)
+Polyline::~Polyline()
 {}
 
-Polyline::Polyline(const Polyline &source)
-  :
-  AbsCurve(source)
+void Polyline::render()
 {
-}
-
-void Polyline::render(){
-
-  double increment; 
-  increment = Control_point_size / 2.0;
-  
-  glColor3f(_redComponent, _greenComponent, _blueComponent);
-
+  glColor3f(_redColor, _greenColor, _blueColor);
   glBegin(GL_LINE_STRIP);
-
-  cout<<"RENDER POLYLINE"<<endl;
-
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
-    glVertex2f(_pointsVector[i][0], _pointsVector[i][1]);
+    glVertex2f((*_pointsVector[i])[0], (*_pointsVector[i])[1]);
   }
-
-  if(_isClosed){
-    glVertex2f(_pointsVector[0][0], _pointsVector[0][1]);
-  }
-
   glEnd();
-
-  glColor3f(_redComponent, _greenComponent, _blueComponent);
-  bool selected;
-
-  //we draw the control points
-  for(int i = 0 ; i < int(_pointsVector.size()); i++){
-
-    if(isSelected(i)){
-       glColor3f(_redComponentSelect,
-		 _greenComponentSelect, 
-		 _blueComponentSelect);
-    }
-    else{
-      glColor3f(_redComponent, 
-		_greenComponent, 
-		_blueComponent);
-    }
-
-    glBegin(GL_POLYGON);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]-increment);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]-increment);
-    glEnd();
-  }
-}
-
-
-void Polyline::managePressEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-  int index;
-    
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-    addPoint(position);
-    noSelection();
-    select(isExistingPoint(position));
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-    }
-  else{
-    /***************** selection mode **********************************/
-    //add to selection group with shift
-    if(event->state() == Qt::ShiftButton){
-      if(!isSelected(index)){
-	  if((index=isExistingPoint(position)) != NO_EXIST){
-	    select(index);
-	  }
-      }
-      _startMovePoint[0] = position[0];
-      _startMovePoint[1] = position[1];
-    }
-    
-      else if(event->state() == Qt::Keypad){
-	if((index=isExistingPoint(position)) != NO_EXIST){
-	  deletePoint(index);
-	}
-      }
-    
-    //deselect and add without shift
-    else{
-      if((index=isExistingPoint(position)) != NO_EXIST){
-	if(!isSelected(index)){
-	  noSelection();
-	    select(index);
-	}
-	_startMovePoint[0] = position[0];
-	_startMovePoint[1] = position[1];
-	
-      }
-	else{
-	  noSelection();
-	}
-    }
-  }
-}
-
-
-
-
-
-void Polyline::manageMoveEvent(QMouseEvent* event,
-			       unsigned short toolType,
-			       unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-  }
-  /***************** selection mode **********************************/
-  else{
-    gml::Point3D newPos;
-    for(unsigned i = 0; i<_pointsVector.size(); i++){
-      if(isSelected((int)i)){
-	newPos[0] = _pointsVector[i][0] 
-	  + (position[0] - _startMovePoint[0]);
-	newPos[1] = _pointsVector[i][1]
-	  + (position[1] - _startMovePoint[1]);
-	movePoint((int)i, newPos);
-      }
-    }
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-  }
-}
-
-
-
-
-
-void Polyline::manageReleaseEvent(QMouseEvent* event,
-				  unsigned short toolType,
-				  unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  if(event->type() == QEvent::MouseButtonRelease){
-    /***************** creation mode **********************************/
-    if(event->state() == Qt::ControlButton){
-      
-    }
-    /***************** selection mode **********************************/
-    else{
-      
-    }
-  } 
-}
-
-
-
-
-void Polyline::manageDbClickEvent(QMouseEvent* event,
-				  unsigned short toolType,
-				  unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-    addPoint(position);
-    close();
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-  }
-  /***************** selection mode **********************************/
-  else{
-    
-  }
 }
 
 std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
@@ -210,45 +30,35 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
   double increment, coeff;
   
   //the first point
-  point[0] = _pointsVector[0][0];
-  point[1] = _pointsVector[0][1];
+  point[0] = (*_pointsVector[0])[0];
+  point[1] = (*_pointsVector[0])[1];
   pointsList.push_back(point);
 
-  increment = 1.0/(double)nbSegments;
+  increment = 1.0/(double)(nbSegments+1);
   
   for(unsigned i = 0 ; i<_pointsVector.size()-1; i++){
 
     //vector construction
-    vec[0] = _pointsVector[i+1][0] - _pointsVector[i][0];
-    vec[1] = _pointsVector[i+1][1] - _pointsVector[i][1];
+    vec[0] = (*_pointsVector[i+1])[0] - (*_pointsVector[i])[0];
+    vec[1] = (*_pointsVector[i+1])[1] - (*_pointsVector[i])[1];
 
     coeff = increment;
 
-    for(int j = 1 ; j<=nbSegments ; j++){
+    for(int j = 1 ; j<=(nbSegments+1) ; j++){
       point[0] = vec[0] * coeff;
       point[1] = vec[1] * coeff;
-      point[0] += _pointsVector[i][0];
-      point[1] += _pointsVector[i][1];
-      pointsList.push_back(point);
-      coeff += increment;
-    }
-  }
-
-  if(_isClosed == true){
-    vec[0] = _pointsVector[0][0] - _pointsVector[_pointsVector.size()-1][0];
-    vec[1] = _pointsVector[0][1] - _pointsVector[_pointsVector.size()-1][1];
-    
-    coeff = increment;
-
-    for(int j = 1 ; j<=nbSegments-1 ; j++){
-      point[0] = vec[0] * coeff;
-      point[1] = vec[1] * coeff;
-      point[0] += _pointsVector[_pointsVector.size()-1][0];
-      point[1] += _pointsVector[_pointsVector.size()-1][1];
+      point[0] += (*_pointsVector[i])[0];
+      point[1] += (*_pointsVector[i])[1];
       pointsList.push_back(point);
       coeff += increment;
     }
   }
 
   return pointsList;
-}  
+}
+
+int Polyline::addPoint(gml::Point3D *point)
+{
+  _pointsVector.push_back(point);
+  return ADDED;
+}
