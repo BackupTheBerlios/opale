@@ -5,112 +5,43 @@
 #include "point.hpp"
 #include "qgl.h"
 
-class Canvas2D;
-
-//color of the polylines
-const double RED_DEFAULT = 0.0;
-const double GREEN_DEFAULT = 0.0;
-const double BLUE_DEFAULT = 1.0;
-
-//color of the control points
-const double RED_DEFAULT_SELECT = 1.0;
-const double GREEN_DEFAULT_SELECT = 0.0;
-const double BLUE_DEFAULT_SELECT = 0.0;
+//color for figure render
+const double RED_COLOR = 0.0;
+const double GREEN_COLOR = 1.0;
+const double BLUE_COLOR = 0.0;
 
 //various cosntant values
 const int NO_EXIST = -1;
 const int NO_SELECTION = -1;
+const int NOT_ADDED = -1;
+const int ADDED = 0;
 
 //size of control points
 const double Control_point_size = 0.03;
 
 class AbsCurve
 {
-
-  //Public Members/Attributes
-  public:
-  
   //Protected Members/Attributes
-  protected:
-
-  //the prent widget
-  Canvas2D *_parent;
-  //control points
-  std::vector <gml::Point3D> _pointsVector;
-  //if the curve is closed
-  bool _isClosed;
-  //color component for curve render
-  double _redComponent, _greenComponent, _blueComponent;
-  //color for control point selection
-  double _redComponentSelect, _greenComponentSelect, _blueComponentSelect;
-  //selected points
-  std::vector<int> _isSelected;
-  //start point for move action
-  gml::Point3D _startMovePoint;
+protected:
+  std::vector <gml::Point3D*> _pointsVector;
 
   //public methods
-  public:
+public:
 
-  AbsCurve(Canvas2D *parent);
-  AbsCurve(std::vector<gml::Point3D> pointsVector, 
-           bool isClosed,
-           Canvas2D *parent);
-  AbsCurve::AbsCurve(const AbsCurve &source);
+  AbsCurve();
   virtual ~AbsCurve();
-  
 
+  //virtual methods (must be redefined)
   virtual void render() = 0;
-  virtual void managePressEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType);
-
-  virtual void manageMoveEvent(QMouseEvent* event,
-			       unsigned short toolType,
-			       unsigned short canvasType);
-
-  virtual void manageReleaseEvent(QMouseEvent* event,
-				  unsigned short toolType,
-				  unsigned short canvasType);
-
-  virtual void manageDbClickEvent(QMouseEvent* event,
-				  unsigned short toolType,
-				  unsigned short canvasType);
-
-  //virtual methods (can be redefined)
-  virtual void addPoint(gml::Point3D newPoint);
-  virtual void deletePoint(int index);
-  virtual void deleteSelected();
-  virtual void movePoint(int index, gml::Point3D newPosition);
+  virtual int addPoint(gml::Point3D *newPoint) = 0;
   virtual std::vector<gml::Point3D> discretize(int nbSegments) = 0;
 
   //non virtual methods
   int getNbPoints() const;
-  gml::Point3D getPoint(int index) const;
-  bool isClosed() const;
-  void close();
-  void open();
-  int isExistingPoint(gml::Point3D point) const;
+  gml::Point3D *getPoint(int index) const;
   bool isEmpty();
-  void select(unsigned short index);
-  bool isSelected(int index);
-  void noSelection();
-  void selectAll();
-  void setColor(double red, double green, double blue);
-  void setSelectionColor(double red, double green, double blue);
-  double getRed() const;
-  double getGreen() const;
-  double getBlue() const;
-  double getRedSelect() const;
-  double getGreenSelect() const;
-  double getBlueSelect() const;
-
-  gml::Point3D getPoint(int index);
-
-  //Protected Methods
-  protected:
-
-  void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
-
+  bool containPoint(gml::Point3D *point);
+  double _redColor, _greenColor, _blueColor;
 };
 
 #endif
