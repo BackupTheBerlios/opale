@@ -14,6 +14,8 @@ MainWindow::MainWindow(int screen_w,
       _screen_w(screen_w),
       _screen_h(screen_h)
 {
+  _labelStatus = NULL;
+  
   _pluginManager = new PluginManager(this);
 
   _toolBar = new QToolBar("Operations", this);
@@ -49,6 +51,13 @@ MainWindow::~MainWindow()
   delete _wChemin;
   delete _w3d;
   delete _pluginManager;
+
+  
+  if ( _labelStatus != NULL)
+  {
+    delete _labelStatus;
+  }
+  
 }
 
 void
@@ -343,8 +352,14 @@ MainWindow::setModel(Faces& faces)
   Canvas3D& c3d = dynamic_cast<Canvas3D &>( _w3d->canvas() );
 
   c3d.makeCurrent();
-  
+
+  _chronometer.start();
   c3d.renderer().setModel(faces);
+  int buildTime = (_chronometer.elapsed());
+
+  QString status = QString("Display Lists rebuilt in %1").arg(buildTime) + QString(" ms");
+  statusBar()->message( status, 5000 );
+  
   
   c3d.updateGL();
 
@@ -446,22 +461,22 @@ MainWindow::generateCylinder()
   
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
   canvas.makeCurrent();
-  
-  std::vector<Point3D> ptsProfile;
 
   int paramDiscretisationCHEMIN  = 18;
   int paramDiscretisationSECTION = 15;
 
-  Canvas2D & canvasSection=  dynamic_cast<Canvas2D &>(_wSection->canvas());
-  Canvas2D & canvasChemin=  dynamic_cast<Canvas2D &>(_wChemin->canvas());
+  Canvas2D & canvasSection =  dynamic_cast<Canvas2D &>(_wSection->canvas());
+  Canvas2D & canvasChemin  =  dynamic_cast<Canvas2D &>(_wChemin->canvas());
+  Canvas2D & canvasProfil  =  dynamic_cast<Canvas2D &>(_wProfil->canvas());
 
   AbsCurve* section =  canvasSection.getFigure();
   AbsCurve* chemin =  canvasChemin.getFigure();
+  AbsCurve* profil =  canvasProfil.getFigure();
 
-  if( (section == NULL) || (chemin == NULL) )
+  if( (section == NULL) || (chemin == NULL) || (profil == NULL) )
   {
     QMessageBox::warning( this, "ERROR",
-                          "Impossible to generate a cylinder without at least two curves .\n");
+                          "Impossible to generate a cylinder without curves .\n");
     return;
   }
   
@@ -470,8 +485,16 @@ MainWindow::generateCylinder()
   adjustSection(ptsSection);
   
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
-  _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
 
+  std::vector<Point3D> ptsProfile = profil->discretize(paramDiscretisationCHEMIN);
+
+  
+  int timeTiGenerateIt = ( _cylGenerator->generate( ptsChemin,
+                                                    ptsSection,
+                                                    ptsProfile) );
+    
+
+  displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);
 }
 
 void
@@ -547,3 +570,23 @@ MainWindow::adjustSection(std::vector<Point3D> & ptsSection)
 // }
 
   
+
+void
+MainWindow::displayTimeStatus(const char* operation, int timeInMilliSeconds)
+{
+  if (_labelStatus == NULL)
+  {
+    _labelStatus =  new QLabel(this);
+  }
+  else
+  {
+    statusBar()->removeWidget(_labelStatus);
+  }
+  
+  QString status = QString(operation).arg(timeInMilliSeconds).append(" ms");
+  _labelStatus->setText(status);
+  
+  statusBar()->addWidget( _labelStatus );
+
+}
+

@@ -15,6 +15,8 @@
 #include <qiconset.h>
 #include <qpixmap.h>
 #include <qtoolbar.h>
+#include <qstatusbar.h>
+#include <qlabel.h>
 #include <qtoolbutton.h>
 
 //Our stuff
@@ -57,6 +59,9 @@ class MainWindow : public QMainWindow
 
   QDict<QPopupMenu> _menus;
   
+  QTime   _chronometer;
+  QLabel* _labelStatus; //this is the label used for the status bar
+
   PluginManager*  _pluginManager;
 
   QToolBar*       _toolBar;
@@ -96,6 +101,8 @@ class MainWindow : public QMainWindow
   Faces& model();
 
   void setModel(Faces & faces);
+
+  void displayTimeStatus( const char* operation, int timeInMilliSeconds);
   
   
   private:
