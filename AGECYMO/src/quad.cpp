@@ -1,5 +1,15 @@
 #include "quad.hpp"
 
+/**************************************************************
+ *
+ *  constructor for Quad class
+ *  @param points a vector of points used in the quad
+ *  @param i1 the first index of the quad
+ *  @param i2 the second index of the quad
+ *  @param i3 the third index of the quad
+ *  @param i4 the fourth index of the quad
+ *
+ *************************************************************/
 Quad::Quad(std::vector<gml::Point3D> *points, int i1, int i2, int i3, int i4)
     : AbsFace(points),
       _i1(i1),
@@ -10,6 +20,11 @@ Quad::Quad(std::vector<gml::Point3D> *points, int i1, int i2, int i3, int i4)
   updateNormal();
 }
 
+/**************************************************************
+ *
+ *  draw the quad in the openGL context
+ *
+ *************************************************************/
 void
 Quad::render()
 {
@@ -53,6 +68,11 @@ Quad::render()
   glEnd();
 }
 
+/**************************************************************
+ *
+ *  draw the normals of the quad
+ *
+ *************************************************************/
 void
 Quad::renderNormal()
 {
@@ -72,7 +92,11 @@ Quad::renderNormal()
   glEnd();
 }
 
-
+/**************************************************************
+ *
+ *  draw the quad in the openGL context with the normals
+ *
+ *************************************************************/
 void
 Quad::renderWithNormal()
 {
@@ -80,7 +104,13 @@ Quad::renderWithNormal()
   renderNormal();
 }
 
-
+/**************************************************************
+ *
+ *  define if the quad contains a vertex
+ *  @param vertexIndex the index of the vertex
+ *  @return true if the quad contains the vertex, false else
+ *
+ *************************************************************/
 bool
 Quad::containVertex(int vertexIndex) const
 {
@@ -109,23 +139,11 @@ Quad::getIndexes()
   return indices;
 }
 
-// int Quad::nbPoints(){
-//   return 4;
-// }
-
-// int Quad::getIndex(int num){
-//   if((num>(nbPoints()-1)) || (index<0)){
-//     exit(-1);;
-//   }
-//   else{
-//     if(num == 0) return _i1; 
-//     if(num == 1) return _i2; 
-//     if(num == 2) return _i3; 
-//     if(num == 3) return _i4; 
-//   }
-// }
-
-
+/**************************************************************
+ *
+ *  update the normals of the quad
+ *
+ *************************************************************/
 void
 Quad::updateNormal()
 {  
@@ -170,7 +188,11 @@ Quad::updateNormal()
 }
 
 
-
+/**************************************************************
+ *
+ *  redefine the display stream operator for debug
+ *
+ *************************************************************/
 std::ostream&
 operator<<(std::ostream& os, Quad const& q)
 {
