@@ -439,7 +439,7 @@ MainWindow::generateCylinder()
 
   std::vector<Point3D> ptsProfile;
 
-  int paramDiscretisationCHEMIN  = 10;
+  int paramDiscretisationCHEMIN  = 100;
   int paramDiscretisationSECTION = 20;
 
   Canvas2D & canvasSection=  dynamic_cast<Canvas2D &>(_wSection->canvas());
@@ -448,7 +448,7 @@ MainWindow::generateCylinder()
   AbsCurve* section =  canvasSection.getFigure();
   AbsCurve* chemin =  canvasChemin.getFigure();
 
-  if( (section == NULL) && (chemin == NULL) )
+  if( (section == NULL) || (chemin == NULL) )
   {
     QMessageBox::warning( this, "ERROR",
                           "Impossible to generate a cylinder without at least two curves .\n");
@@ -462,7 +462,7 @@ MainWindow::generateCylinder()
   
   
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
-  
+
 
   _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
 
