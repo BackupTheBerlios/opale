@@ -192,7 +192,14 @@ int load(MainWindow *mainWin){
         curve = new Quadri();
       }
       else if(curveType == POLYG_MODE){
-        curve = new Polygone();
+
+        if(canvasType == CHEMIN_CANVAS){
+          curve = new Polygone( &mainWin->getCheminCanvas() );
+        }
+        else if(canvasType == SECTION_CANVAS){
+          curve = new Polygone( &mainWin->getSectionCanvas() );
+        }
+        
       }
       else if(curveType == CIRCLE_MODE){
         curve = new Circle();
@@ -206,7 +213,7 @@ int load(MainWindow *mainWin){
       }
 
       file>>indexCurve;
-      gml::Point3D *lepoint;
+//      gml::Point3D *lepoint;
 
       //add the control points of the curve
       while(indexCurve != CURVE_END){
