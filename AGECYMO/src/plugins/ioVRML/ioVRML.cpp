@@ -1,31 +1,24 @@
 #include <cstdlib>
 #include <stdlib.h>
+
 #include <iostream>
-#include <qapplication.h>
 #include <fstream>
 #include <string>
 #include <vector>
+
+//Qt stuff
+#include <qapplication.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include "../../testVector.hpp"
-#include "../../mainwindow.hpp"
-#include "../../point.hpp"
-#include "../../face.hpp"
-#include "../../tria.hpp"
-#include "../../quad.hpp"
-#include "../../absface.hpp"
-#include "../../faces.hpp"
 
-//a inplémenter dans le module de chargement des plugins
-enum PluginType{ LOAD_SAVE, ACTION };
-enum EmplacementType{ACTION_ADD, LOAD_ADD, SAVE_ADD};
-class MenuAddOn{
-public:
-  unsigned short typeAppel;
-  std::string *emplacement;
-  std::string *image;
-  std::string *texte;
-};
+//Our stuff
+#include "mainwindow.hpp"
+#include "point.hpp"
+#include "face.hpp"
+#include "tria.hpp"
+#include "quad.hpp"
+#include "absface.hpp"
+#include "faces.hpp"
 
 using namespace std;
 using namespace gml;
@@ -54,27 +47,31 @@ const char* SPACE                 = " ";
 
 extern "C"
 void **query(void){
-  void ** parameters;
   
-  *parameters = calloc(5,sizeof(void*));
+  void ** parameters = new void*[5];
 
-  unsigned short *type;
-  *type = LOAD_SAVE;
+  //Plugin's type
+  unsigned short *type = new unsigned short(LOAD_AND_SAVE);
+
+  //Plugin's name
   std::string *name = new string("ioVRML");
-  unsigned short *nbEntries;
-  *nbEntries = 2;
 
-  MenuAddOn *menuLoadAdd;
-  menuLoadAdd = new MenuAddOn();
-  menuLoadAdd->typeAppel = LOAD_ADD;
-  menuLoadAdd->emplacement = new string("Menu/file/loadVRML");
+  //Total number of entries in the different components 
+  unsigned short *nbEntries = new unsigned short(2);
+
+  //Load action 
+  MenuAddOn *menuLoadAdd = new MenuAddOn();
+  menuLoadAdd->typeAppel = LOAD_CALL;
+  menuLoadAdd->emplacement = new string(MENUBAR_CMP);
+  menuLoadAdd->emplacement->append("/file/loadVRML");
   menuLoadAdd->image = NULL;
   menuLoadAdd->texte = NULL;
 
-  MenuAddOn *menuSaveAdd;
-  menuSaveAdd = new MenuAddOn();
-  menuSaveAdd->typeAppel = SAVE_ADD;
-  menuSaveAdd->emplacement = new string("Menu/file/saveVRML");
+  //Save Action 
+  MenuAddOn *menuSaveAdd = new MenuAddOn();
+  menuSaveAdd->typeAppel = SAVE_CALL;
+  menuSaveAdd->emplacement = new string(MENUBAR_CMP);
+  menuSaveAdd->emplacement->append("/file/saveVRML");
   menuSaveAdd->image = NULL;
   menuSaveAdd->texte = NULL;
 
@@ -259,7 +256,6 @@ int load(MainWindow *mainW){
  *  @param mainWin the principal window of the application
  *  @return 0 if success, -1 else.
  *
- *  Copyright (c) 2004 __MyCompanyName__. All rights reserved.
  *
  ***************************************************************/
 extern "C"
