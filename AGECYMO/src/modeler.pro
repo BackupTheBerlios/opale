@@ -43,6 +43,7 @@ HEADERS		= absVector.hpp \
             pluginmanager.hpp \
             controlpanel.hpp \
             helpwindow.hpp \
+            eventswindow.hpp \
             mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
@@ -69,6 +70,7 @@ SOURCES		= testVector.cpp \
             pluginmanager.cpp \
             controlpanel.cpp \
             helpwindow.cpp \
+            eventswindow.cpp \
             mainwindow.cpp \
             main.cpp
 
