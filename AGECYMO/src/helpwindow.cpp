@@ -13,7 +13,8 @@ HelpWindow::HelpWindow(const QString& home)
   _browser->setSource( home );
   _browser->setTextFormat(Qt::RichText);
   _browser->setStyleSheet( QStyleSheet::defaultSheet() );
-  
+  _browser->mimeSourceFactory()->setFilePath( "." );
+ 
   connect( _browser, SIGNAL( sourceChanged(const QString& ) ),
            this, SLOT( sourceChanged( const QString&) ) );
 
@@ -28,11 +29,15 @@ HelpWindow::HelpWindow(const QString& home)
   //Go Menu
   QPopupMenu* go = new QPopupMenu( this );
   backwardId = go->insertItem( icon_back,
-                               tr("&Backward"), _browser, SLOT( backward() ),
+                               tr("&Backward"),
+                               _browser, SLOT( backward() ),
                                CTRL+Key_Left );
+
   forwardId = go->insertItem( icon_forward,
-                              tr("&Forward"), _browser, SLOT( forward() ),
+                              tr("&Forward"), _browser,
+                              SLOT( forward() ),
                               CTRL+Key_Right );
+
   go->insertItem( icon_home, tr("&Home"), _browser, SLOT( home() ) );
 
   menuBar()->insertItem( tr("&Go"), go );
