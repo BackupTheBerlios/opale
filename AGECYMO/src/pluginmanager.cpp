@@ -18,7 +18,7 @@ const char* PluginManager::SAVE_SYMBOL  = "save";
 
 
 const QString PluginManager::PLUGIN_EXT("plg");
-const QString PluginManager::PLUGIN_DIR ("./plugins/");
+const QString PluginManager::PLUGIN_DIR("./plugins/");
 
 
 
@@ -57,7 +57,7 @@ PluginManager::recordAvailablePlugins()
       {
         std::cout << "Found a plugin named :" << fileInfo->fileName() << std::endl;
 
-        loadPlugin(fileInfo->filePath());
+        loadPlugin(fileInfo->filePath()); 
       }
       ++it;
     }
@@ -253,8 +253,62 @@ PluginManager::loadPlugin(const QString & pluginFullName)
 }
 
 void
-PluginManager::reloadPlugin(const QString & pluginFullName)
+PluginManager::reloadPlugin(const QString & pluginID)
 {
+  PluginHandler* plgh = _plugins[pluginID];
+  
+  if (plgh == 0)
+  {
+    //Strange trying to reload an unrecorded plugin...
+    qWarning("Unknown Plugin %s !!!", pluginID.latin1());
+    return;
+  }
+
+    
+  HandleType handler = plgh->handler;
+
+  if (handler != NULL)
+  {
+    //plugin already load !!
+    qWarning("Plugin %s already load !!!", pluginID.latin1());
+    return;
+  }
+
+  
+  
+  handler = dlopen(pluginFullName, RTLD_NOW | RTLD_GLOBAL);
+
+  if(!handler)
+  {
+    qWarning("Plugin %s could NOT BE LOAD !!!! WONT BE USED !!!");
+    return;
+  }
+
+  //OK we found the plugin storing it
+  plgh->handler = handler;
+
+  //Now we link the functions according to the plugin type
+  //TODO : to test error ?
+  //If we found the plugin we hope it did  not change since the recording...
+  switch(plgh->type)
+  {
+    case LOAD_AND_SAVE:
+    {
+      plgh->load = dlsym(plgh->handler, LOAD_SYMBOL);
+      plgh->save = dlsym(plgh->handler, SAVE_SYMBOL);
+      break;
+    }
+
+    case ACTION:
+    {
+      plgh->run = dlsym(plgh->handler, RUN_SYMBOL);
+      break;
+    }
+    
+    default:
+      break;
+  }
+    
 }
 
 
@@ -288,7 +342,7 @@ PluginManager::unloadPlugin(QString const & pluginID)
     }
     else
     {
-      qDebug("Unabled to unload the plugin %s \n", pluginID.latin1());
+      qWarning("Unabled to unload the plugin %s \n", pluginID.latin1());
     }
   }
   else
