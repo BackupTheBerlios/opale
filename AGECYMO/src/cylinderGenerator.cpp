@@ -24,9 +24,6 @@ CylinderGenerator::~CylinderGenerator()
   
 }
 
-
-
-
 int
 CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
                             const std::vector<Point3D> & sectionPts,
@@ -44,19 +41,16 @@ CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
   return _chronometer.elapsed();
 }
 
-  
-  
-
 void
 CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
                                   const std::vector<Point3D> & sectionPts,
                                   const std::vector<Point3D> & profilePts)
 {
   //delete the old points 
-  if (_points != NULL)
-  {
-    delete _points;
-  }
+//   if (_points != NULL)
+//   {
+//     delete _points;
+//   }
   
   _points = new std::vector<Point3D>();
   
@@ -225,6 +219,7 @@ CylinderGenerator::computeProfileMatrix( const std::vector<Point3D> & profilePts
   //Compute a profile matrix according to the profile curve
   //TODO: just do it !
   profileMatrix.loadIdentity();
+
 }
 
 void
@@ -252,10 +247,10 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
   int t1, t2, t3, t4, t5, t6;
 
   // Older faces should be deleted
-  if (_faces !=NULL)
-  {
-    delete _faces;
-  }
+//   if (_faces !=NULL)
+//   {
+//     delete _faces;
+//   }
   
   _faces = new std::vector<AbsFace*>();
   
@@ -304,12 +299,12 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
   Face* top = new Face( indexes, _points, nbPtSection);
   _faces->push_back(top);
   delete indexes;
-  
+
+  //todo put this in the generate Method
   Faces* model = new Faces(_points, _faces);
+  qDebug(" Model = %p", model);
+  qDebug("about to set the model");
   _canvas.setModel(*model);
-
-
-
 
 }
 
