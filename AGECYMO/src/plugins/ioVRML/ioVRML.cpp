@@ -10,7 +10,7 @@
 #include <qapplication.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-
+#include <qstring.h>
 
 //Our stuff
 #include "mainwindow.hpp"
@@ -210,11 +210,14 @@ int load(MainWindow *mainW){
 
   // If there is no name defined exit
   if(fileName.isEmpty()){
-    mainW->getEventsWindow().writeComments("error in loading VRML file");
+
+    QString message("error in loading VRML file");
+    mainW->getEventsWindow().writeComments(message);
     return EXIT_FAILURE;
   }
-  
-  mainW->getEventsWindow().writeComments("VRML model loading...");
+
+  QString message(" VRML model loading...");
+  mainW->getEventsWindow().writeComments( message);
 
   // Open the file
   ifstream VRMLFile (fileName,ios::in);
@@ -330,7 +333,8 @@ int load(MainWindow *mainW){
           if (currentIndex == -1) {
 
             if (nbPointsIndex < 3) {
-              mainW->getEventsWindow().writeComments("error in VRML file loading");
+              QString message("error in VRML file loading" );
+              mainW->getEventsWindow().writeComments( message );
               return EXIT_FAILURE;
             }
 	    
@@ -385,7 +389,8 @@ int load(MainWindow *mainW){
   //cout << "La face :" << endl << *faces;
   mainW->setModel(*faces);
 
-  mainW->getEventsWindow().writeComments("VRML model loaded");
+  message = "VRML model loaded";
+  mainW->getEventsWindow().writeComments( message );
 
   return EXIT_SUCCESS;
 }
@@ -419,11 +424,13 @@ int save(MainWindow *mainWin){
 
   //if no name defined exit
   if(fileName.isEmpty()){
-    mainWin->getEventsWindow().writeComments("VRML model saving...");
+    QString message("VRML model saving...");
+    mainWin->getEventsWindow().writeComments( message );
     return EXIT_FAILURE;
   }
 
-  mainWin->getEventsWindow().writeComments("VRML model saving...");
+  QString message("VRML model saving");
+  mainWin->getEventsWindow().writeComments( message );
 
   //opening file for writing
   ofstream file(fileName.latin1());
@@ -437,7 +444,8 @@ int save(MainWindow *mainWin){
   if(!file.is_open()){
     QMessageBox::information( mainWin, "Generalized cylinder",
                               "Unable to open file for save.\n");
-    mainWin->getEventsWindow().writeComments("error in saving VRML model");
+    QString message( "error in saving VRML model" );
+    mainWin->getEventsWindow().writeComments( message );
     return EXIT_FAILURE;
   }
 
@@ -495,7 +503,8 @@ int save(MainWindow *mainWin){
   //file closing
   file.close();
 
-  mainWin->getEventsWindow().writeComments("VRML model saved");
+  message = "VRML model saved";
+  mainWin->getEventsWindow().writeComments( message );
 
   return EXIT_SUCCESS;
 }
