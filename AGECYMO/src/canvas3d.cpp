@@ -163,7 +163,7 @@ Canvas3D::initializeGL()
   
   
   //TODO: Remove it and compute the normal inside the objet
-  glEnable(GL_NORMALIZE);  
+//  glEnable(GL_NORMALIZE);  
   
   buildAxesDPL();
   
