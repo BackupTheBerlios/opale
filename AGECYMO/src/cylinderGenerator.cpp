@@ -258,13 +258,13 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   //Before:
 //  lastFrenetFrame(wayPts[size-2], wayPts[size-1], currentFrame);
 
-//   startIndex = profileToWayByIndex(profilePts, size-1);
-//   qDebug("COMPUTED Last index = %d", startIndex);
-//   std::cout << "Previous frame " << std::endl << previousFrame << std::endl;
+  startIndex = profileToWayByIndex(profilePts, size-1);
+  qDebug("COMPUTED Last index = %d", startIndex);
+  //std::cout << "Previous frame " << std::endl << previousFrame << std::endl;
 
-  //lastFrenetFrame(wayPts[startIndex-1], wayPts[startIndex], currentFrame);
-
-  lastFrenetFrame(wayPts[_nbPtWay-2], wayPts[_nbPtWay-1], currentFrame);
+  lastFrenetFrame(wayPts[startIndex-1], wayPts[startIndex], currentFrame);
+  
+  //lastFrenetFrame(wayPts[_nbPtWay-2], wayPts[_nbPtWay-1], currentFrame);
   
   //Profile part
   computeProfileMatrix(profilePts, (size-1), profileMatrix);    
