@@ -6,7 +6,7 @@ Polyline::Polyline(){
   _redComponent = 0.0;
   _greenComponent = 0.0;
   _blueComponent = 1.0;
-  _isSelected = NO_SELECTION;
+  _isSelected.clear();
 }
 
 Polyline::Polyline(std::vector <gml::Point3D> pointsVector, bool isClosed){
@@ -19,7 +19,7 @@ Polyline::Polyline(std::vector <gml::Point3D> pointsVector, bool isClosed){
   _redComponent = 0.0;
   _greenComponent = 0.0;
   _blueComponent = 1.0;
-  _isSelected = NO_SELECTION;
+  _isSelected.clear();
 }
 
 Polyline::Polyline(const Polyline &source){
@@ -103,6 +103,7 @@ void Polyline::render(){
   increment = Control_point_size / 2.0;
   
   glColor3f(_redComponent, _greenComponent, _blueComponent);
+
   glBegin(GL_LINE_STRIP);
 
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
@@ -124,17 +125,41 @@ void Polyline::render(){
     glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]-increment);
     glEnd();
   }
-  glEnd();
 
 }
 
-int Polyline::isSelected() const{
+
+void Polyline::selection(double xUpLeft, 
+			 double yUpLeft,
+			 double xDownRight, 
+			 double yDownRight){
+  _isSelected.clear();
+
+  //we define the selected points
+  for(unsigned int i = 0; i<_pointsVector.size(); i++){
+    if((_pointsVector[i][0] >= xUpLeft ) || 
+       (_pointsVector[i][0] <= xDownRight ) ||
+       (_pointsVector[i][1] <= yUpLeft ) || 
+       (_pointsVector[i][1] >= yDownRight )){
+      
+      //we select the point
+      _isSelected.push_back(i);
+      
+    }
+  }
+}
+
+void Polyline::noSelection(){
+  _isSelected.clear();
+}
+
+std::vector<unsigned short> Polyline::isSelected() const{
   return _isSelected;
 }
 
-void Polyline::select(int index){
-  if(((unsigned)index<_pointsVector.size()) || (index >= 0)){ 
-    _isSelected = index;
+void Polyline::select(unsigned short index){
+  if(index<_pointsVector.size()){ 
+    _isSelected.push_back(index);
   }
 }
 

@@ -147,12 +147,57 @@ Canvas2D::resizeGL(int width, int height)
 	     glOrthoParameter);
 }
 
+//mode de lecture a implémenter plus haut
+int mode = 1;
+Point3D saveClick;
+bool inSelection = false;
 
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
   Point3D point;
+  //calcul de la coordonnée x QT -> openGL
+  point[0] =
+    -glOrthoParameter + 
+    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
+  //calcul de la coordonnée y QT -> openGL
+  point[1] =
+    glOrthoParameter - 
+    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
+  
 
+  //mode selection
+  if(mode == 0){
+    if(!inSelection){
+      saveClick[0] = point[0];
+      saveClick[1] = point[1];
+      inSelection = true;
+    }
+  }
+
+
+  //mode creation
+  else{
+      //ajout du point openGl
+      _polyline.addPoint(point);
+  }
+  
+  //openGl update
+  updateGL();
+}
+
+
+void
+Canvas2D::mouseMoveEvent(QMouseEvent* event)
+{
+  //openGl update
+  updateGL();
+}
+
+void
+Canvas2D::mouseReleaseEvent(QMouseEvent* event)
+{
+  Point3D point;
   //calcul de la coordonnée x QT -> openGL
   point[0] =
     -glOrthoParameter + 
@@ -162,20 +207,11 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
     glOrthoParameter - 
     ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
 
-  //ajout du point openGl
-  _polyline.addPoint(point);
-  updateGL();
-}
-
-void
-Canvas2D::mouseMoveEvent(QMouseEvent* event)
-{
-}
-
-void
-Canvas2D::mouseReleaseEvent(QMouseEvent* event)
-{
-  
+  //mode selection
+  if(mode == 0){
+    _polyline.selection(saveClick[0], saveClick[1], 
+			point[0], point[1]);
+  }
 }
 
 void

@@ -15,7 +15,7 @@ private:
   std::vector <gml::Point3D> _pointsVector;
   bool _isClosed;
   double _redComponent, _greenComponent, _blueComponent;
-  int _isSelected;
+  std::vector<unsigned short> _isSelected;
 
 public:
   Polyline();
@@ -43,9 +43,13 @@ public:
   //delete the index point
   void deletePoint(int index);
   //define if a point is selected
-  int isSelected() const;
+  std::vector<unsigned short> isSelected() const;
   //selection of a point
-  void select(int index);
+  void select(unsigned short index);
+  //selection of few points
+  void selection(double xUpLeft, double yUpLeft,
+		 double xDownRight, double yDownRight);
+  void noSelection();
   //define the color of the polyline
   void setColor(double red, double green, double blue);
   //draw the polyline
