@@ -35,7 +35,7 @@ class EventsWindow : public QMultiLineEdit
    *  @param text the log message
    *
    *************************************************************/
-  void writeComments(QString text);
+  void writeComments(QString & text);
   
 };
 

@@ -35,7 +35,7 @@ EventsWindow::~EventsWindow()
  *
  *************************************************************/
 void
-EventsWindow::writeComments(QString text)
+EventsWindow::writeComments(QString & text)
 {
 
   time_t now;

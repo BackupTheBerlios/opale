@@ -409,7 +409,9 @@ int Canvas2D::getSquareNumber()
 void Canvas2D::setSquareNumber(int newValue)
 {
   _squareNumber = newValue;
-  _mw->getEventsWindow().writeComments("square number updated");
+  QString message("square number updated");
+  
+  _mw->getEventsWindow().writeComments(message);
 }
 
 /**************************************************************
@@ -490,7 +492,9 @@ QPopupMenu *Canvas2D::getPopupMenu()
 void Canvas2D::setPolyMode()
 {
   _toolMode = POLY_MODE;
-  _mw->getEventsWindow().writeComments("polylines selected in " + this->caption());
+  QString message("polylines selected in ");
+  message += this->caption();
+  _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -501,7 +505,9 @@ void Canvas2D::setPolyMode()
 void Canvas2D::setPolygMode()
 {
   _toolMode = POLYG_MODE;
-   _mw->getEventsWindow().writeComments("polygones selected in "+ this->caption());
+   QString message("polygones selected in ");
+   message += this->caption();
+   _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -512,7 +518,9 @@ void Canvas2D::setPolygMode()
 void Canvas2D::setCircleMode()
 {
   _toolMode = CIRCLE_MODE;
-  _mw->getEventsWindow().writeComments("circles selected in "+ this->caption());
+  QString message("circle mode selected in ");
+  message += this->caption();
+  _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -523,7 +531,9 @@ void Canvas2D::setCircleMode()
 void Canvas2D::setRecMode()
 {
   _toolMode = REC_MODE;
-   _mw->getEventsWindow().writeComments("rectangles selected in "+ this->caption());
+  QString message("rectangle mode selected in ");
+  message += this->caption();
+   _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -534,7 +544,9 @@ void Canvas2D::setRecMode()
 void Canvas2D::setNurbsMode()
 {
   _toolMode = NURBS_MODE;
-   _mw->getEventsWindow().writeComments("nurbs curves selected in "+ this->caption());
+  QString message("nurbs mode selected in ");
+  message += this->caption();
+   _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -548,7 +560,10 @@ void Canvas2D::deleteAllPoints()
   //polyline default tool
   _toolMode = POLY_MODE;
 
-  _mw->getEventsWindow().writeComments("all points deleted in "+ this->caption());
+
+  QString message("all points deleted");
+  message += this->caption();
+  _mw->getEventsWindow().writeComments( message );
 }
 
 /**************************************************************
@@ -564,7 +579,12 @@ void Canvas2D::selectAllPoints()
   for(unsigned i = 0; i<points.size(); i++){
     cout<<"x = "<<points[i][0]<<" y = "<<points[i][1]<<endl;
   }
-  _mw->getEventsWindow().writeComments("all points selected in " + this->caption());
+
+
+  QString message("all points selected") ;
+  message += this->caption();
+  _mw->getEventsWindow().writeComments(message);
+
 }
 
 /**************************************************************
@@ -575,7 +595,11 @@ void Canvas2D::selectAllPoints()
 void Canvas2D::deselectAllPoints()
 {
   _figure->noSelection();
-  _mw->getEventsWindow().writeComments("all points deselected in "+ this->caption());
+
+  QString message("all points deselected");
+  message += this->caption();
+  _mw->getEventsWindow().writeComments(message);
+
 }
 
 

@@ -475,7 +475,8 @@ Canvas3D::accelEvent(int id)
     
     case ENABLE_DRAW_BOUNDING_BOX:
     {
-      _mw->getEventsWindow().writeComments("bounding box display toggled");
+      QString message("bounding box display toggled");
+      _mw->getEventsWindow().writeComments( message );
       _boundingBoxEnabled = !_boundingBoxEnabled;
       updateGL();
       break;
@@ -483,7 +484,8 @@ Canvas3D::accelEvent(int id)
     
     case ENABLE_DRAW_AXES:
     {
-      _mw->getEventsWindow().writeComments("axes diplay toggled");
+      QString message( "axes diplay toggled");
+      _mw->getEventsWindow().writeComments( message );
       _axesEnabled = !_axesEnabled;
       updateGL();
       break;
@@ -491,7 +493,8 @@ Canvas3D::accelEvent(int id)
 
     case ENABLE_DRAW_FPS:
     {
-      _mw->getEventsWindow().writeComments("fps informations toggled");
+      QString message("fps informations toggled");
+      _mw->getEventsWindow().writeComments( message );
       _fpsEnabled = !_fpsEnabled;
       updateGL();
       break;
@@ -499,7 +502,8 @@ Canvas3D::accelEvent(int id)
 
     case ENABLE_DRAW_INFO_MODEL:
     {
-      _mw->getEventsWindow().writeComments("informations toggled");
+      QString message("Informations toggled");
+      _mw->getEventsWindow().writeComments(message);
       _infoEnabled = !_infoEnabled;
       updateGL();
       break;
@@ -507,7 +511,8 @@ Canvas3D::accelEvent(int id)
 
     case WIREFRAME_RENDERING_MODE:
     {
-      _mw->getEventsWindow().writeComments("wireframe rendering mode");
+      QString message("Wireframe rendering mode");
+      _mw->getEventsWindow().writeComments(message);
       _renderer.setRenderMode(Renderer::WF);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -524,7 +529,8 @@ Canvas3D::accelEvent(int id)
     
     case FLAT_RENDERING_MODE:
     {
-      _mw->getEventsWindow().writeComments("flat rendering mode");
+      QString message("Flat rendering mode");
+      _mw->getEventsWindow().writeComments( message );
       _renderer.setRenderMode(Renderer::FLAT);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -542,7 +548,8 @@ Canvas3D::accelEvent(int id)
         
     case GOURAUD_RENDERING_MODE:
     {
-      _mw->getEventsWindow().writeComments("Gouraud rendering mode");
+      QString message("Gouraud rendering mode");
+      _mw->getEventsWindow().writeComments( message );
       _renderer.setRenderMode(Renderer::GOURAUD);
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -560,7 +567,8 @@ Canvas3D::accelEvent(int id)
         
     case WF_HDLR_RENDERING_MODE:
     {
-      _mw->getEventsWindow().writeComments("wireframe HDLR rendering mode");
+      QString message("Wireframe HDLR rendering mode");
+      _mw->getEventsWindow().writeComments( message );
       _renderer.setRenderMode(Renderer::WF_HDLR);
       updateGL();
       break;
@@ -568,7 +576,8 @@ Canvas3D::accelEvent(int id)
 
     case NORMAL_RENDERING_MODE:
     {
-      _mw->getEventsWindow().writeComments("normal diplay toggled");
+      QString message("normal display toggled");
+      _mw->getEventsWindow().writeComments( message );
       _normalEnabled = !_normalEnabled;
       updateGL();
       break;
