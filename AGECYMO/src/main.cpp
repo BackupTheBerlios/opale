@@ -54,7 +54,7 @@ main(int argc, char **argv)
 
   //TODO : remove this 
   //Test the vector class 
-  testVector();
+  //testVector();
   
   // execute the application (main loop)
   return application.exec();
