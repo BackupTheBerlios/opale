@@ -25,10 +25,19 @@ Tria::render()
 
   std::vector<gml::Point3D> tpoints = *_points;
   
+
+  gml::Vector3D v1 = tpoints[_i2] -  tpoints[_i1];
+  gml::Vector3D v2 = tpoints[_i3] -  tpoints[_i1];
+
+  gml::Vector3D normal = cross(v1, v2);
+  normal.normalize();
   
   glBegin(GL_TRIANGLES);
 
   glColor3f(0.0, 0.0, 1.0);
+
+  glNormal3f(normal[0], normal[1], normal[2]);
+   
   glVertex3d(tpoints[_i1][0],
              tpoints[_i1][1],
              tpoints[_i1][2]);
@@ -42,6 +51,38 @@ Tria::render()
              tpoints[_i3][2]);
   
   glEnd();
+
+
+  //TODO: fix this to display the normal
+  gml::Point3D c;
+
+  c[0] =  (tpoints[_i1][0] +  tpoints[_i2][0] + tpoints[_i3][0]) / 3.0;
+  c[1] =  (tpoints[_i1][1] +  tpoints[_i2][1] + tpoints[_i3][1]) / 3.0;
+  c[2] =  (tpoints[_i1][2] +  tpoints[_i2][2] + tpoints[_i3][2]) / 3.0;
+  
+  
+  gml::Point3D n1;
+  n1[0] = normal[0] + c[0];
+  n1[1] = normal[1] + c[1];
+  n1[2] = normal[2] + c[2];
+  
+  
+  glBegin(GL_LINES);
+
+  glColor3f(1.0, 0.0, 1.0);
+  
+  glVertex3d(c[0],
+             c[1],
+             c[2]);
+   
+  glVertex3d(n1[0],
+             n1[1],
+             n1[2]);
+  
+  glEnd();
+  
+  
+  
 }
 
 Tria&
