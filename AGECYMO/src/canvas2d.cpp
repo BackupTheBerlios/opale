@@ -1,4 +1,7 @@
 #include "canvas2d.hpp"
+#include "abscurve.hpp"
+#include "polyline.hpp"
+#include <qaction.h>
 
 //a mettre dans les attributs de classe
 //a modifier pour une gestion par l'interface
@@ -12,7 +15,35 @@ int mode = CREATION_MODE;
 Canvas2D::Canvas2D(QWidget* parent, const char* name)
     : AbsCanvas(parent, name)
 {
-  _squareNumber = SQUARE_NUMBER_DEFAULT;
+    
+  _toolMenuBar = new QMenuBar(this,"the Tools");
+  _fileMenu = new QPopupMenu(this);
+
+  _toolMenuBar->insertItem( "Tools", _fileMenu );
+
+  _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
+  _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()) );
+  _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()) );
+  _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
+
+
+  _squareNumber = SQUARE_NUMBER_DEFAULT; 
+
+  if((caption().compare(sectionS))==0){
+    _canvasType = SECTION_CANVAS;
+  }
+  else if((caption().compare(cheminS))==0){
+        _canvasType = CHEMIN_CANVAS;
+  }
+  else if((caption().compare(profilS))==0){
+        _canvasType = PROFIL_CANVAS;
+  }
+  else{
+    _canvasType = W3D_CANVAS;
+  }
+
+  _toolMode = POLY_MODE;
+  _figure = NULL;
 }
 
 void
@@ -95,8 +126,9 @@ Canvas2D::paintGL()
   drawAxes();
   
   //we draw the polyline
-  _polyline.render();
-  _symetrique.render();
+  if(_figure != NULL){
+    _figure->render();
+  }
 
   //updating buffers
   swapBuffers();
@@ -124,20 +156,22 @@ int cpt = 3;
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
-  if((caption().compare(sectionS))==0){
-    sectionClickEvent(event);
-  }
-  else if((caption().compare(cheminS))==0){
-    cheminClickEvent(event);
-  }
-  else if((caption().compare(profilS))==0){
-    profilClickEvent(event);
-  }
-  else{
-    window3dClickEvent(event);
-  }
+  if(_figure == NULL){
+    if(_toolMode == POLY_MODE){
+      _figure = new Polyline(this);
+    }
+    if(_toolMode == CIRCLE_MODE){
+      cout<<"creation dun cercle !!!!"<<endl;
+    }
+    if(_toolMode == REC_MODE){
 
-  //openGl update
+    }
+    if(_toolMode == NURBS_MODE){
+      
+    }
+  }
+    
+  _figure->manageEvent(event,_toolMode,_canvasType);
   updateGL();
 }
 
@@ -145,57 +179,42 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 void
 Canvas2D::mouseMoveEvent(QMouseEvent* event)
 {
-
-  if((caption().compare(sectionS))==0){
-    sectionMoveEvent(event);
+  if(_figure != NULL){
+    _figure->manageEvent(event,_toolMode,_canvasType);
+    updateGL();
   }
-  else if((caption().compare(cheminS))==0){
-    cheminMoveEvent(event);
-  }
-  else if((caption().compare(profilS))==0){
-    profilMoveEvent(event);
-  }
-  else{
-    window3dMoveEvent(event);
-  }
-
-  //openGl update
-  updateGL();
 }
 
 void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 {
-
-  if((caption().compare(sectionS))==0){
-    sectionReleaseEvent(event);
-  }
-  else if(caption().compare(cheminS)==0){
-    cheminReleaseEvent(event);
-  }
-  else if(caption().compare(profilS)==0){
-    profilReleaseEvent(event);
-  }
-  else{
-    window3dReleaseEvent(event);
+  if(_figure != NULL){
+    _figure->manageEvent(event,_toolMode,_canvasType);
+    updateGL();
   }
 }
 
 void
 Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 {
-  if(caption().compare(sectionS)==0){
-    sectionDoubleClickEvent(event);
+  if(_figure == NULL){
+    if(_toolMode == POLY_MODE)
+      _figure = new Polyline(this);
   }
-  else if(caption().compare(cheminS)==0){
-    cheminDoubleClickEvent(event);
+
+  if(_toolMode == CIRCLE_MODE){
+    cout<<"creation dun cercle !!!!"<<endl;
   }
-  else if(caption().compare(profilS)==0){
-    profilDoubleClickEvent(event);
+  if(_toolMode == REC_MODE){
+    
   }
-  else{
-    window3dDoubleClickEvent(event);
+  if(_toolMode == NURBS_MODE){
+    
   }
+    
+  _figure->manageEvent(event,_toolMode,_canvasType);
+  updateGL();
+
 }
 
 int Canvas2D::getSquareNumber()
@@ -208,244 +227,31 @@ void Canvas2D::setSquareNumber(int newValue)
   _squareNumber = newValue;
 }
 
-void Canvas2D::calculateQtToOpenGL(QMouseEvent* event, Point3D *point)
+
+//SLOTS
+
+void Canvas2D::setPolyMode()
 {
-  //coordinate calcul for qt/openGl traduction
-  (*point)[0] =
-    -glOrthoParameter + 
-    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
-  (*point)[1] =
-    glOrthoParameter - 
-    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
+  cout<<"hourra"<<endl;
+  _toolMode = POLY_MODE;
 }
 
-
-
-
-
-
-
-/****************************************************************/
-/*evenement management*/
-
-//SECTION EVENTS
-
-void Canvas2D::sectionClickEvent(QMouseEvent* event)
+void Canvas2D::setCircleMode()
 {
-  //coordinate calcul for qt/openGl traduction
-  Point3D point;
-  calculateQtToOpenGL(event, &point);
-
-  if(mode == CREATION_MODE){
-    //force the polyline to be closed
-    if(!_polyline.isClosed()){
-      _polyline.close();
-    }
-
-    //add the opengl point
-    _polyline.addPoint(point);
-  }
-  else if (mode == SELECTION_MODE){
-    //if a point is selected
-    int index;
-    index = _polyline.isExistingPoint(point);
-
-     _polyline.noSelection();
-
-    if(index == -1){
-      savePoint[0] = point[0];
-      savePoint[1] = point[1];
-    }
-    else{
-      _polyline.select(index);
-    }
-  }
+  cout<<"hourra"<<endl;
+  _toolMode = CIRCLE_MODE;
 }
 
-
-void Canvas2D::sectionMoveEvent(QMouseEvent* event)
+void Canvas2D::setRecMode()
 {
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
+  cout<<"hourra"<<endl;
+  _toolMode = REC_MODE;
 }
 
-
-void Canvas2D::sectionReleaseEvent(QMouseEvent* event)
+void Canvas2D::setNurbsMode()
 {
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::sectionDoubleClickEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-
-//PROFIL EVENTS
-
-void Canvas2D::profilClickEvent(QMouseEvent* event)
-{
-  Point3D point;
-  calculateQtToOpenGL(event, &point);
-
-  if(mode == CREATION_MODE){
-    //add the opengl point with his symetric
-    if(point[0] <= 0.0){
-      _polyline.addPoint(point);
-      point[0] *= -1;
-      _symetrique.addPoint(point);
-    }
-    else{
-      _symetrique.addPoint(point);
-      point[0] *= -1;
-      _polyline.addPoint(point);
-    }
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::profilMoveEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::profilReleaseEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::profilDoubleClickEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-
-//CHEMIN EVENTS
-
-void Canvas2D::cheminClickEvent(QMouseEvent* event)
-{
-  Point3D point;
-  calculateQtToOpenGL(event, &point);
-  
-  if(mode == CREATION_MODE){
-    //add the opengl point
-    _polyline.addPoint(point);
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::cheminMoveEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::cheminReleaseEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::cheminDoubleClickEvent(QMouseEvent* event)
-{
-  Point3D point;
-  calculateQtToOpenGL(event, &point);
-
-
-  if(mode == CREATION_MODE){
-    //ajout du point openGl
-    _polyline.addPoint(point);
-    //polyline closing
-    _polyline.close();
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-
-}
-
-
-//WINDOW3D EVENTS
-
-void Canvas2D::window3dClickEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::window3dMoveEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::window3dReleaseEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
-}
-
-void Canvas2D::window3dDoubleClickEvent(QMouseEvent* event)
-{
-  if(mode == CREATION_MODE){
-    
-  }
-  else if (mode == SELECTION_MODE){
-    
-  }
+  cout<<"hourra"<<endl;
+  _toolMode = NURBS_MODE;
 }
 
 
