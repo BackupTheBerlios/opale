@@ -106,7 +106,7 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
       {
         aAction->setAccel( QKeySequence( QString(infoMenu->texte->c_str()) ) );
       }
-
+ 
       if( infoMenu->image != NULL )
       {
         aAction->setIconSet( QIconSet(
@@ -114,6 +114,8 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
                                (
                                  QString(IMAGES_DIR).append(infoMenu->image->c_str())
                                  ) ) );
+
+        aAction->addTo( _toolBar);
       }
       
       QSignalMapper* _signalMapper = new QSignalMapper(this);
@@ -152,10 +154,11 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
       aAction->addTo(_menus[decomposition[decomposition.size() - 2]]);
       
     }
-    else if (component == "Tool")
-    {
-      //TODO : to implement it !!!
-    }
+//     else if (component == "Tool")
+//     {
+//       //TODO : to implement it !!!
+//     }
+
     
   }//end of for loop
   
