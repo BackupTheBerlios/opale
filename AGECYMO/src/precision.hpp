@@ -663,9 +663,14 @@
   } //end of method on face
 
 
-  //Returns wheter or not the segment [ a , b]
-  // intersect he plane defined by the points in the vector
-  static bool interPlan(gml::Point3D & a, gml::Point3D & b, 
+//Returns wheter or not the segment [ a , b]
+// intersect he plane defined by the points in the vector
+// Valeurs retournées :
+// -1 : problème dans la definition du plan
+// 0 : le segment n'intersecte pas la face
+// 1 : le segment intersecte la face de façon incorrecte
+// 2 : le segment intersecte la face de façon correcte
+  static int interPlan(gml::Point3D & a, gml::Point3D & b, 
                         std::vector < gml::Point3D > const & points,
                         double *t)
   {
@@ -682,70 +687,126 @@
     plane = definePlane(points);
     if( plane.empty() )
     {
-      return false;
+      return -1;
     }
 
+
+    // Premiere verification, on regarde si le segment est parallèle au plan 
+    // Il y a alors deux cas :
+    // - le segment est en dehors du plan
+    // - le segment est sur le plan
     if(isEqual((plane[0]*vectorEdgeX + plane[1]*vectorEdgeY +	plane[2]*vectorEdgeZ), null_value))
     {
-      // 1.5) Verification if the egde is not a edge of the plane of the considerate face
+      // Si le segment ne se trouve pas sur le plan, alors on retourne 0
       if (!onPlane(a, points) && !onPlane(b, points)) {
-	return false;
+	return 0;
       }
+
+      // Cas ou le segment se trouve sur le plan
       else {
 
-	// Search if the points of the edge are the points of the face
-	 bool found1 = false;
-	 bool found2 = false;
-	 int i=0;
-	 while ((!found1 || !found2 ) && i<points.size())
-	   {
-	     
-	     if ( isTheSame(a, points[i]) ) 
-	       {
-		 found1 = true;
-	       }
-	     
-	     if ( isTheSame(b, points[i]) )
-	       {
-		 found2 = true;
-	       }
-	     i++;
-	   }
+	// Recherche si les points du segment ne correspondent pas aux points de la face
+	bool founda = false;
+	bool foundb = false;
+	int i=0;
+	int j=0;
+	while ((!founda || !foundb ) && i<points.size()) {
+	  
+	  // Si le premier point a est un point de la face
+	  if (isTheSame(a, points[i])) {
+	    
+	    founda = true;
+	    
+	    
+	    // Gestion des indices
+	    if (i+1 == points.size()) {
+	      j=0;
+	    }
+	    else {
+	      j=i+1;
+	    }
+	    
+	    // Si le segment est une arrete de la face on stoppe l'execution
+	    if (isTheSame(b, points[j])) {
+	      return 2;
+	    }
+	  }
+
+	  // Si le premier point b est un point de la face
+	  if (isTheSame(b, points[i])) {
+	    
+	    foundb = true;
+
+
+	    // Gestion des indices
+	    if (i+1 == points.size()) {
+	      j=0;
+	    }
+	    else {
+	      j=i+1;
+	    }
+
+	    // Si le segment est une arrete de la face on stoppe l'execution
+	    if (isTheSame(a, points[j])) {
+		return 2;
+	    }
+	  }
+
+	  i++;
+	    
+	}
+	    
 	 
-	 // Case where the edge is a edge of the face
-	 if (found1 && found2) {
-	     return false;
-	   }
-	 else {
-	   if (!found1 && found2) {
-	     if (onFace(a, points)) {
-	       return true;
-	     }
-	     else {
-	       return false;
-	     }
-	   }
-	   else {
-	     if (found1 && !found2) {
-	       if (onFace(b, points)) {
-		 return true;
-	       }
-	       else {
-		 return false;
-	       }
-	     }
-	     else {
-	       if (onFace(a, points)) {
-		 *t=0.0;
-		 return true;
-	       }
-	       if (onFace(b, points)) {
-		 *t=1.0;
-		 return true;
-	       }
-	     }
-	   }
-	 }
+	// Si les deux points du segment sont des points de la face mais pas des points successifs 
+	if (founda && foundb) {
+	  *t=0.0;
+	  return 1;
+	}
+	else {
+	  // Le point b est un point de la face mais pas le point a
+	  if (!founda && foundb) {
+	    // Cependant le point a est un point sur la face
+	    if (onFace(a, points)) {
+	      *t=0.0;
+	      return 1;
+	    }
+	    // Sinon
+	    else {
+	      return 2;
+	    }
+	  }
+	  else {
+	    // Le point a est un point de la face mais pas le point b
+	    if (founda && !foundb) {
+	      // Cependant le point b est un point sur la face
+	      if (onFace(b, points)) {
+		*t=1.0;
+		return 1;
+	      }
+	      else {
+		return 2;
+	      }
+	    }
+	    // Aucun des points a ou b n'est un point de la face
+	    else {
+	      // Si le point a est sur la face
+	      if (onFace(a, points)) {
+		*t=0.0;
+		return 1;
+	      }
+	      // Si le point b est sur la face
+	      if (onFace(b, points)) {
+		*t=1.0;
+		return 1;
+	      }
+	    }
+	  }
+	}
+
+	// Probleme de valeur
+	std::cout << "FUCK !! " << std::endl;
+	return -1;
+
       }
     }
 
@@ -756,7 +817,7 @@
     //Intersection avec la droite mais PAS le segment
     if ( isLesser(*t, null_value) || isGreater(*t ,one) )
     {
-      return false;
+      return 0;
     }
     else
     {
@@ -768,11 +829,11 @@
 #endif
       if (! onFace(interPoint, points))
 	{
-	  return false;
+	  return 0;
 	}
       else
 	{
-	  return true;
+	  return 1;
 	}
     }
   }
@@ -915,16 +976,16 @@ static void edgesCutFaces(std::vector<AbsFace*> & faces, std::vector< std::vecto
 	  
 	  double t;
 	  
-	  if (interPlan(edges[i][0], edges[i][1], temp, &t) )
+	  if (interPlan(edges[i][0], edges[i][1], temp, &t) == 1)
 	    {
-	      if ( isEqual(t, null_value) || isEqual(t, one) )
-		{
-		  nbValid ++;
-		}
-	      else
-		{
+	      //if ( isEqual(t, null_value) || isEqual(t, one) )
+	      //{
+	      //  nbValid ++;
+	      //}
+	      //else
+	      //{
 		  nbNotValid++;
-		}
+		  //}
 	    }
 	  else
 	    {
