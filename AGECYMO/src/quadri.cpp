@@ -47,10 +47,16 @@ void Quadri::render(){
     float diffy = _pointsVector[0][1] - _pointsVector[1][1];
 
     glVertex2f(_pointsVector[0][0], _pointsVector[0][1]);
-    glVertex2f(_pointsVector[0][0] -  diffx, _pointsVector[0][1]);
+
     glVertex2f(_pointsVector[1][0], _pointsVector[1][1]);
-    glVertex2f(_pointsVector[0][0], _pointsVector[0][1] - diffy);
-    glVertex2f(_pointsVector[0][0], _pointsVector[0][1]);
+
+    glVertex2f(_pointsVector[1][0], _pointsVector[1][1] + 2 * diffy);
+
+    glVertex2f(_pointsVector[1][0] + 2 * diffx, _pointsVector[1][1] + 2 * diffy);
+
+    glVertex2f(_pointsVector[1][0] + 2 * diffx, _pointsVector[1][1]);  
+
+    glVertex2f(_pointsVector[1][0], _pointsVector[1][1]);
     
     glEnd() ;
   }
