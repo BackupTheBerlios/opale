@@ -1,4 +1,4 @@
 TEMPLATE= subdirs
 
-SUBDIRS = ioVRML ioOBJ ioPLY ioPOV ioCURVES
+SUBDIRS = ioVRML ioOBJ ioPLY ioPOV ioCURVES mantilla core
 
