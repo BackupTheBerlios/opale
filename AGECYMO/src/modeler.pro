@@ -6,6 +6,7 @@ MOC_DIR = moc
 OBJECTS_DIR = obj
 
 HEADERS		= absVector.hpp \
+            abscurve.hpp \
             point.hpp \
             polyline.hpp \
             vector.hpp \
@@ -27,6 +28,7 @@ HEADERS		= absVector.hpp \
             mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
+            abscurve.cpp \
             polyline.cpp \
             matrix.cpp \
             absface.cpp \
