@@ -130,7 +130,7 @@ Renderer::rebuildDPL()
   qDebug("\n bounding box model DPL = %d\n", _boundingBoxDPL);
   
   glNewList(_boundingBoxDPL, GL_COMPILE);
-  glPolygonMode(GL_FRONT, GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   _faces->renderBoundingBox();
   glEndList();
 
