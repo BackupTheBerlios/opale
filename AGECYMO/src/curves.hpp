@@ -37,12 +37,15 @@ public:
   int getNbCurves();
   void deleteAllCurves();
   void addCurve(AbsCurve *newCurve);
+  std::vector<AbsCurve*> getAllCurves();
   void setCurrentToolType(unsigned short toolType);
-
+  unsigned short getCurrentToolType();
+  
   //control point management
   int getNbControlPoints();
   void addPoint(gml::Point3D *newPoint);
   void movePoint(int index, gml::Point3D newPosition);
+  gml::Point3D *getPointAtIndex(unsigned short index);
   std::vector<gml::Point3D*> getAllPoints();
   bool isClosed() const;
   void close();
@@ -62,6 +65,8 @@ public:
   //colors management
   void setColor(double red, double green, double blue);
   void setSelectionColor(double red, double green, double blue);
+  gml::Point3D getColor();
+  gml::Point3D getSelectionColor();
 
   //events management
   void managePressEvent(QMouseEvent* event,
