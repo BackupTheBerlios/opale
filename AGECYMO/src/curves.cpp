@@ -105,6 +105,27 @@ void Curves::deleteAllCurves()
   
 }
 
+/**************************************************************
+ *
+ *  add a curve to the curves list
+ *  @param newCurve the newCurve
+ *
+ *************************************************************/
+void Curves::addCurve(AbsCurve *newCurve)
+{
+  _listOfCurves.push_back(newCurve);
+}
+
+/**************************************************************
+ *
+ *  change the current tool type
+ *  @param toolType the new curent tool type
+ *
+ *************************************************************/
+void Curves::setCurrentToolType(unsigned short toolType)
+{
+  _currentToolType = toolType;
+}
 
 /**************************************************************
  *
@@ -139,6 +160,17 @@ void Curves::movePoint(int index, gml::Point3D newPosition){
     (*_listOfControlPoints[index])[0] = newPosition[0];
     (*_listOfControlPoints[index])[1] = newPosition[1];
   }
+}
+
+/**************************************************************
+ *
+ *  get all the points of the network (save utility)
+ *  @return the vector of all control points
+ *
+ *************************************************************/
+std::vector<gml::Point3D*> Curves::getAllPoints()
+{
+  return _listOfControlPoints;
 }
 
 /**************************************************************

@@ -33,13 +33,17 @@ public:
   Curves(Canvas2D *parent);
   ~Curves();
 
+  //curves management
   int getNbCurves();
   void deleteAllCurves();
+  void addCurve(AbsCurve *newCurve);
+  void setCurrentToolType(unsigned short toolType);
 
   //control point management
   int getNbControlPoints();
   void addPoint(gml::Point3D *newPoint);
   void movePoint(int index, gml::Point3D newPosition);
+  std::vector<gml::Point3D*> getAllPoints();
   bool isClosed() const;
   void close();
   int isExistingPoint(gml::Point3D point) const;
