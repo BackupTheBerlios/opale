@@ -618,10 +618,6 @@ MainWindow::generateCylinder()
     return;
   }
   
-  
-  
-
-  
   //Set the OpenGL Context to the 3D Canvas
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
   canvas.makeCurrent();
@@ -638,17 +634,15 @@ MainWindow::generateCylinder()
   Curves* chemin =  canvasChemin.getFigure();
   Curves* profil = canvasProfil.getFigure();
 
-  if( (section == NULL) || (chemin == NULL) || (profil == NULL) )
-  {
-    QMessageBox::warning( this, "ERROR",
-                          "Impossible to generate a cylinder without curves .\n");
-    return;
-  }
+
+//  QMessageBox::warning( this, "ERROR",
+//                        "Impossible to generate a cylinder without curves .\n");
+    
 
   std::cout << "Chemin is closed = " << chemin->isClosed() << std::endl;
-  
   _cylGenerator->setWayClosed( chemin->isClosed() );
-    
+
+
   int nbSegmentsChemin  =  chemin->getNbControlPoints() - 1;
   int nbSegmentsProfil  =  profil->getNbControlPoints() - 1;
   int nbSegmentsSection =  section->getNbControlPoints() - 1;
@@ -674,11 +668,11 @@ MainWindow::generateCylinder()
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
   adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
 
-  std::vector<Point3D> ptsProfile = profil->discretize(nWay / nbSegmentsProfil);
+  int nProfile = nWay / nbSegmentsProfil;
+  nProfile = (nProfile < 2) ? (2) : (nProfile);
   
-  //std::vector<Point3D> ptsChemin  = chemin->discretize( (ptsProfile.size()/ nbSegmentsChemin) + 1);
-  //adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
-
+  std::vector<Point3D> ptsProfile = profil->discretize( nProfile );
+  
   int discretizeWay;
   int u = ptsProfile.size()/ nbSegmentsChemin;
   std::vector<Point3D> ptsChemin  = chemin->discretize( u );
@@ -688,14 +682,65 @@ MainWindow::generateCylinder()
     u++;
     ptsChemin = chemin->discretize( u );
   }
-    
+
+  if ( ptsChemin.size() == (ptsProfile.size()+1) )
+  {
+    ptsChemin.pop_back();
+  }
+  
+  
   adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
   
   qDebug("Apres Discretisation");
   qDebug(" nb pt chemin = %d",  ptsChemin.size());
   qDebug(" nb pt profile = %d", ptsProfile.size());
     
+
+  if ( ptsChemin.size() == 0 )
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate a cylinder without a way curve .\n");
+    return;
+  }
+
+  if ( ptsSection.size() == 0)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate a cylinder without a section curve .\n");
+    return;
+  }
   
+  
+  if ( ptsProfile.size() == 0)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate a cylinder without a profile curve .\n");
+    return;
+  }
+
+
+  if (ptsChemin.size() < 2)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate need more point for the way.\n");
+    return;
+  }
+
+  if (ptsProfile.size() < 2)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate need more points for the profile .\n");
+    return;
+  }
+
+  if (ptsSection.size() < 3)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate need more points for the section .\n");
+    return;
+  }
+  
+
   int timeTiGenerateIt = ( _cylGenerator->generate( ptsChemin,
                                                     ptsSection,
                                                     ptsProfile) );
