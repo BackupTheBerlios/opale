@@ -16,12 +16,14 @@
 
 //Our stuff
 #include "mainwindow.hpp"
-#include "point.hpp"
-#include "face.hpp"
-#include "tria.hpp"
-#include "quad.hpp"
-#include "absface.hpp"
-#include "faces.hpp"
+
+//#include "point.hpp"
+//#include "face.hpp"
+//#include "tria.hpp"
+//#include "quad.hpp"
+//#include "absface.hpp"
+//#include "faces.hpp"
+
 #include "precision.hpp"
 
 using namespace std;
