@@ -194,6 +194,17 @@ void Circle::manageMoveEvent(QMouseEvent* event,
 	newPos[1] = _pointsVector[i][1]
 	  + (position[1] - _startMovePoint[1]);
 	movePoint((int)i, newPos);
+
+	// In case of the first point is selected alone
+	if (i==0 && !isSelected(1)){
+	  newPos[0] = _pointsVector[1][0] 
+	    + (position[0] - _startMovePoint[0]);
+	  newPos[1] = _pointsVector[1][1]
+	    + (position[1] - _startMovePoint[1]);
+	  movePoint(1, newPos);
+	}
+	  
+
       }
     }
     _startMovePoint[0] = position[0];
@@ -231,20 +242,7 @@ void Circle::manageDbClickEvent(QMouseEvent* event,
 				unsigned short toolType,
 				unsigned short canvasType)
 {
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-    addPoint(position);
-    close();
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-  }
-  /***************** selection mode **********************************/
-  else{
-    
-  }
+  
 }
 
 std::vector<gml::Point3D> Circle::discretize(int nbSegments)
@@ -252,12 +250,12 @@ std::vector<gml::Point3D> Circle::discretize(int nbSegments)
   std::vector<gml::Point3D> pointsList;
 
   // Ray compute
-  float x = pow((float)_pointsVector[1][0] - (float)_pointsVector[0][0],2);
-  float y = pow((float)_pointsVector[1][1] - (float)_pointsVector[0][1],2);
+  float xRay = pow((float)_pointsVector[1][0] - (float)_pointsVector[0][0],2);
+  float yRay = pow((float)_pointsVector[1][1] - (float)_pointsVector[0][1],2);
   
   //cout << "x = " << x << endl;
   
-  float r = sqrt(x + y);
+  float r = sqrt(xRay + yRay);
 
   int step = 360/nbSegments;
   
@@ -271,6 +269,25 @@ std::vector<gml::Point3D> Circle::discretize(int nbSegments)
     p[2] = 0.0;
     pointsList.push_back(p);
   }
+
+  // In order to manage the last point of the revolution
+  /*float angle = 360 * 3.14159F / 180 ;
+  float xLastPoint = (float)(_pointsVector[0][0] + r*cos(angle)) ;
+  float yLastPoint = (float)(_pointsVector[0][1] + r*sin(angle)) ;
+  Point3D p;
+  p[0] = xLastPoint;
+  p[1] = yLastPoint;
+  p[2] = 0.0;
+  pointsList.push_back(p);*/
+
+  float angle = 0 * 3.14159F / 180 ;
+  float xLastPoint = (float)(_pointsVector[0][0] + r*cos(angle)) ;
+  float yLastPoint = (float)(_pointsVector[0][1] + r*sin(angle)) ;
+  Point3D p;
+  p[0] = xLastPoint;
+  p[1] = yLastPoint;
+  p[2] = 0.0;
+  pointsList.push_back(p);
   
   return pointsList;
 }  

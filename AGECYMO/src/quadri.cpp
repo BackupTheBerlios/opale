@@ -195,6 +195,16 @@ void Quadri::manageMoveEvent(QMouseEvent* event,
 	  + (position[1] - _startMovePoint[1]);
 	movePoint((int)i, newPos);
       }
+
+      // In case of the first point is selected alone
+      if (i==0 && !isSelected(1)){
+	newPos[0] = _pointsVector[1][0] 
+	  + (position[0] - _startMovePoint[0]);
+	newPos[1] = _pointsVector[1][1]
+	  + (position[1] - _startMovePoint[1]);
+	movePoint(1, newPos);
+      }
+
     }
     _startMovePoint[0] = position[0];
     _startMovePoint[1] = position[1];
