@@ -21,78 +21,163 @@ namespace gml
 
   const  double DEFAULT_INCR_DIST = 0.150;
   
-  
-  /**
-   * This is a simple camera which by default looks to the world origin
+  /******************************************************
+   * This is a simple camera which by default looks to 
+   * the world origin.
    * Its moves are constrains to maintain its lookat point.
-   */
+   *
+   ******************************************************/
   class Camera
   {
 
     public:
     
-    Point3D _position; //position of the camera in world coordinates
-    Point3D _lookat; //look at the camera in word coordinates
+    Point3D _position; /**position of the camera in world coordinates*/
+    Point3D _lookat; /**look at the camera in word coordinates*/
     
-    Vector3D _up;
+    Vector3D _up; /**up vector*/
 
-    double _fovy; //fovy
+    double _fovy; /**fovy*/
 
     private:
-    Vector3D _x; //Axis of the referential of the camera
-    Vector3D _y;
-    Vector3D _z;
+    Vector3D _x; /**Axis x of the referential of the camera*/
+    Vector3D _y; /**Axis y of the referential of the camera*/
+    Vector3D _z; /**Axis z of the referential of the camera*/
 
-    double _theta; // spherical coordinates
-    double _phi;   
-    double _psi;
-    double _rho;
-        
-    double _thetaIncr;
-    double _phiIncr;
-    double _rhoIncr;
-    double _psiIncr;
+    double _theta; /** spherical coordinates*/
+    double _phi; /**PHI*/
+    double _psi; /**PSI*/
+    double _rho; /**RHO*/
+    double _thetaIncr; /**THETA*/
+    double _phiIncr; /**PHI increment*/
+    double _rhoIncr; /**RHO increment*/
+    double _psiIncr; /**PSI increment*/
     
     
     //Matrices to manage the camera moves
-    Matrix3D _matRotIncrY; //matric to turn around Y axis 
-    Matrix3D _matRotDecrY;
+    Matrix3D _matRotIncrY; /**matrix to turn around Y axis, increment*/ 
+    Matrix3D _matRotDecrY; /**matrix to turn around Y axis, decrement*/ 
     
-    Matrix3D _matRotIncrX; //matric to turn around X axis 
-    Matrix3D _matRotDecrX;
+    Matrix3D _matRotIncrX; /**matrix to turn around X axis, increment*/ 
+    Matrix3D _matRotDecrX; /**matrix to turn around X axis, decrement*/ 
     
-    Matrix3D _matRotIncrZ; //matric to turn around Z axis 
-    Matrix3D _matRotDecrZ;
+    Matrix3D _matRotIncrZ; /**matrix to turn around Z axis, increment*/ 
+    Matrix3D _matRotDecrZ; /**matrix to turn around Z axis, decrement*/ 
     
-    Matrix3D _matIncrPsi;
-    Matrix3D _matDecrPsi;
+    Matrix3D _matIncrPsi; /**matrix for PSI, increment*/ 
+    Matrix3D _matDecrPsi; /**matrix for PSI, decrement*/ 
     
-    Matrix3D _matIncrTheta;
-    Matrix3D _matDecrTheta;
+    Matrix3D _matIncrTheta; /**matrix for THETA, increment*/ 
+    Matrix3D _matDecrTheta; /**matrix for THETA, decrement*/ 
     
     public:
 
+    /**************************************************************
+     *
+     *  Camera constructor
+     *
+     *************************************************************/
     Camera();
 
     //Sets the position this will update spherical coordinates
+
+    /**************************************************************
+     *
+     *  set the camera position
+     *  
+     *  @param new_position the new position
+     *
+     *************************************************************/
     void setCameraPosition(Point3D const& new_position);
+
+    /**************************************************************
+     *
+     *  set the camera position
+     *  
+     *  @param px x coordinate
+     *  @param py y coordinate
+     *  @param pz z coordinate
+     *
+     *************************************************************/
     void setCameraPosition(double px, double py, double pz);
   
+    /**************************************************************
+     *
+     *  set the vector up of the camera
+     *  
+     *  @param upx x coordinate
+     *  @param upy y coordinate
+     *  @param upz z coordinate
+     *
+     *************************************************************/
     void setCameraUp(double upx, double upy, double upz);
+
+    /**************************************************************
+     *
+     *  set the lookAt of the camera
+     *  
+     *  @param cx x coordinate
+     *  @param cy y coordinate
+     *  @param cz z coordinate
+     *
+     *************************************************************/
     void setCameraLookAt(double cx, double cy, double cz);
 
-    
-    
+    /**************************************************************
+     *
+     *  increment PHI
+     *  
+     *
+     *************************************************************/
     void incrementPhi();
+
+    /**************************************************************
+     *
+     *  decrement PHI
+     *
+     *************************************************************/
     void decrementPhi();
     
+    /**************************************************************
+     *
+     *  increment THETA
+     *
+     *************************************************************/
     void incrementTheta();
+
+    /**************************************************************
+     *
+     *  decrement THETA
+     *
+     *************************************************************/
     void decrementTheta();
         
+    /**************************************************************
+     *
+     *  increment PSI
+     *
+     *************************************************************/
     void incrementPsi();
+
+    /**************************************************************
+     *
+     *  decrement PSI
+     *
+     *************************************************************/
     void decrementPsi();
 
+    /**************************************************************
+     *
+     *  increment distance
+     *
+     *************************************************************/
     void incrementDistance();
+
+    /**************************************************************
+     *
+     *  decrement distance
+     *
+     *************************************************************/
     void decrementDistance();
     
       
@@ -114,13 +199,39 @@ namespace gml
 
     private:
 
+    /**************************************************************
+     *
+     *  update THETA transform matrix
+     *
+     *************************************************************/
     void updateThetaTransformMatrix();
+
+    /**************************************************************
+     *
+     *  update PSI transform matrix
+     *
+     *************************************************************/
     void updatePsiTransformMatrix();
     
+    /**************************************************************
+     *
+     *  update Spherical coordinates
+     *
+     *************************************************************/
     void updateSphericalCoordinates();
+
+    /**************************************************************
+     *
+     *  update Cartesian coordinates 
+     *
+     *************************************************************/
     void updateCartesianCoordinates();
     
-    
+    /**************************************************************
+     *
+     *  update the axis 
+     *
+     *************************************************************/
     void updateAxis();
 
     

@@ -2,6 +2,12 @@
 
 using namespace gml;
   
+
+/**************************************************************
+ *
+ *  Camera constructor
+ *
+ *************************************************************/
 Camera::Camera()
     :_theta(M_PI/2.0),
      _phi(0.0),
@@ -36,7 +42,12 @@ Camera::Camera()
   _fovy = 120;
 }
 
-
+/**************************************************************
+ *
+ *  increment PHI
+ *  
+ *
+ *************************************************************/
 void
 Camera::incrementPhi()
 {
@@ -50,6 +61,11 @@ Camera::incrementPhi()
   updatePsiTransformMatrix();
 }
 
+/**************************************************************
+ *
+ *  decrement PHI
+ *
+ *************************************************************/
 void
 Camera::decrementPhi()
 {
@@ -63,6 +79,11 @@ Camera::decrementPhi()
   updatePsiTransformMatrix();
 }
 
+/**************************************************************
+ *
+ *  increment PSI
+ *
+ *************************************************************/
 void
 Camera::incrementPsi()
 {
@@ -72,6 +93,7 @@ Camera::incrementPsi()
   newUp = _matIncrPsi * _up;
   _up = newUp;
 }
+
 
 void
 Camera::decrementPsi()
@@ -83,7 +105,11 @@ Camera::decrementPsi()
   _up = newUp;
 }
 
-    
+/**************************************************************
+ *
+ *  decrement PSI
+ *
+ *************************************************************/
 void
 Camera::incrementTheta()
 {
@@ -114,6 +140,11 @@ Camera::incrementTheta()
   updatePsiTransformMatrix();
 }
 
+/**************************************************************
+ *
+ *  decrement THETA
+ *
+ *************************************************************/
 void
 Camera::decrementTheta()
 {
@@ -144,6 +175,12 @@ Camera::decrementTheta()
   updatePsiTransformMatrix();
 }
 
+
+/**************************************************************
+ *
+ *  increment distance
+ *
+ *************************************************************/
 void
 Camera::incrementDistance()
 {
@@ -166,6 +203,11 @@ Camera::incrementDistance()
   _rho +=  _rhoIncr;
 }
 
+/**************************************************************
+ *
+ *  decrement distance
+ *
+ *************************************************************/
 void
 Camera::decrementDistance()
 {
@@ -188,6 +230,13 @@ Camera::decrementDistance()
   _rho -=  _rhoIncr;
 }
 
+/**************************************************************
+ *
+ *  set the camera position
+ *  
+ *  @param new_position the new position
+ *
+ *************************************************************/
 void
 Camera::setCameraPosition(gml::Point3D const& new_position)
 {
@@ -195,7 +244,15 @@ Camera::setCameraPosition(gml::Point3D const& new_position)
   updateSphericalCoordinates();
 }
 
-
+/**************************************************************
+ *
+ *  set the camera position
+ *  
+ *  @param px x coordinate
+ *  @param py y coordinate
+ *  @param pz z coordinate
+ *
+ *************************************************************/
 void
 Camera::setCameraPosition(double px, double py, double pz)
 {
@@ -206,6 +263,15 @@ Camera::setCameraPosition(double px, double py, double pz)
   updateSphericalCoordinates();
 }
 
+/**************************************************************
+ *
+ *  set the vector up of the camera
+ *  
+ *  @param upx x coordinate
+ *  @param upy y coordinate
+ *  @param upz z coordinate
+ *
+ *************************************************************/
 void
 Camera::setCameraUp(double upx, double upy, double upz)
 {
@@ -216,6 +282,15 @@ Camera::setCameraUp(double upx, double upy, double upz)
   updateAxis();
 }
 
+/**************************************************************
+ *
+ *  set the lookAt of the camera
+ *  
+ *  @param cx x coordinate
+ *  @param cy y coordinate
+ *  @param cz z coordinate
+ *
+ *************************************************************/
 void
 Camera::setCameraLookAt(double cx, double cy, double cz)
 {
@@ -226,6 +301,11 @@ Camera::setCameraLookAt(double cx, double cy, double cz)
   updateAxis();
 }
 
+/**************************************************************
+ *
+ *  update THETA transform matrix
+ *
+ *************************************************************/
 void
 Camera::updateThetaTransformMatrix()
 {
@@ -241,6 +321,11 @@ Camera::updateThetaTransformMatrix()
 
 }
 
+/**************************************************************
+ *
+ *  update PSI transform matrix
+ *
+ *************************************************************/
 void
 Camera::updatePsiTransformMatrix()
 {
@@ -257,7 +342,11 @@ Camera::updatePsiTransformMatrix()
   _matDecrPsi = Matrix3D::rotationY( + _phi) * _matDecrPsi;
 }
 
-
+/**************************************************************
+ *
+ *  update Spherical coordinates
+ *
+ *************************************************************/
 void
 Camera::updateSphericalCoordinates()
 {
@@ -273,6 +362,11 @@ Camera::updateSphericalCoordinates()
   _theta =   M_PI/2.0 + atan( sqrt(x2y2) / _position[2] );
 }
 
+/**************************************************************
+ *
+ *  update Cartesian coordinates 
+ *
+ *************************************************************/
 void
 Camera::updateCartesianCoordinates()
 {
@@ -283,7 +377,11 @@ Camera::updateCartesianCoordinates()
   _position[2] = _rho * cos(_theta);
 }
 
-
+/**************************************************************
+ *
+ *  update the axis 
+ *
+ *************************************************************/
 void
 Camera::updateAxis()
 {
@@ -296,18 +394,5 @@ Camera::updateAxis()
   _y = cross(_x, _z);
   _y.normalize();
 }
-
-
-
-// std::ostream&
-// operator<<(std::ostream& os, Camera const& cam)
-// {
-//   os << "Camera : position = " << cam._position << " up = " << cam._up << std::endl
-//      << " phi = " << cam._phi
-//      << " theta = " << cam._theta
-//      << " rho = " << cam._rho << std::endl;
-  
-//   return os;
-// }
 
     
