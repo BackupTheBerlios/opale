@@ -283,23 +283,6 @@ MainWindow::addStaticMenuBarContent()
   _toolBar->addSeparator();
   quitAction->addTo(_toolBar);
 
-
-  // Validation menu
-//   QAction* validAction = new QAction("validation",
-//                                     QIconSet( QPixmap(IMAGES_DIR + QUIT_IMAGE) ),
-//                                     "&Validation",
-//                                     CTRL+Key_V,
-//                                     this);
-//   connect(validAction,
-//           SIGNAL( activated() ),
-//           this,
-//           SLOT( validation() ) );
-
-//   validAction->addTo(_menus[FILE_KEY]);
-
-//   _toolBar->addSeparator();
-//   validAction->addTo(_toolBar);
-
   //Tools Menu
   QPopupMenu* toolsMenu =  _menus.find(TOOLS_KEY);
   if (!toolsMenu)
@@ -309,7 +292,7 @@ MainWindow::addStaticMenuBarContent()
     menuBar()->insertItem( TOOLS_KEY, _menus[TOOLS_KEY]);
   }
   
-  _menus[TOOLS_KEY]->insertItem("Validate Solid", this, SLOT( validation() ) );
+  //_menus[TOOLS_KEY]->insertItem("Validate Solid", this, SLOT( validation() ) );
   
     
   //Help Menu with about
@@ -1162,14 +1145,14 @@ MainWindow::displayTimeStatus(const char* operation, int timeInMilliSeconds)
   statusBar()->addWidget( _labelStatus );
 
 }
+ 
+// void 
+// MainWindow::validation() {
 
-void 
-MainWindow::validation() {
 
-
-  Faces & allFaces = model();
+//   Faces & allFaces = model();
   
 
-  allFaces.validModel();
+//   allFaces.validModel();
   
-}
+// }
