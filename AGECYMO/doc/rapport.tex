@@ -100,7 +100,7 @@
 
 	Nous avons effectué les tests de validation sur les modèles suivants :
 	\begin{itemize}
-	\item Un cube (cf figure~\ref{cube})
+	\item Un cube (cf figure~\ref{cube} avec deux faces non  coplanaires)
 	\item Un vase (cf figure~\ref{vase})
 	\item Le lapin simplifé de Standford (cf figure~\ref{bunny})
 	\item Le dragon simplifé de Standford (cf figure~\ref{dragon})
@@ -110,11 +110,26 @@
 	\ref{chess3} et~\ref{chess4}).
 	\end{itemize}
 
-	\begin{figure}[h]
+%	\begin{figure}[h]
+%		\begin{center}
+%			\includegraphics[width=5cm]{./cube1.png}
+%			\caption{\label{cube} \textit{Le Cube}.}
+%		\end{center}
+%	\end{figure}
+
+	\begin{figure}[h!]
+	\begin{minipage}[b]{.46\linewidth}
 		\begin{center}
-			\includegraphics[width=5cm]{./cube1.png}
-			\caption{\label{cube} \textit{Le Cube}.}
+			\includegraphics[keepaspectratio=true,width=5cm]{./cube1.png}
+			\caption{\label{cube} \textit{Le cube $1$}.}
 		\end{center}
+		\end{minipage} \hfill
+		\begin{minipage}[b]{.46\linewidth}
+				\begin{center}
+					\includegraphics[keepaspectratio=true,width=5cm]{./vase.png}
+					\caption{\label{vase} \textit{Le vase}.}
+				\end{center}
+		\end{minipage}
 	\end{figure}
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
@@ -181,15 +196,7 @@
 		\multicolumn{2}{|c|}{$10$} \\
 		\hline
 	\end{tabular}
-
-
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=5cm]{./vase.png}
-			\caption{\label{vase} 
-				\textit{Vase}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -256,12 +263,30 @@
 		\hline
 	\end{tabular}
 
-	\begin{figure}[h]
+%	\begin{figure}[h]
+%		\begin{center}
+%			\includegraphics[width=5cm]{./bunny.png}
+%			\caption{\label{bunny} 
+%				\textit{Le Lapin. Modèle VRML simplifié du	modèle original de Standford}.}
+%		\end{center}
+%	\end{figure}
+
+	\begin{figure}[h!]
+	\begin{minipage}[b]{.46\linewidth}
 		\begin{center}
 			\includegraphics[width=5cm]{./bunny.png}
 			\caption{\label{bunny} 
 				\textit{Le Lapin. Modèle VRML simplifié du	modèle original de Standford}.}
 		\end{center}
+		\end{minipage} \hfill
+		\begin{minipage}[b]{.46\linewidth}
+				\begin{center}
+					\includegraphics[width=5cm]{./dragon.png}
+					\caption{\label{dragon} 
+						\textit{Le Dragon. Modèle VRML simplifié du	modèle
+						original de Standford}.}
+				\end{center}
+		\end{minipage}
 	\end{figure}
 
 
@@ -329,14 +354,7 @@
 		\multicolumn{2}{|c|}{19981} \\
 		\hline
 	\end{tabular}
-
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=5cm]{./dragon.png}
-			\caption{\label{dragon} 
-				\textit{Le Dragon. Modèle VRML simplifié du	modèle original de Standford}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -403,12 +421,28 @@
 		\hline
 	\end{tabular}
 
-	\begin{figure}[h]
+%	\begin{figure}[h]
+%		\begin{center}
+%			\includegraphics[width=5cm]{./hand.png}
+%			\caption{\label{hand} 
+%				\textit{Main. Modèle VRML simplifié du	modèle original de Standford}.}
+%		\end{center}
+%	\end{figure}
+
+	\begin{figure}[h!]
+	\begin{minipage}[b]{.46\linewidth}
 		\begin{center}
 			\includegraphics[width=5cm]{./hand.png}
 			\caption{\label{hand} 
 				\textit{Main. Modèle VRML simplifié du	modèle original de Standford}.}
 		\end{center}
+		\end{minipage} \hfill
+		\begin{minipage}[b]{.46\linewidth}
+				\begin{center}
+					\includegraphics[width=7cm]{./fourmille.png}
+					\caption{\label{fourmille} \textit{La fourmille}.}
+				\end{center}
+		\end{minipage}
 	\end{figure}
 
 
@@ -476,13 +510,7 @@
 		\multicolumn{2}{|c|}{$13\,887$} \\
 		\hline
 	\end{tabular}
-
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=7cm]{./fourmille.png}
-			\caption{\label{fourmille} \textit{La fourmille}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -548,13 +576,34 @@
 		\multicolumn{2}{|c|}{$5\,966$} \\
 		\hline
 	\end{tabular}
+\\
 
-	\begin{figure}[h]
+	\begin{figure}[h!]
+	\begin{minipage}[b]{.46\linewidth}
 		\begin{center}
-			\includegraphics[width=5cm]{./chess1.png}
-			\caption{\label{chess1} 
-				\textit{Pièce d'échec $1$}.}
+			\includegraphics[keepaspectratio=true,width=5cm]{./chess1.png}
+			\caption{\label{chess1} \textit{Pièce d'échec $1$}.}
 		\end{center}
+		\end{minipage} \hfill
+		\begin{minipage}[b]{.46\linewidth}
+				\begin{center}
+					\includegraphics[keepaspectratio=true,width=5cm]{./chess2.png}
+					\caption{\label{chess2} \textit{Pièce d'échec $2$}.}
+				\end{center}
+		\end{minipage}
+		\\
+		\begin{minipage}[b]{.46\linewidth}
+		\begin{center}
+			\includegraphics[keepaspectratio=true, width=5cm]{./chess3.png}
+			\caption{\label{chess3} \textit{Pièce d'échec $3$}.}
+		\end{center}
+		\end{minipage} \hfill
+		\begin{minipage}[b]{.46\linewidth}
+				\begin{center}
+					\includegraphics[keepaspectratio=true, width=5cm, height=5cm]{./chess4.png}
+					\caption{\label{chess4} \textit{Pièce d'échec $4$}.}
+				\end{center}
+		\end{minipage}
 	\end{figure}
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
@@ -621,14 +670,7 @@
 		\multicolumn{2}{|c|}{$7\,041$} \\
 		\hline
 	\end{tabular}
-
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=5cm]{./chess2.png}
-			\caption{\label{chess2} 
-				\textit{Pièce d'échec $2$}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -694,14 +736,7 @@
 		\multicolumn{2}{|c|}{$\,5866$} \\
 		\hline
 	\end{tabular}
-
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=5cm]{./chess3.png}
-			\caption{\label{chess3} 
-				\textit{Pièce d'échec $3$}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -767,13 +802,7 @@
 		\multicolumn{2}{|c|}{$5\,471$} \\
 		\hline
 	\end{tabular}
-
-	\begin{figure}[h!]
-		\begin{center}
-			\includegraphics[width=5cm]{./chess4.png}
-			\caption{\label{chess4} \textit{Pièce d'échec $4$}.}
-		\end{center}
-	\end{figure}
+\\
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
@@ -839,6 +868,8 @@
 		\multicolumn{2}{|c|}{$7741$} \\
 		\hline
 	\end{tabular}
+
+\newpage
 
 	\section{Discussion et Conclusion}
 
