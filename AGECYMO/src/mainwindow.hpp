@@ -30,9 +30,12 @@ const QString INPUT_COMPONENT_SEPARATOR = "/";
 
 const QString FILE_KEY = "&File";
 const QString HELP_KEY = "&Help";
+const QString CYLINDER_KEY = "&Cylinder";
+
 
 const QString IMAGES_DIR = "../images/";
 const QString QUIT_IMAGE = "exit.png";
+const QString CYLINDER_IMAGE = "cylinder.png";
 
 
 class MainWindow : public QMainWindow
@@ -56,6 +59,8 @@ class MainWindow : public QMainWindow
   PluginManager*  _pluginManager;
 
   QToolBar*       _toolBar;
+
+  CylinderGenerator*  _cylGenerator;
   
   
   public:
@@ -108,7 +113,8 @@ class MainWindow : public QMainWindow
 
   void about();
   
- 
+  void generateCylinder();
+  
 
 };
 
