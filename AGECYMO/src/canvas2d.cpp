@@ -47,7 +47,7 @@ Canvas2D::buildAxesDPL()
 void
 Canvas2D::drawAxes()
 {
-  std::cout << "ici " << std::endl;
+//  std::cout << "ici " << std::endl;
   
 //   glColor3f(0.7, 0.0, 0.0);
   
@@ -85,6 +85,9 @@ void
 Canvas2D::paintGL()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glMatrixMode (GL_MODELVIEW);   
+  glLoadIdentity();
 
   drawAxes();
   
