@@ -131,12 +131,12 @@ Canvas3D::drawAxes()
 void
 Canvas3D::initializeGL()
 {
-//  glEnable     (GL_DITHER);
+  glEnable     (GL_DITHER);
   glEnable     (GL_DEPTH_TEST);
   glClearColor (0, 0, 0, 0);
 
-//  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glPolygonMode(GL_FRONT, GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//  glPolygonMode(GL_FRONT, GL_LINE);
 
 //   GLfloat mat_diffuse[] = {1.0, 1.0, 0, 1.0};
 //   GLfloat mat_specular[] = {0, 1.0, 1.0, 1.0};
@@ -158,8 +158,8 @@ Canvas3D::initializeGL()
   glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
   glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 20.0);
 
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+//   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+//   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
   
   
   //TODO: Remove it and compute the normal inside the objet
@@ -306,7 +306,7 @@ Canvas3D::accelEvent(int id)
     {
       _renderer.setRenderMode(Renderer::WF);
 
-      glShadeModel(GL_FLAT);
+//      glShadeModel(GL_FLAT);
       
       glDisable(GL_LIGHT0);
       glDisable(GL_LIGHTING);
