@@ -125,6 +125,7 @@ Canvas2D::paintGL()
   
   //we draw the polyline
   _polyline.render();
+  _symetrique.render();
 
   //updating buffers
   swapBuffers();
@@ -147,41 +148,24 @@ Canvas2D::resizeGL(int width, int height)
 	     glOrthoParameter);
 }
 
-//mode de lecture a implémenter plus haut
-int mode = 1;
-Point3D saveClick;
-bool inSelection = false;
-
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
-  Point3D point;
-  //calcul de la coordonnée x QT -> openGL
-  point[0] =
-    -glOrthoParameter + 
-    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
-  //calcul de la coordonnée y QT -> openGL
-  point[1] =
-    glOrthoParameter - 
-    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
-  
-
-  //mode selection
-  if(mode == 0){
-    if(!inSelection){
-      saveClick[0] = point[0];
-      saveClick[1] = point[1];
-      inSelection = true;
-    }
+  if(caption() == "Section"){
+    sectionClickEvent(event);
   }
-
-
-  //mode creation
+  else if(caption().compare(cheminS)==0){
+    cheminClickEvent(event);
+  }
+  else if(caption() == NULL){
+    profilClickEvent(event);
+  }
   else{
-      //ajout du point openGl
-      _polyline.addPoint(point);
+    window3dClickEvent(event);
   }
-  
+
+  cout<<caption().compare(sectionS)<<endl;
+
   //openGl update
   updateGL();
 }
@@ -190,12 +174,83 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 void
 Canvas2D::mouseMoveEvent(QMouseEvent* event)
 {
+
+  if(caption().compare(sectionS)==0){
+    sectionMoveEvent(event);
+  }
+  else if(caption().compare(cheminS)==0){
+    cheminMoveEvent(event);
+  }
+  else if(caption().compare(profilS)==0){
+    profilMoveEvent(event);
+  }
+  else{
+    window3dMoveEvent(event);
+  }
+
   //openGl update
   updateGL();
 }
 
 void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
+{
+
+  if(caption().compare(sectionS)==0){
+    sectionReleaseEvent(event);
+  }
+  else if(caption().compare(cheminS)==0){
+    cheminReleaseEvent(event);
+  }
+  else if(caption().compare(profilS)==0){
+    profilReleaseEvent(event);
+  }
+  else{
+    window3dReleaseEvent(event);
+  }
+}
+
+void
+Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
+{
+  if(caption().compare(sectionS)==0){
+    sectionDoubleClickEvent(event);
+  }
+  else if(caption().compare(cheminS)==0){
+    cheminDoubleClickEvent(event);
+  }
+  else if(caption().compare(profilS)==0){
+    profilDoubleClickEvent(event);
+  }
+  else{
+    window3dDoubleClickEvent(event);
+  }
+}
+
+
+void Canvas2D::sectionClickEvent(QMouseEvent* event)
+{
+  Point3D point;
+  //calcul de la coordonnée x QT -> openGL
+  point[0] =
+    -glOrthoParameter + 
+    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
+  //calcul de la coordonnée y QT -> openGL
+  point[1] =
+    glOrthoParameter - 
+    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
+  
+  //polyline closing
+  if(!_polyline.isClosed()){
+      _polyline.close();
+  }
+
+  //add the opengl point
+  _polyline.addPoint(point);
+  
+}
+
+void Canvas2D::profilClickEvent(QMouseEvent* event)
 {
   Point3D point;
   //calcul de la coordonnée x QT -> openGL
@@ -207,15 +262,74 @@ Canvas2D::mouseReleaseEvent(QMouseEvent* event)
     glOrthoParameter - 
     ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
 
-  //mode selection
-  if(mode == 0){
-    _polyline.selection(saveClick[0], saveClick[1], 
-			point[0], point[1]);
-  }
+  //add the opengl point
+  _polyline.addPoint(point);
+  point[0] *= -1;
+  _symetrique.addPoint(point);
+
 }
 
-void
-Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
+void Canvas2D::cheminClickEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::window3dClickEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::sectionMoveEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::profilMoveEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::cheminMoveEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::window3dMoveEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::sectionReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::profilReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::cheminReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::window3dReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::sectionDoubleClickEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::profilDoubleClickEvent(QMouseEvent* event)
+{
+
+}
+
+void Canvas2D::cheminDoubleClickEvent(QMouseEvent* event)
 {
   Point3D point;
    //calcul de la coordonnée x QT -> openGL
@@ -232,4 +346,9 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
   //polyline closing
   _polyline.close();
   updateGL();
+}
+
+void Canvas2D::window3dDoubleClickEvent(QMouseEvent* event)
+{
+
 }
