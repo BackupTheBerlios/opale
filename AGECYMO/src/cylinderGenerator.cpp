@@ -75,9 +75,9 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   
   initFrenetFrame( wayPts[0], wayPts[1], currentFrame);
 
-  computeProfileMatrix(profilePts, 0, profileMatrix);
-  tmpFrame = currentFrame;
-  currentFrame = tmpFrame * profileMatrix;
+//   computeProfileMatrix(profilePts, 0, profileMatrix);
+//   tmpFrame = currentFrame;
+//   currentFrame = tmpFrame * profileMatrix;
 
 //   std::cout << "FIRST currentFrame = " << std::endl
 //             << currentFrame << std::endl;
@@ -99,9 +99,9 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
                        wayPts[i-1], wayPts[i], wayPts[i+1],
                        currentFrame);
     //Profile part
-    computeProfileMatrix(profilePts, i, profileMatrix);
-    tmpFrame = currentFrame;
-    currentFrame = tmpFrame * profileMatrix;
+//     computeProfileMatrix(profilePts, i, profileMatrix);
+//     tmpFrame = currentFrame;
+//     currentFrame = tmpFrame * profileMatrix;
     
     computePointsAccordingToFrame(sectionPts, currentFrame);
     
@@ -111,9 +111,9 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   lastFrenetFrame(wayPts[size-2], wayPts[size-1], currentFrame);
 
   //Profile part
-  computeProfileMatrix(profilePts, (size-1), profileMatrix);
-  tmpFrame = currentFrame;
-  currentFrame = tmpFrame * profileMatrix;
+//   computeProfileMatrix(profilePts, (size-1), profileMatrix);
+//   tmpFrame = currentFrame;
+//   currentFrame = tmpFrame * profileMatrix;
     
   computePointsAccordingToFrame(sectionPts, currentFrame);
   
