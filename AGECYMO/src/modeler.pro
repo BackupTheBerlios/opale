@@ -8,9 +8,17 @@ OBJECTS_DIR = obj
 #  ../lib/libmatrixI.a ../lib/libmatrixN.a ../lib/libmatrix.a/ ../lib/libnurbsd.a ../lib/libnurbsf.a
 
 INCLUDEPATH += ../lib/nurbs++/
+
+# Comment or uncomment this to use CORE precision library 
+INCLUDEPATH += ../lib/core/ ../lib/gmp/
+
 #LIBS +=  ../lib/libmatrixI.a ../lib/libmatrixN.a ../lib/libmatrix.a ../lib/libnurbsd.a ../lib/libnurbsf.a
 #LIBS      +=  -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
+
 LIBS      += -L../lib/ -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
+
+# Comment or uncomment this to use CORE precision library 
+LIBS      += -L../lib/ -lcore++ -lgmp
 
 LIBS      += -lm -Wl,-E -ldl -rdynamic
 
