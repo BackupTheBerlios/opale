@@ -18,6 +18,12 @@
 class MainWindow;
 
 
+// Plugin types definition
+enum pluginType {
+  LOAD_SAVE,
+  ACTION
+};
+
 class PluginManager
 {
 
