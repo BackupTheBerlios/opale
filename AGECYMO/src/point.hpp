@@ -9,7 +9,7 @@ namespace gml
 {
   using namespace std;
 
-  const double EPSILON = 0.0000001;
+  const double EPSILON = 0.000001;
   
   template<typename T = double, int N = 3>
   class Point : public AbsVector<T, N>
