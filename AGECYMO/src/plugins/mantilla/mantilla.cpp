@@ -93,7 +93,7 @@ int load(MainWindow *mainW){
 				       Precision::getInstance()
 				       ->getEpsilon()
 				       , 0,
-				       1, 2, &ok, NULL );
+				       1, 15, &ok, NULL );
 
   //user has entered a correct value and pressed OK
   if ( ok ) {
