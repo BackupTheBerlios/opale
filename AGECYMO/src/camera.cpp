@@ -40,38 +40,35 @@ Camera::Camera()
 void
 Camera::incrementPhi()
 {
-  Point3D newPosition;
-
   _phi +=  _phiIncr;
   
+  Point3D newPosition;
   newPosition = _matRotIncrY * _position;
-
   _position = newPosition;
   
   updateThetaTransformMatrix();
+//  updatePsiTransformMatrix();
 }
 
 void
 Camera::decrementPhi()
 {
-  Point3D newPosition;
-
   _phi -=  _phiIncr;
-  
-  newPosition = _matRotDecrY * _position;
 
+  Point3D newPosition;
+  newPosition = _matRotDecrY * _position;
   _position = newPosition;
 
   updateThetaTransformMatrix();
+  // updatePsiTransformMatrix();
 }
 
 void
 Camera::incrementPsi()
 {
-  Vector3D newUp;
-
   _psi += _psiIncr;
 
+  Vector3D newUp;
   newUp = _matIncrPsi * _up;
   _up = newUp;
 }
@@ -79,10 +76,9 @@ Camera::incrementPsi()
 void
 Camera::decrementPsi()
 {
-  Vector3D newUp;
-
   _psi -= _psiIncr;
 
+  Vector3D newUp;
   newUp = _matDecrPsi * _up;
   _up = newUp;
 }
@@ -91,54 +87,61 @@ Camera::decrementPsi()
 void
 Camera::incrementTheta()
 {
-  Point3D newPosition;
-
   _theta += _thetaIncr;
-
-  if ( _theta < gml::EPSILON )
-  {
-    _theta = 0;
-    return;
-  }
-
-  if ( _theta > 3.14)
-  {
-    _theta = M_PI;
-    return;
-  }
-      
-  newPosition = _matIncrTheta * _position;
   
+//   if ( _theta < gml::EPSILON )
+//   {
+//     _theta = 0;
+//     return;
+//   }
+
+//   if ( _theta > 3.14)
+//   {
+//     _theta = M_PI;
+//     return;
+//   }
+  
+  std::cout << "theta = " << _theta << std::endl;
+  
+  Point3D newPosition;
+  newPosition = _matIncrTheta * _position;
   _position = newPosition;
   
-  updatePsiTransformMatrix();
+  //Vector3D newUp;
+  //newUp = _matIncrTheta * _up;
+  //_up = newUp;
+  
+  //updatePsiTransformMatrix();
 }
 
 void
 Camera::decrementTheta()
 {
-  Point3D newPosition;
-
   _theta -= _thetaIncr;
   
-  if ( _theta < gml::EPSILON )
-  {
-    _theta = 0;
-    return;
-  }
+//   if ( _theta < gml::EPSILON )
+//   {
+//     _theta = 0;
+//     return;
+//   }
 
-  if ( _theta > M_PI)
-  {
-    _theta = M_PI;
-    return;
-  }
+//   if ( _theta > M_PI)
+//   {
+//     _theta = M_PI;
+//     return;
+//   }
+
+  std::cout << "theta = " << _theta << std::endl;
   
+  // Vector3D newUp;
+  //newUp = _matDecrTheta * _up;
+  //_up = newUp;
 
+  Point3D newPosition;
   newPosition = _matDecrTheta * _position;
-  
   _position = newPosition;
-  
-  updatePsiTransformMatrix();
+    
+  //updatePsiTransformMatrix();
 }
 
 void
@@ -235,7 +238,7 @@ Camera::updateThetaTransformMatrix()
   _matDecrTheta = _matRotDecrX *  _matDecrTheta;
   _matDecrTheta = Matrix3D::rotationY( + _phi) *  _matDecrTheta;
 
-  updatePsiTransformMatrix();
+
 }
 
 void
@@ -262,8 +265,11 @@ Camera::updateSphericalCoordinates()
   
   _rho = sqrt ( x2y2 + _position[2] * _position[2]);
 
-  _phi =  M_PI + atan2( _position[1], _position[0] ) ;
+//  _phi =  M_PI + atan2( _position[1], _position[0] ) ;
+  _phi =  atan2( _position[1], _position[0] ) ;
 
+  std::cout << "dans updateSpherical coordinates phi = " << _phi << std::endl;
+  
   _theta =   M_PI/2.0 + atan( sqrt(x2y2) / _position[2] );
 }
 
@@ -290,3 +296,18 @@ Camera::updateAxis()
   _y = cross(_x, _z);
   _y.normalize();
 }
+
+
+
+// std::ostream&
+// operator<<(std::ostream& os, Camera const& cam)
+// {
+//   os << "Camera : position = " << cam._position << " up = " << cam._up << std::endl
+//      << " phi = " << cam._phi
+//      << " theta = " << cam._theta
+//      << " rho = " << cam._rho << std::endl;
+  
+//   return os;
+// }
+
+    

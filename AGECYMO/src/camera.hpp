@@ -95,6 +95,22 @@ namespace gml
     void incrementDistance();
     void decrementDistance();
     
+      
+    /**************************************************************
+     *
+     *  redefines the display stream operator for debuging purpose
+     *
+     *************************************************************/
+    friend std::ostream& operator<<(std::ostream& os, Camera const& cam)
+    {
+      os << "Camera : position = " << cam._position << " up = " << cam._up << std::endl
+         << " phi = " << cam._phi
+         << " theta = " << cam._theta
+         << " rho = " << cam._rho << std::endl;
+      
+      return os;
+    };
+    
 
     private:
 
@@ -106,8 +122,10 @@ namespace gml
     
     
     void updateAxis();
+
     
   };
+
 }
 
 
