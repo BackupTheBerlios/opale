@@ -1,0 +1,27 @@
+#This is a Makefile to compile Noyau.cpp
+#
+#
+#
+CC = g++
+CCFLAGS = -g -Wall -W
+LIBS = -Wl,-E -ldl -rdynamic
+
+INCLUDE = 
+INCLUDE_LIB = ${INCLUDE}
+
+INTERF_LIB =
+
+all : Noyau.exe
+
+
+Noyau.exe: Noyau.o
+	$(CC) $(SOFLAGS) $< -o $@ $(LIBS)	
+
+%.o : %.cpp
+	$(CC) $(CCFLAGS) $(INCLUDE) -c $< -o $@
+
+
+.PHONY : clean cleanall
+
+clean :
+	rm -f Noyau.exe Noyau.o

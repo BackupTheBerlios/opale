@@ -1,0 +1,56 @@
+Ce repertoire contient toutes les  sources
+du modeler de cylindre  généralisé.
+
+modeler.pro est le fichier de projet qt qui permet de generer
+automatiquement le Makefile.
+
+obj/ contient les objets compilés
+
+moc/ les méta-objets compilés pour le moc de Qt
+
+plugins/ contient les plugins du modeler 
+
+
+--------------------------------------------------
+
+Samedi 23 octobre 2004:
+
+Les plugins
+
+mainwindow.hpp contient a l heure actuelle les methodes suivantes que les plugins
+doivent utiliser :
+
+//Those functions return a pointer to manipulate the canvas
+ Canvas3D& getCanvas3D(); 
+ Canvas2D& getCheminCanvas();
+ Canvas2D& getProfilCanvas();
+ Canvas2D& getSectionCanvas();
+
+ //Function to manage the model
+ Faces& model();
+
+ void setModel(Faces & faces);
+
+---> Il manque les méthodes pour manager la section, le profil et le chemin.
+Ca sera fait mercredi des que Desbarat nous aura éclaircit !
+
+
+
+Mes Références C++ pour ceux que ca intéresse : 
+
+
+Référence pour la STL :
+
+
+
+Thinking in C++ Volume 1 et 2 de Bruce Eckel dispos là : 
+
+Volume 1 est tres didacticiel, c est surtout pour apprendre
+Volume 2 est plus une balade didactique à travers la STL très sympa.
+
+
+Et puis sinon en francais il y a les doc suivantes que je trouve intéressantes :
+
+C++ Avancé : 
+STL : 
+Cours C/C++ : 
