@@ -61,7 +61,7 @@ void** query(void){
   menuLoadAdd->typeAppel = LOAD_CALL;
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuLoadAdd->emplacement->append("/&File/Load Curves");
-  menuLoadAdd->image = new string("up.png");
+  menuLoadAdd->image = new string("loadCurve.png");
   menuLoadAdd->texte = new string("CTRL+M");
   
 
@@ -70,7 +70,7 @@ void** query(void){
   menuSaveAdd->typeAppel = SAVE_CALL;
   menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuSaveAdd->emplacement->append("/&File/Save Curves");
-  menuSaveAdd->image = new string("down.png");
+  menuSaveAdd->image = new string("saveCurve.png");
   menuSaveAdd->texte = new string("CTRL+P");
 
   qDebug("INSIDE PLUGIN : Query IOCURVES type  = %d", *type);
