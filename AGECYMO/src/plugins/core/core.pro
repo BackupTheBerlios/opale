@@ -8,6 +8,7 @@ OBJECTS_DIR = obj
 INCLUDEPATH  =../../
 
 INCLUDEPATH +=../../../lib/core/
+INCLUDEPATH +=../../../lib/gmp/
 
 HEADERS		= ../../point.hpp \
             ../../vector.hpp \
