@@ -15,7 +15,12 @@ MainWindow::MainWindow(int screen_w,
       _screen_h(screen_h)
 {
   _labelStatus = NULL;
+
+  _controlPanel = new ControlPanel(this);
+
+  setCentralWidget(_controlPanel);
   
+    
   _pluginManager = new PluginManager(this);
 
   _toolBar = new QToolBar("Operations", this);
@@ -23,12 +28,11 @@ MainWindow::MainWindow(int screen_w,
   _toolBar->setVerticallyStretchable(true);
   _toolBar->setResizeEnabled(true);
   
-  
-  
   resize(w_app, h_app);
   move(0, 0);
   setCaption(TITLE);
 
+  
   show();
 
   initViewFrames(800, screen_w, w_app);
@@ -42,6 +46,7 @@ MainWindow::MainWindow(int screen_w,
   addStaticMenuBarContent();
   moveDockWindow(_toolBar, Qt::DockLeft);
 
+  
 }
 
 MainWindow::~MainWindow()

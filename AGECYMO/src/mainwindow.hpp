@@ -26,6 +26,7 @@
 #include "canvas2d.hpp"
 #include "canvas3d.hpp"
 #include "window3d.hpp"
+#include "controlpanel.hpp"
 
 class PluginManager;
 
@@ -57,6 +58,8 @@ class MainWindow : public QMainWindow
   Window3D* _wSection;
   Window3D* _wProfil;
 
+  ControlPanel* _controlPanel;
+  
   QDict<QPopupMenu> _menus;
   
   QTime   _chronometer;
