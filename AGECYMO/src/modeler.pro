@@ -3,11 +3,12 @@ CONFIG		+= qt opengl thread warn_on debug
 #CONFIG		+= qt opengl thread warn_off release
 
 MOC_DIR = moc
-OBJECTS_DIR = obj
+OBJECTS_DIR = obj 
 
 INCLUDEPATH += ../lib/nurbs++/
-LIBS      += -lm -Wl,-E -ldl -rdynamic
 LIBS      += -L../lib/ -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
+LIBS      += -lm -Wl,-E -ldl -rdynamic
+
 
 HEADERS		= absVector.hpp \
             abscurve.hpp \
