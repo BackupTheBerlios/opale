@@ -79,7 +79,7 @@ class Faces
   void renderBoundingBox() const;
 
 
-  void validModel() const;
+//  void validModel() const;
 
   //accessors
 
