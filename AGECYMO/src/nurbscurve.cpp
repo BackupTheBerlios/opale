@@ -272,7 +272,7 @@ void NurbsCurve::manageDbClickEvent(QMouseEvent* event,
   }
 }
 
-std::vector<gml::Point3D> NurbsCurve::discretize()
+std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
   pointsList.clear();
