@@ -70,9 +70,11 @@ void** query(void)
 
 
 extern "C"
-int load(MainWindow *mainW)
+int load(MainWindow *mainWin)
 {
   qDebug("Dans load du PLUGIN ioOBJ ");
+  QMessageBox::information( mainWin, "NOT IMPLEMETED YET",
+                            "Sorry this functionnality is not yet implemented .\n");
 }
 
 
@@ -80,4 +82,6 @@ extern "C"
 int save(MainWindow *mainWin)
 {
   qDebug("Dans save du PLUGIN ioOBJ ");
+  QMessageBox::information( mainWin, "NOT IMPLEMETED YET",
+                            "Sorry this functionnality is not yet implemented .\n");
 }
