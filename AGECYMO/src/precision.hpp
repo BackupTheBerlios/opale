@@ -723,15 +723,19 @@
     }
     
     if (!found1 && !found2) {
-      if (onFace(a, points)) {
+      bool aOnFace = onFace(a, points);
+      bool bOnFace = onFace(b, points);
+      if (aOnFace) {
 	*t=0.0;
 	return true;
       }
-      if (onFace(b, points)) {
+      if (bOnFace) {
 	*t=1.0;
 	return true;
       }
-    }
+      if (aOnFace, bOnFace) {
+	return false;
+      }
 	
 
     if (found1 && found2)
