@@ -1,10 +1,46 @@
-#ifndef CLASS_NURBSCURVE_H
-#define CLASS_NURBSCURVE_H
+#ifndef CLASS_NURBSCURVE
+#define CLASS_NURBSCURVE
 
-class NurbsCurve
+#include <vector>
+#include "qgl.h"
+#include "abscurve.hpp"
+
+class NurbsCurve : public AbsCurve 
 {
-  
-};
+private:
 
+  int nbPointsDefine;
+  
+public:
+
+  NurbsCurve(Canvas2D *parent);
+
+  NurbsCurve(std::vector<gml::Point3D> pointsVector, 
+	   bool isClosed,
+	   Canvas2D *parent);
+
+  NurbsCurve(const NurbsCurve &source);
+
+  void render();
+
+  std::vector<gml::Point3D> discretize();
+
+  void managePressEvent(QMouseEvent* event,
+			unsigned short toolType,
+			unsigned short canvasType);
+
+  void manageMoveEvent(QMouseEvent* event,
+		       unsigned short toolType,
+		       unsigned short canvasType);
+
+  void manageReleaseEvent(QMouseEvent* event,
+			  unsigned short toolType,
+			  unsigned short canvasType);
+
+  void manageDbClickEvent(QMouseEvent* event,
+			  unsigned short toolType,
+			  unsigned short canvasType);
+
+};
 
 #endif
