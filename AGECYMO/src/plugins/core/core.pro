@@ -5,7 +5,9 @@ CONFIG		=  qt opengl thread warn_on debug
 MOC_DIR = moc
 OBJECTS_DIR = obj
 
-INCLUDEPATH=../../
+INCLUDEPATH  =../../
+
+INCLUDEPATH +=../../../lib/core/
 
 HEADERS		= ../../point.hpp \
             ../../vector.hpp \
@@ -28,9 +30,15 @@ SOURCES		=  ../../absface.cpp \
              ../../precision.cpp \
              core.cpp
 
-TARGET		= core.plg
+# LEVEL 3 is CORE precision
+DEFINES = CORE_LEVEL=3
+
 LIBS      = -lm -Wl,-E -ldl -rdynamic -shared
 
 # Comment or uncomment this to use CORE precision library 
 LIBS      += -L../../../lib/ -lcore++ -lgmp
+
+TARGET		= core.plg
+
+
 
