@@ -20,6 +20,7 @@
 //Our stuff
 #include "pluginmanager.hpp"
 
+#include "abscurve.hpp"
 #include "canvas2d.hpp"
 #include "canvas3d.hpp"
 #include "window3d.hpp"
@@ -104,6 +105,8 @@ class MainWindow : public QMainWindow
   void updateViewFramesPosition();
 
   void addStaticMenuBarContent();
+
+  void adjustSection(std::vector<Point3D> & ptsSection);
   
   
   protected:

@@ -17,6 +17,10 @@ MainWindow::MainWindow(int screen_w,
   _pluginManager = new PluginManager(this);
 
   _toolBar = new QToolBar("Operations", this);
+  _toolBar->setHorizontallyStretchable(true);
+  _toolBar->setVerticallyStretchable(true);
+  _toolBar->setResizeEnabled(true);
+  
   
   resize(w_app, h_app);
   move(0, 0);
@@ -431,54 +435,109 @@ MainWindow::about()
 void
 MainWindow::generateCylinder()
 {
-
   qDebug("Mainwindow : Dans generateCylinder ");
-  
-  std::vector<Point3D> ptsSection;
+
   std::vector<Point3D> ptsProfile;
-  std::vector<Point3D> ptsChemin;
 
+  int paramDiscretisationCHEMIN  = 10;
+  int paramDiscretisationSECTION = 20;
 
-  Point3D s1, s2, s3, s4;
-  Point3D s5, s6, s7, s8;
+  Canvas2D & canvasSection=  dynamic_cast<Canvas2D &>(_wSection->canvas());
+  Canvas2D & canvasChemin=  dynamic_cast<Canvas2D &>(_wChemin->canvas());
+
+  AbsCurve* section =  canvasSection.getFigure();
+  AbsCurve* chemin =  canvasChemin.getFigure();
+
+  if( (section == NULL) && (chemin == NULL) )
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate a cylinder without at least two curves .\n");
+    return;
+  }
   
-  Point3D c1, c2, c3, c4;
-
-  s1[0] = -1.0; s1[1] = 0;  s1[2] = 1.0;
-  s2[0] = 1.0; s2[1] = 0;  s2[2] = 1.0;
-  s3[0] = 1.0; s3[1] = 0;  s3[2] = -1.0;
-  s4[0] = -1.0; s4[1] = 0;  s4[2] = -1.0;
-
   
+  std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
 
-  s5[0] = 0.0; s5[1] = 0;  s5[2] = 1.4;
-  s6[0] = 1.4; s6[1] = 0;  s6[2] = 0;
-  s7[0] = 0; s7[1] = 0;  s7[2] = -1.4;
-  s8[0] = -1.4; s8[1] = 0;  s8[2] = 0;
-
-
-  ptsSection.push_back(s1);
-  ptsSection.push_back(s5);
-  ptsSection.push_back(s2);
-  ptsSection.push_back(s6);
-  ptsSection.push_back(s3);
-  ptsSection.push_back(s7);
-  ptsSection.push_back(s4);
-  ptsSection.push_back(s8);
+  adjustSection(ptsSection);
   
-  c1[0] = 0; c1[1] = 1; c1[2] = 0;
-  c2[0] = 0; c2[1] = 2; c2[2] = 0;
-  c3[0] = 0; c3[1] = 3; c3[2] = 0;
-  c4[0] = 0; c4[1] = 4; c4[2] = 0;
   
-
-  ptsChemin.push_back(c1);
-  ptsChemin.push_back(c2);
-  ptsChemin.push_back(c3);
-  ptsChemin.push_back(c4);
+  std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
+  
 
   _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
 
 }
+
+void
+MainWindow::adjustSection(std::vector<Point3D> & ptsSection)
+{
+  Point3D temp;
+  
+  
+  for (unsigned int i = 0; i< ptsSection.size(); i++)
+  {
+    temp = ptsSection[i];
+
+    ptsSection[i][0] = temp[0];
+    ptsSection[i][1] = 0;
+    ptsSection[i][2] = temp[1];
+  }
+
+}
+
+
+
+// void
+// MainWindow::generateCylinder()
+// {
+
+//   qDebug("Mainwindow : Dans generateCylinder ");
+  
+//   std::vector<Point3D> ptsSection;
+//   std::vector<Point3D> ptsProfile;
+//   std::vector<Point3D> ptsChemin;
+
+
+//   Point3D s1, s2, s3, s4;
+//   Point3D s5, s6, s7, s8;
+  
+//   Point3D c1, c2, c3, c4;
+
+//   s1[0] = -1.0; s1[1] = 0;  s1[2] = 1.0;
+//   s2[0] = 1.0; s2[1] = 0;  s2[2] = 1.0;
+//   s3[0] = 1.0; s3[1] = 0;  s3[2] = -1.0;
+//   s4[0] = -1.0; s4[1] = 0;  s4[2] = -1.0;
+
+  
+
+//   s5[0] = 0.0; s5[1] = 0;  s5[2] = 1.4;
+//   s6[0] = 1.4; s6[1] = 0;  s6[2] = 0;
+//   s7[0] = 0; s7[1] = 0;  s7[2] = -1.4;
+//   s8[0] = -1.4; s8[1] = 0;  s8[2] = 0;
+
+
+//   ptsSection.push_back(s1);
+//   ptsSection.push_back(s5);
+//   ptsSection.push_back(s2);
+//   ptsSection.push_back(s6);
+//   ptsSection.push_back(s3);
+//   ptsSection.push_back(s7);
+//   ptsSection.push_back(s4);
+//   ptsSection.push_back(s8);
+  
+//   c1[0] = 0; c1[1] = 1; c1[2] = 0;
+//   c2[0] = 0; c2[1] = 2; c2[2] = 0;
+//   c3[0] = 0; c3[1] = 3; c3[2] = 0;
+//   c4[0] = 0; c4[1] = 4; c4[2] = 0;
+  
+
+//   ptsChemin.push_back(c1);
+//   ptsChemin.push_back(c2);
+//   ptsChemin.push_back(c3);
+//   ptsChemin.push_back(c4);
+
+//   _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
+
+// }
 
   
