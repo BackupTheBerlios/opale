@@ -484,7 +484,7 @@ Canvas3D::accelEvent(int id)
     
     case ENABLE_DRAW_AXES:
     {
-      QString message( "axes diplay toggled");
+      QString message( "axis display toggled");
       _mw->getEventsWindow().writeComments( message );
       _axesEnabled = !_axesEnabled;
       updateGL();
