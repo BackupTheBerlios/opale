@@ -10,11 +10,12 @@
 #include <math.h>
 
 #include "faces.hpp"
-#include "point.hpp"
 
 #ifdef CORE_LEVEL
 #include "CORE/CORE.h"
 #endif
+
+#include "point.hpp"
 
 
 //namespace gml 
@@ -584,14 +585,18 @@
     }
    
     // 4) Computation of a line
-    double diffx = allPoints[0][0] - allPoints[1][0];
-    double diffy = allPoints[0][1] - allPoints[1][1];
-    double diffz = allPoints[0][2] - allPoints[1][2];
 
-    gml::Point3D newPoint;
-    newPoint[0] = p[0] + diffx;
-    newPoint[1] = p[1] + diffy;
-    newPoint[2] = p[2] + diffz;
+
+  //   double diffx = allPoints[0][0] - allPoints[1][0];
+//     double diffy = allPoints[0][1] - allPoints[1][1];
+//     double diffz = allPoints[0][2] - allPoints[1][2];
+
+    gml::Vector3D diffVector =  allPoints[0] - allPoints[1];
+    
+    gml::Point3D newPoint = p + diffVector;
+ //    newPoint[0] = p[0] + diffx;
+//     newPoint[1] = p[1] + diffy;
+//     newPoint[2] = p[2] + diffz;
     
     // 5) Check if the line cut or not the plan
     int nbCut = 0;
@@ -704,7 +709,12 @@
     }
     else
     {
+#ifndef CORE_LEVEL
       gml::Point3D interPoint = a.collinear(b, *t);
+#else
+      //TODO : check more accurately
+      gml::Point3D interPoint = a.collinear(b, (*t).doubleValue() );
+#endif
       //CE Test sert vraiment ???
       if (! onFace(interPoint, points))
       {
