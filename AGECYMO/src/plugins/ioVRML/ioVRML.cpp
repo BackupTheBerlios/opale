@@ -13,6 +13,7 @@
 
 //Our stuff
 #include "mainwindow.hpp"
+//#include "plugin.hpp"
 #include "point.hpp"
 #include "face.hpp"
 #include "tria.hpp"
@@ -46,12 +47,12 @@ const char* SPACE                 = " ";
 
 
 extern "C"
-void **query(void){
+void** query(void){
   
-  void ** parameters = new void*[5];
+  void** parameters = new void*[5];
 
   //Plugin's type
-  unsigned short *type = new unsigned short(LOAD_AND_SAVE);
+  PluginType* type = new PluginType(LOAD_AND_SAVE);
 
   //Plugin's name
   std::string *name = new string("ioVRML");
@@ -75,6 +76,9 @@ void **query(void){
   menuSaveAdd->image = NULL;
   menuSaveAdd->texte = NULL;
 
+  qDebug("INSIDE PLUGIN : Query IOVRML type  = %d", *type);
+  
+  
   parameters[0] = type;
   parameters[1] = name;
   parameters[2] = nbEntries;
