@@ -3,24 +3,28 @@
 using namespace gml;
   
 Camera::Camera()
-    : _thetaIncr(DEFAULT_INCR_THETA),
-      _phiIncr(DEFAULT_INCR_PHI),
-      _rhoIncr(DEFAULT_INCR_DIST),
-      _theta(M_PI/2.0),
-      _phi(0.0),
-      _rho(2.0)
-
+    :_theta(M_PI/2.0),
+     _phi(0.0),
+     _psi(0.0),
+     _rho(2.0),
+     _thetaIncr(DEFAULT_INCR_THETA),
+     _phiIncr(DEFAULT_INCR_PHI),
+     _rhoIncr(DEFAULT_INCR_DIST),
+     _psiIncr(DEFAULT_INCR_PSI)
 {  
   //matrices to manage the camera
   _matRotIncrY = Matrix3D::rotationY(   _phiIncr);
   _matRotDecrY = Matrix3D::rotationY( - _phiIncr);
-
   
   _matRotIncrX = Matrix3D::rotationX(   _thetaIncr);
   _matRotDecrX = Matrix3D::rotationX( - _thetaIncr);
-    
+
   updateThetaTransformMatrix();
   
+  _matRotIncrZ = Matrix3D::rotationZ(   _psiIncr);
+  _matRotDecrZ = Matrix3D::rotationZ( - _psiIncr);
+
+  updatePsiTransformMatrix();
   
   //camera parameters according to phi, theta and rho 
   _position[0] = 0; _position[1] = 0; _position[2] = 2;
@@ -61,6 +65,28 @@ Camera::decrementPhi()
   updateThetaTransformMatrix();
 }
 
+void
+Camera::incrementPsi()
+{
+  Vector3D newUp;
+
+  _psi += _psiIncr;
+
+  newUp = _matIncrPsi * _up;
+  _up = newUp;
+}
+
+void
+Camera::decrementPsi()
+{
+  Vector3D newUp;
+
+  _psi -= _psiIncr;
+
+  newUp = _matDecrPsi * _up;
+  _up = newUp;
+}
+
     
 void
 Camera::incrementTheta()
@@ -68,11 +94,24 @@ Camera::incrementTheta()
   Point3D newPosition;
 
   _theta += _thetaIncr;
-    
+
+  if ( _theta < gml::EPSILON )
+  {
+    _theta = 0;
+    return;
+  }
+
+  if ( _theta > 3.14)
+  {
+    _theta = M_PI;
+    return;
+  }
+      
   newPosition = _matIncrTheta * _position;
   
   _position = newPosition;
-    
+  
+  updatePsiTransformMatrix();
 }
 
 void
@@ -81,10 +120,25 @@ Camera::decrementTheta()
   Point3D newPosition;
 
   _theta -= _thetaIncr;
- 
+  
+  if ( _theta < gml::EPSILON )
+  {
+    _theta = 0;
+    return;
+  }
+
+  if ( _theta > M_PI)
+  {
+    _theta = M_PI;
+    return;
+  }
+  
+
   newPosition = _matDecrTheta * _position;
   
   _position = newPosition;
+  
+  updatePsiTransformMatrix();
 }
 
 void
@@ -180,8 +234,26 @@ Camera::updateThetaTransformMatrix()
   _matDecrTheta = Matrix3D::rotationY( - _phi);
   _matDecrTheta = _matRotDecrX *  _matDecrTheta;
   _matDecrTheta = Matrix3D::rotationY( + _phi) *  _matDecrTheta;
-  
+
+  updatePsiTransformMatrix();
 }
+
+void
+Camera::updatePsiTransformMatrix()
+{
+  _matIncrPsi = Matrix3D::rotationY( - _phi);
+  _matIncrPsi = Matrix3D::rotationX( PI_2 - _theta) * _matIncrPsi;
+  _matIncrPsi = _matRotIncrZ * _matIncrPsi;
+  _matIncrPsi = Matrix3D::rotationX( _theta - PI_2 ) * _matIncrPsi;
+  _matIncrPsi = Matrix3D::rotationY( + _phi) * _matIncrPsi;
+
+  _matDecrPsi = Matrix3D::rotationY( - _phi);
+  _matDecrPsi = Matrix3D::rotationX( PI_2 - _theta) * _matDecrPsi;
+  _matDecrPsi = _matRotDecrZ * _matDecrPsi;
+  _matDecrPsi = Matrix3D::rotationX( _theta - PI_2 ) * _matDecrPsi;
+  _matDecrPsi = Matrix3D::rotationY( + _phi) * _matDecrPsi;
+}
+
 
 void
 Camera::updateSphericalCoordinates()

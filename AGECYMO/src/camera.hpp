@@ -9,11 +9,17 @@
 
 namespace gml
 {
-
+  
+  
+  const double PI_2 = M_PI / 2.0;
+  
   const  double DEFAULT_INCR_THETA = M_PI / 180.0;     //1 degree
+  
+  const  double DEFAULT_INCR_PSI = M_PI / 180.0;     //1 degree
+
   const  double DEFAULT_INCR_PHI   = 5 * M_PI / 180.0; //5 degrees
 
-  const  double DEFAULT_INCR_DIST = 0.20;
+  const  double DEFAULT_INCR_DIST = 0.150;
   
   
   /**
@@ -39,11 +45,13 @@ namespace gml
 
     double _theta; // spherical coordinates
     double _phi;   
+    double _psi;
     double _rho;
-
+        
     double _thetaIncr;
     double _phiIncr;
     double _rhoIncr;
+    double _psiIncr;
     
     
     //Matrices to manage the camera moves
@@ -52,6 +60,12 @@ namespace gml
     
     Matrix3D _matRotIncrX; //matric to turn around X axis 
     Matrix3D _matRotDecrX;
+    
+    Matrix3D _matRotIncrZ; //matric to turn around Z axis 
+    Matrix3D _matRotDecrZ;
+    
+    Matrix3D _matIncrPsi;
+    Matrix3D _matDecrPsi;
     
     Matrix3D _matIncrTheta;
     Matrix3D _matDecrTheta;
@@ -74,6 +88,9 @@ namespace gml
     
     void incrementTheta();
     void decrementTheta();
+        
+    void incrementPsi();
+    void decrementPsi();
 
     void incrementDistance();
     void decrementDistance();
@@ -82,7 +99,8 @@ namespace gml
     private:
 
     void updateThetaTransformMatrix();
-
+    void updatePsiTransformMatrix();
+    
     void updateSphericalCoordinates();
     void updateCartesianCoordinates();
     
