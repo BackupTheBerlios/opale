@@ -411,5 +411,5 @@ void Canvas2D::setFigure(AbsCurve *figure)
     delete(_figure);
   }
   _figure = figure;
-  paintGL();
+  updateGL();
 }
