@@ -1,6 +1,6 @@
 TEMPLATE	= app
-CONFIG		= qt opengl thread warn_on debug
-#CONFIG		= qt opengl warn_off 
+CONFIG		+= qt opengl thread warn_on debug
+#CONFIG		+= qt opengl thread warn_off release
 
 MOC_DIR = moc
 OBJECTS_DIR = obj
