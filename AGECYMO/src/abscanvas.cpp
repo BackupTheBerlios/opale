@@ -36,7 +36,7 @@ AbsCanvas::drawFps()
   if (_fpsEnabled)
   {
     double seconds = _chronometer.elapsed()/1000.0;
-    int fps = _nFps / seconds;
+    int fps = static_cast<int>(_nFps / seconds);
     std::cout << "FPS = " << fps << std::endl;
 
     if (seconds > 1)
