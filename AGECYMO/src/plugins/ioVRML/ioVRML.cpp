@@ -87,8 +87,168 @@ void **query(void){
   return parameters;
 }
 
+// Sequence for points coordinates 
+static void sequence1Construction(vector<string> & sequence) {
+  sequence.push_back("point");
+  sequence.push_back("[");
+  sequence.push_back("]");
+}
+
+
+// Sequence for indexes (points order)
+static void sequence2Construction(vector<string> & sequence) {
+  sequence.push_back("coordIndex");
+  sequence.push_back("[");
+  sequence.push_back("]");
+}
+
 extern "C"
-int load(MainWindow *mainWin){
+int load(MainWindow *mainW){
+  
+  // Using of the main window in order to enable the model access
+  //MainWindow *mainW = (MainWindow*)mainWindow[0];
+
+  // Variables declaration
+  string word;
+
+  int currentIndex;
+
+  double currentValue, xValue, yValue, zValue;
+
+  vector<int> indexValues;
+
+  int numCoord = 1, nbPointsIndex = 0;
+
+  vector<string> awaitedSequence1;
+  vector<string> awaitedSequence2;
+  vector<Point3D> *listPoint = new vector<Point3D>();
+  vector<AbsFace*> *listFaces = new vector<AbsFace*>();
+  
+  ifstream VRMLFile ("./vase1.wrl",ios::in);
+
+  Tria *t;
+  Quad *q;
+
+  // Making of awaited sequences
+  sequence1Construction(awaitedSequence1);
+  sequence2Construction(awaitedSequence2);
+
+  // If the file doesn't exist
+  if(!VRMLFile){ 
+    cerr << "File not found !" << endl; 
+    return EXIT_FAILURE;
+  } 
+
+  
+
+  // Reading of the file
+  while (!VRMLFile.eof()){ 
+    
+    VRMLFile >> word;
+
+    // When the first sequence is found
+    if (awaitedSequence1.size() == 1) {
+      
+      if (word != awaitedSequence1.front()) {
+
+	currentValue = atof(word.c_str());
+	
+	// Coordinate X management
+	if (numCoord == 1) {
+	  xValue = currentValue;
+	  numCoord++;
+	}
+	else {
+	  // Coordinate Y management
+	  if (numCoord == 2) {
+	    yValue = currentValue;
+	    numCoord++;
+	  }
+	  // Coordinate Z management 
+	  else {
+	    zValue = currentValue;
+	    Point3D p;
+	    p[0] = xValue;
+	    p[1] = yValue;
+	    p[2] = zValue;
+	    cout << "x=" << p[0] << "y=" << p[1] << "z=" << p[2] << endl;
+	    listPoint->push_back(p);
+	    numCoord = 1;
+	
+	  }
+	}
+      }
+    }
+    
+
+    // When the second sequence is found
+    if (awaitedSequence2.size() == 1) {
+     
+      
+      if (word != awaitedSequence2.front()) {
+      
+	currentIndex = atoi(word.c_str());
+	
+	if (currentIndex == -1) {
+
+	  if (nbPointsIndex < 3) {
+	    return EXIT_FAILURE;
+	  }
+
+  	  if (nbPointsIndex == 3) {
+	    t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
+	    listFaces->push_back(t);
+	  }
+	  else {
+	    if (nbPointsIndex == 4) {
+	      q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
+	      listFaces->push_back(q);
+	    }
+	    else {
+	      //Face f(v, nbPointsIndex, 
+	    }
+	  }
+
+	  nbPointsIndex = 0;
+	  indexValues.clear();
+	    
+	}
+	else {
+	  indexValues.push_back(currentIndex);
+	  nbPointsIndex++;
+	}
+	
+	
+      }
+    }
+    
+
+    if (word == awaitedSequence1.front()) {
+      awaitedSequence1.erase(awaitedSequence1.begin());
+    } 
+    
+    if (word == awaitedSequence2.front()) {
+      awaitedSequence2.erase(awaitedSequence2.begin());
+    }
+   
+    // If there are more one point coordinate declaration
+    if (awaitedSequence1.empty()) {
+      sequence1Construction(awaitedSequence1);
+    }
+
+    // If there are more one index declaration
+    if (awaitedSequence2.empty()) {
+      sequence2Construction(awaitedSequence2);
+      }
+
+  } 
+
+  Faces* f = new Faces(listPoint, listFaces);
+  //cout << "La face :" << endl << *f;
+  mainW->setModel(*f);
+  
+
+
   return EXIT_SUCCESS;
 }
 
