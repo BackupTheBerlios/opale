@@ -87,7 +87,7 @@ class AbsFace
 
   /**************************************************************
    *
-   *  define if the face contains a vertex
+   *  Returns whether or not the face contains a vertex
    *  @param vertexIndex the index of the vertex
    *  @return true if the face contains the vertex, false else
    *
