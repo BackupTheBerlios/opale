@@ -4,10 +4,11 @@
 #include <qmultilineedit.h>
 #include <qstring.h>
 
-class EventsWindow : public QMultiLineEdit {
-private:
+class EventsWindow : public QMultiLineEdit
+{
+  private:
   
-public:
+  public:
   
   EventsWindow();
   

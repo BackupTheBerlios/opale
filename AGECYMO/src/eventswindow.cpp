@@ -1,7 +1,9 @@
 #include <qmultilineedit.h>
 #include "eventswindow.hpp"
 
-EventsWindow::EventsWindow() : QMultiLineEdit(NULL, "log"){
+EventsWindow::EventsWindow() :
+    QMultiLineEdit(NULL, "log")
+{
 
   this-> setReadOnly ( true );
   QColor color(200, 20, 20);
@@ -9,14 +11,15 @@ EventsWindow::EventsWindow() : QMultiLineEdit(NULL, "log"){
   this->insert("Welcome to AGECYMO\n");
   this->resize(275, 550);
   this->move(1, 433);
-  
-
 }
 
-EventsWindow::~EventsWindow() {
+EventsWindow::~EventsWindow()
+{
 }
 
-void EventsWindow::writeComments(QString text) {
+void
+EventsWindow::writeComments(QString text)
+{
 
   time_t now;
 
