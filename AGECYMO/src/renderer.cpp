@@ -21,11 +21,11 @@ Renderer::render()
   std::vector<AbsFace*> myfaces;
 
   gml::Point3D p1, p2, p3, p4, p5;
-  p1[0] = 0.10;  p1[1] = 0.0; p1[2] = 0.0;
-  p2[0] = 0.0;  p2[1] = 0.10; p2[2] = 0.0;
-  p3[0] = -0.10; p3[1] = 0.0; p3[2] = 0.0;
-  p4[0] = -0.10; p4[1] = 0.0; p4[2] = 0.10;
-  p5[0] = 0.10; p5[1] = 0.0; p5[2] = 0.10;
+  p1[0] = 1;  p1[1] = 0.0; p1[2] = 0.0;
+  p2[0] = 0.0;  p2[1] = 1; p2[2] = 0.0;
+  p3[0] = -1; p3[1] = 0.0; p3[2] = 0.0;
+  p4[0] = -1; p4[1] = 0.0; p4[2] = 1;
+  p5[0] = 1; p5[1] = 0.0; p5[2] = 1;
   
   mypoints.push_back(p1);
   mypoints.push_back(p2);
@@ -38,6 +38,8 @@ Renderer::render()
   
   Faces thefaces(&mypoints, &myfaces);
 
+//  std::cout << thefaces << std::endl;
+  
   setModel(thefaces);
     
   assert(_faces != NULL);
