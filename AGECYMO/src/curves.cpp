@@ -547,7 +547,7 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //polygone creation
       if(toolType == POLYG_MODE){
-        newCurve = new Polygone();
+        newCurve = new Polygone(_parent);
         close();
         _listOfCurves.push_back(newCurve);
         _currentToolType = POLYG_MODE;

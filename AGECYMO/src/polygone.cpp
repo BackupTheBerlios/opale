@@ -12,8 +12,23 @@ using namespace std;
  * the default Polygone constructor
  *
  ******************************************************/
-Polygone::Polygone()
-{}
+Polygone::Polygone(Canvas2D *parent)
+{
+
+  bool ok;
+  int res = QInputDialog::getInteger(
+				     "Another cylinder", "Number of vertices:", 
+				     3, 3, 12, 1,
+				     &ok, parent );
+  if ( ok ) {
+    _nbPoints = res;
+  }
+  
+  _redCircle = RED_CIRCLE;
+  _greenCircle = GREEN_CIRCLE;
+  _blueCircle = BLUE_CIRCLE;
+
+}
 
 /*******************************************************
  * the Polygonee destructor
@@ -57,6 +72,8 @@ void Polygone::render(){
       glVertex2f(x,y) ;
     }
     glEnd();
+
+    glColor3f(_redCircle, _greenCircle, _blueCircle);
     
     glBegin(GL_POLYGON);
     for ( int i = 0 ; i < 360 ; i++ ) {

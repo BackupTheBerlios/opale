@@ -21,6 +21,9 @@ class Polygone : public AbsCurve
 private:
 
   int _nbPoints; /**number of vertices*/
+  double _redCircle;
+  double _greenCircle;
+  double _blueCircle;
 
 public:
 
@@ -28,7 +31,7 @@ public:
    * the default Polygone constructor
    *
    ******************************************************/
-  Polygone();
+  Polygone(Canvas2D *parent);
 
   /*******************************************************
    * the Polygonee destructor
