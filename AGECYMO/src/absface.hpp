@@ -10,8 +10,14 @@ class AbsFace
 {
   protected:
   
-  std::vector<gml::Point3D> *_points;
-  //gml::Point3D *_points;
+  std::vector<gml::Point3D> *_points; //pointer to the point coordinates
+  
+  std::vector<gml::Vector3D> *_normals;  //pointer to the normal  coordinates
+
+  
+  gml::Vector3D _normal; //normal of the face NOT the vertex normal
+  gml::Point3D _n1; //n1 - center = normalized normal of the triangle 
+  gml::Point3D _center;
   
   public:
 
@@ -20,12 +26,7 @@ class AbsFace
   
   virtual ~AbsFace();
 
-  // void setPoints(gml::Point3D * pts);
   void setPoints(std::vector<gml::Point3D> * pts);
-  
-  //virtual int nbPoints();
-  
-  //virtual int getIndex(int num);
   
   virtual void render() = 0;
 
@@ -34,12 +35,14 @@ class AbsFace
   virtual void renderNormal() = 0;
     
   virtual std::vector<int> *getIndexes()=0;
-  
-//   {
-//     std::cout << "render de absface" << std::endl;
-//   }
-  
 
+  virtual bool containVertex(int vertexIndex) const = 0;  
+
+  gml::Vector3D normal() const;
+
+  void setNormals(std::vector<gml::Vector3D> * anormals);
+  
+  
   AbsFace& operator=(AbsFace const& f2);
 
   friend std::ostream& operator<<(std::ostream& os, AbsFace const& f);

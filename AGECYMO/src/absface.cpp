@@ -4,6 +4,7 @@
 AbsFace::AbsFace(std::vector<gml::Point3D> *points)
 {
   _points = points;
+  _normals = NULL;
 }
 
 AbsFace::AbsFace(AbsFace const & f1)
@@ -37,6 +38,21 @@ AbsFace::setPoints(std::vector<gml::Point3D> * pts)
 //   std::cout << "render de absface" << std::endl;ca
   
 // }
+
+gml::Vector3D
+AbsFace::normal() const
+{
+  return _normal;
+}
+
+
+void
+AbsFace::setNormals(std::vector<gml::Vector3D> * anormals)
+{
+  assert(anormals != NULL);
+  _normals = anormals;
+}
+
 
 AbsFace&
 AbsFace::operator=(AbsFace const& f2)
