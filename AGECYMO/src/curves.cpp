@@ -531,8 +531,6 @@ void Curves::managePressEvent(QMouseEvent* event,
         _listOfCurves.push_back(newCurve);
         _currentToolType = POLY_MODE;
 
-        _parent->getMW().getEventsWindow().writeComments("New point added!!");
-
         //management of the popupMenu
 	_parent->getPopupMenu()
 	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),false);
