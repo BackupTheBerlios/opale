@@ -877,7 +877,7 @@
 
 \newpage
 
-	\section{Discussion et Conclusion}
+	\section{Discussion}
 
 	Comme cela a été précisé en introduction, la validation des modèles se déroule en trois étapes distinctes :
 
@@ -937,4 +937,70 @@
 
 	\end{itemize}
 
+
+	\section{Interprétation et conclusion}
+	
+	\begin{itemize}
+
+	\item[-] Test 1 : intersections non valides entre arètes
+
+	Le fait d'augmenter le epsilon sur les modèles testés a
+	pour but de baisser le nombre d'erreurs. Plus l'epsilon
+	est élevé, plus la taille des deux segments testés diminue
+	à partir de ses extrémités. Pour une valeur supérieure ou
+	égale à $0.5$, les deux extrémités du segment fusionnent. Il
+	est donc normale pour les résultats récupérés de n'avoir 
+	aucune erreur supérieure à $0.5$.\\
+	Néanmoins une variation anormale se produit sur certains 
+	models pour des valeurs de epsilon faibles (Main, fourmis, pieces
+	d'échecs). \\
+	En effet ceci peut s'expliquer via le fait que l'epsilon
+	peut aussi engendrer des erreurs. En effet, plus l'epsilon est 
+	augmenté et plus il y aura des intersections entre les arètes. 
+	Cependant, il y a des intersections considérées comme valides
+	(si l'intersection s'effectue aux extrémités du segment) et
+	des intersections dîtes non valides (si l'intersection ne 
+	s'effectue pas au niveau des extrémités). Le nombre d'intersection
+	non valide peut donc complètement varier d'un epsilon à un autre et
+	ne suit en aucun cas une logique bien définie. Par exemple un epsilon à 
+	$0.2$ peut considérer que deux arètes (A et B) ne se touche pas, un epsilon
+	à $0.3$ peut considérer que A et B s'intersectent de façon non valide, et un 
+	epsilon de $0.4$ lui considèrera que l'intersection entre A et B est finalement
+	valide.\\
+	
+
+
+	\item[-] Test 2 : Coplanarité des faces
+
+	  Plus le epsilon est élevé, plus les tests admettent une coplanarité
+	  inexacte. Ce principe s'applique sur les valeurs entre $0$ et $0.5$. Il 
+	  est détecté sur les tests une remontée significative
+	  des erreurs pour un epsilon entre $0.5$ et $1.0$. \\
+	  Ceci est du au fait qu'une face est décidée invalide (non coplanaire) 
+	  si elle est constituée des mêmes points. Or si l'epsilon est 
+	  supérieur à $0.5$, tous les points de la face sont considérés 
+	  comme étant identiques (de part le fait qu'un segment s'étend entre $0.0$
+	  et $1.0$). Il est donc logique de trouver des un nombre d'erreur 
+	  conséquent lorsque l'epsilon dépasse la valeur $0.5$.\\
+	  
+
+	\item[-] Test 3 : intersection arètes-faces
+	  
+	  Les erreurs varient ici de deux façons selon les modèles.
+	  \begin{itemize}
+	  \item[-] plus l'epsilon est élevé, plus les erreurs décroissent
+	    (Main, Vase, Lapin, Dragon).
+	  \item[-] les erreurs admettent un nombre significatif d'erreurs
+	    pour les epsilons $0.0$, $0.5$ et $1.0$ (Pieces d'échec, fourmis).
+	  \end{itemize}
+	  De nouveau nous sommes confrontés aux problèmes liés à la notion
+	  de l'epsilon.\\
+	  	  
+	\item[-]Test Core :
+
+	  Les résultats du test \textbf{core} donne pour tous les tests un nombre
+	  d'erreurs moyen par rapport aux tests \textbf{mantyla}. Il semblerai que
+	  ce nombre d'erreurs moyen corresponde à un espilon optimum.
+	  
+	\end{itemize}
 \end{document}
