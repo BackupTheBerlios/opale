@@ -2,6 +2,7 @@
 
 
 Renderer::Renderer()
+    :  _renderMode(WF)
 {
   _faces = NULL;
   
@@ -41,11 +42,33 @@ Renderer::render()
 {
   
   assert(_faces != NULL);
-    
-  glPolygonMode(GL_FRONT, GL_FILL);
-  
-  _faces->render();
 
+
+
+  
+  
+  switch(_renderMode)
+  {
+    case WF:
+    {
+      glPolygonMode(GL_FRONT, GL_LINE);
+      break;
+    }
+
+    case FLAT:
+    {
+      glPolygonMode(GL_FRONT, GL_FILL);
+      break;
+    }
+    
+    default:
+    {
+      glPolygonMode(GL_FRONT, GL_FILL);
+      break;
+    }
+  }
+    
+  _faces->render();
     
 }
 
@@ -63,4 +86,11 @@ Faces&
 Renderer::model()
 {
   return *(_faces);
+}
+
+
+void
+Renderer::setRenderMode(RenderMode r)
+{
+  _renderMode = r;
 }

@@ -12,17 +12,22 @@
 
 class Renderer
 {
-  private:
-  Faces * _faces;
   
   public:
   enum RenderMode
-  {WF, //wireframe
-   FLAT, //no shading
-   GOURAUD, //gourad shading
-   WF_HDLR, //Wireframe with hidden line removal
+  {
+    WF, //wireframe
+    FLAT, //no shading
+    GOURAUD, //gouraud shading
+    WF_HDLR, //Wireframe with hidden line removal
   };
   
+  private:
+  Faces * _faces;
+
+  RenderMode _renderMode;
+  
+  public:
   Renderer();
   ~Renderer();
 
@@ -31,6 +36,9 @@ class Renderer
   Faces& model();
   
   void render();
+
+  void setRenderMode(RenderMode r);
+  
   
 };
 
