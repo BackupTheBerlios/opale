@@ -1,8 +1,3 @@
-//
-//  curves.cpp
-//  
-//  implementation of the class Curves
-//
 #include "curves.hpp"
 #include "canvas2d.hpp"
 #include "circle.hpp"
@@ -193,9 +188,19 @@ void Curves::movePoint(int index, gml::Point3D newPosition){
   }
 }
 
+/**************************************************************
+ *
+ *  get a point at an index
+ *  @param index the index of the point in the network
+ *  @return the point at the index or NULL if not exists
+ *
+ *************************************************************/
 gml::Point3D *Curves::getPointAtIndex(unsigned short index)
 {
-  return _listOfControlPoints[index];
+  if(index <_listOfControlPoints.size()){
+    return _listOfControlPoints[index];
+  }
+  return NULL;
 }
 
 /**************************************************************
@@ -454,9 +459,7 @@ gml::Point3D Curves::getColor()
 /**************************************************************
  *
  *  get the network control points color when selected
- *  @param red the red component
- *  @param green the green component
- *  @param blue the blue component
+ *  @return a vector point with the RGB colors
  *
  *************************************************************/
 gml::Point3D Curves::getSelectionColor()
