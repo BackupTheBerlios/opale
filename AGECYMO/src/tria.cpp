@@ -23,33 +23,18 @@ void
 Tria::render()
 {
   assert(_points != NULL);
-
-  qDebug("Tria rendering !!!");
-  qDebug("normals address is %p ", _normals);
   
-//  qDebug("Dans Tria render");
-
   std::vector<gml::Point3D>  tpoints = *_points;
-
   std::vector<gml::Vector3D> & tnormals = *_normals;
 
- //   gml::Vector3D v1 = tpoints[_i2] -  tpoints[_i1];
-//   gml::Vector3D v2 = tpoints[_i3] -  tpoints[_i1];
-
-//   gml::Vector3D normal = cross(v1, v2);
-//   normal.normalize();
   
   glBegin(GL_TRIANGLES);
 
   glColor3f(0.0, 0.0, 1.0);
 
 //  glNormal3f(_normal[0], _normal[1], _normal[2]);
-  
-//  qDebug("avant ");
-
   glNormal3f(tnormals[_i1][0], tnormals[_i1][1], tnormals[_i1][2]);
 
-//  qDebug("ici");
   
   glVertex3d(tpoints[_i1][0],
              tpoints[_i1][1],
