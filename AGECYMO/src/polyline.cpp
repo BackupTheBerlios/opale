@@ -230,10 +230,25 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
       point[0] += _pointsVector[i][0];
       point[1] += _pointsVector[i][1];
       pointsList.push_back(point);
-      cout<<"increment :"<<coeff<<endl;
       coeff += increment;
     }
-  } 
+  }
+
+  if(_isClosed == true){
+    vec[0] = _pointsVector[0][0] - _pointsVector[_pointsVector.size()-1][0];
+    vec[1] = _pointsVector[0][1] - _pointsVector[_pointsVector.size()-1][1];
+    
+    coeff = increment;
+
+    for(int j = 1 ; j<=nbSegments-1 ; j++){
+      point[0] = vec[0] * coeff;
+      point[1] = vec[1] * coeff;
+      point[0] += _pointsVector[_pointsVector.size()-1][0];
+      point[1] += _pointsVector[_pointsVector.size()-1][1];
+      pointsList.push_back(point);
+      coeff += increment;
+    }
+  }
 
   return pointsList;
 }  
