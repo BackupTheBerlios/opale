@@ -8,6 +8,8 @@
 namespace gml
 {
   using namespace std;
+
+  const double EPSILON = 0.0000001;
   
   template<typename T = double, int N = 3>
   class Point : public AbsVector<T, N>
@@ -114,6 +116,21 @@ namespace gml
                              double tolerance, double * t) const
   {
 
+    //Segment reduit a un point
+    if ( p1.isTheSame(p2, tolerance) )
+    {
+      if (this->isTheSame(p1, tolerance))
+      {
+        *t = 0;
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    //Test si le point est confondu avec un des pts du segment
     if ( this->isTheSame(p1, tolerance) )
     {
       *t = 0.0;
