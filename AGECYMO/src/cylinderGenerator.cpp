@@ -109,7 +109,7 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
   //Check this particular case
   if (test.norm() < EPSILON)
   {
-    qDebug("PROOOOOOOOOOOOOOOOOOOOOOBLEM");
+//    qDebug("PROOOOOOOOOOOOOOOOOOOOOOBLEM");
     
     initFrenetFrame( current, next, newCurrentFrame);
     return;
@@ -130,7 +130,19 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
                               binormale[1], tangente[1], normale[1], current[1],
                               binormale[2], tangente[2], normale[2], current[2],
                               0, 0, 0, 1);
+
+//   newCurrentFrame = Matrix3D( normale[0], tangente[0], binormale[0], current[0],
+//                               normale[1], tangente[1], binormale[1], current[1],
+//                               normale[2], tangente[2], binormale[2], current[2],
+//                               0, 0, 0, 1);
+
+//   newCurrentFrame = Matrix3D( tangente[0],  normale[0], binormale[0], current[0],
+//                               tangente[1],  normale[1], binormale[1], current[1],
+//                               tangente[2],  normale[2], binormale[2], current[2],
+//                               0, 0, 0, 1);
   
+  std::cout << "current frame is :" << std::endl
+            << newCurrentFrame << std::endl;
   
 }
 
@@ -152,23 +164,29 @@ CylinderGenerator::initFrenetFrame(const Point3D & p1,
   //TODO : check more accuratly
   v2[0] = - v1[1]; v2[1] =  v1[0]; v2[2] = 0;
 
-  a = cross(v1, v2);
-  a.normalize();
+  a =  v2;
 
   b = cross(v1, a);
   b.normalize();
   
-  std::cout << "v1 = " << v1 << std::endl;
-  std::cout << "v2 = " << v2 << std::endl;
-  std::cout << "a = " << a << std::endl;
-  std::cout << "b = " << b << std::endl;
+//  a = cross(v1, v2);
+//  a.normalize();
+
+//  b = cross(v1, a);
+//  b.normalize();
+  
+//   std::cout << "v1 = " << v1 << std::endl;
+//   std::cout << "v2 = " << v2 << std::endl;
+//   std::cout << "a = " << a << std::endl;
+//   std::cout << "b = " << b << std::endl;
   
   frame = Matrix3D ( b[0], v1[0], a[0], p1[0],
                      b[1], v1[1], a[1], p1[1],
                      b[2], v1[2], a[2], p1[2],
                      0 , 0, 0, 1);
   
-  std::cout << "frame = " << frame << std::endl;
+  std::cout << "frame = " << std::endl
+            << frame << std::endl;
   
   
 }
@@ -191,23 +209,26 @@ CylinderGenerator::lastFrenetFrame(const Point3D & p1,
   //TODO : check more accuratly
   v2[0] = - v1[1]; v2[1] =  v1[0]; v2[2] = 0;
 
-  a = cross(v1, v2);
-  a.normalize();
+  a = v2;
+  
+  //a = cross(v1, v2);
+  //a.normalize();
 
   b = cross(v1, a);
   b.normalize();
   
-  std::cout << "v1 = " << v1 << std::endl;
-  std::cout << "v2 = " << v2 << std::endl;
-  std::cout << "a = " << a << std::endl;
-  std::cout << "b = " << b << std::endl;
+//   std::cout << "v1 = " << v1 << std::endl;
+//   std::cout << "v2 = " << v2 << std::endl;
+//   std::cout << "a = " << a << std::endl;
+//   std::cout << "b = " << b << std::endl;
   
   frame = Matrix3D ( b[0], v1[0], a[0], p2[0],
                      b[1], v1[1], a[1], p2[1],
                      b[2], v1[2], a[2], p2[2],
                      0 , 0, 0, 1);
   
-  std::cout << "LAST frame = " << frame << std::endl;
+  std::cout << "LAST frame = " << std::endl
+            << frame << std::endl;
     
 }
 
@@ -232,8 +253,8 @@ CylinderGenerator::computePointsAccordingToFrame( const std::vector<Point3D> & s
   {
     newPt = currentFrame * sectionPts[i];
 
-    std::cout << " sectionPt = " << sectionPts[i] << std::endl;
-    std::cout << " newPt = " << newPt << std::endl;
+//     std::cout << " sectionPt = " << sectionPts[i] << std::endl;
+//     std::cout << " newPt = " << newPt << std::endl;
     
     _points->push_back( newPt );
   }
