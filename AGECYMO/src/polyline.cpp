@@ -68,121 +68,102 @@ void Polyline::render(){
   }
 }
 
-std::vector<gml::Point3D> Polyline::discretize()
-{
-  std::vector<gml::Point3D> pointsList;
-  pointsList.clear();
 
-  return pointsList;
-}
-
-void Polyline::manageEvent(QMouseEvent* event,
-			   unsigned short toolType,
-			   unsigned short canvasType)
+void Polyline::managePressEvent(QMouseEvent* event,
+				unsigned short toolType,
+				unsigned short canvasType)
 {
   gml::Point3D position;
   calculateQtToOpenGL(event,&position);
   int index;
-
-  /**************** BOUTON PRESSED *********************************/
-  if(event->type() == QEvent::MouseButtonPress){
     
-    /***************** creation mode **********************************/
-    if(event->state() == Qt::ControlButton){
-      addPoint(position);
-      noSelection();
-      select(isExistingPoint(position));
-      _startMovePoint[0] = position[0];
-      _startMovePoint[1] = position[1];
+  /***************** creation mode **********************************/
+  if(event->state() == Qt::ControlButton){
+    addPoint(position);
+    noSelection();
+    select(isExistingPoint(position));
+    _startMovePoint[0] = position[0];
+    _startMovePoint[1] = position[1];
     }
-    else{
-      /***************** selection mode **********************************/
-      //add to selection group with shift
-      if(event->state() == Qt::ShiftButton){
-	if(!isSelected(index)){
+  else{
+    /***************** selection mode **********************************/
+    //add to selection group with shift
+    if(event->state() == Qt::ShiftButton){
+      if(!isSelected(index)){
 	  if((index=isExistingPoint(position)) != NO_EXIST){
 	    select(index);
 	  }
-	}
-	_startMovePoint[0] = position[0];
-	_startMovePoint[1] = position[1];
       }
-
+      _startMovePoint[0] = position[0];
+      _startMovePoint[1] = position[1];
+    }
+    
       else if(event->state() == Qt::Keypad){
 	if((index=isExistingPoint(position)) != NO_EXIST){
 	  deletePoint(index);
 	}
       }
-
-      //deselect and add without shift
-      else{
-	if((index=isExistingPoint(position)) != NO_EXIST){
-	  if(!isSelected(index)){
-	    noSelection();
+    
+    //deselect and add without shift
+    else{
+      if((index=isExistingPoint(position)) != NO_EXIST){
+	if(!isSelected(index)){
+	  noSelection();
 	    select(index);
-	  }
-	  _startMovePoint[0] = position[0];
-	  _startMovePoint[1] = position[1];
-
 	}
+	_startMovePoint[0] = position[0];
+	_startMovePoint[1] = position[1];
+	
+      }
 	else{
 	  noSelection();
 	}
+    }
+  }
+}
+
+
+
+
+
+void Polyline::manageMoveEvent(QMouseEvent* event,
+			       unsigned short toolType,
+			       unsigned short canvasType)
+{
+  gml::Point3D position;
+  calculateQtToOpenGL(event,&position);
+
+  /***************** creation mode **********************************/
+  if(event->state() == Qt::ControlButton){
+  }
+  /***************** selection mode **********************************/
+  else{
+    gml::Point3D newPos;
+    for(unsigned i = 0; i<_pointsVector.size(); i++){
+      if(isSelected((int)i)){
+	newPos[0] = _pointsVector[i][0] 
+	  + (position[0] - _startMovePoint[0]);
+	newPos[1] = _pointsVector[i][1]
+	  + (position[1] - _startMovePoint[1]);
+	movePoint((int)i, newPos);
       }
     }
+    _startMovePoint[0] = position[0];
+    _startMovePoint[1] = position[1];
   }
-    
-  
-  /**************** BOUTON MOVED *********************************/
-  
-  if(event->type() == QEvent::MouseMove){
-    cout<<"move"<<endl;
-    /***************** creation mode **********************************/
-    if(event->state() == Qt::ControlButton){
-    }
-    /***************** selection mode **********************************/
-    else{
-      gml::Point3D newPos;
-      for(unsigned i = 0; i<_pointsVector.size(); i++){
-	if(isSelected((int)i)){
-	  newPos[0] = _pointsVector[i][0] 
-	    + (position[0] - _startMovePoint[0]);
-	  newPos[1] = _pointsVector[i][1]
-	    + (position[1] - _startMovePoint[1]);
-	  movePoint((int)i, newPos);
-	}
-      }
-       _startMovePoint[0] = position[0];
-       _startMovePoint[1] = position[1];
-    }
-  }
-  
-  
-  
-  
-  
-  /**************** BOUTON DOUBLECLICKED ***********************/  
-  
-  if(event->type() == QEvent::MouseButtonDblClick){
-    /***************** creation mode **********************************/
-    if(event->state() == Qt::ControlButton){
-      addPoint(position);
-      close();
-      _startMovePoint[0] = position[0];
-      _startMovePoint[1] = position[1];
-    }
-    /***************** selection mode **********************************/
-    else{
-      
-    }
-  }
-  
-  
-  
-  
-  
-  /**************** BOUTON RELEASED *********************************/
-  
+}
+
+
+
+
+
+void Polyline::manageReleaseEvent(QMouseEvent* event,
+				  unsigned short toolType,
+				  unsigned short canvasType)
+{
+  gml::Point3D position;
+  calculateQtToOpenGL(event,&position);
+
   if(event->type() == QEvent::MouseButtonRelease){
     /***************** creation mode **********************************/
     if(event->state() == Qt::ControlButton){
@@ -196,15 +177,32 @@ void Polyline::manageEvent(QMouseEvent* event,
 }
 
 
-void Polyline::manageKeyEvent(QKeyEvent * event,
-			      unsigned short toolType,
-			      unsigned short canvasType)
+
+
+void Polyline::manageDbClickEvent(QMouseEvent* event,
+				  unsigned short toolType,
+				  unsigned short canvasType)
 {
-  cout<<"dans key event"<<endl;
-  if(event->key() == Qt::Key_Return){
-    cout<<"return ok"<<endl;
-    for(int i = 0; i<_isSelected.size(); i++){
-      deletePoint(_isSelected[i]);
-    }
+  gml::Point3D position;
+  calculateQtToOpenGL(event,&position);
+
+  /***************** creation mode **********************************/
+  if(event->state() == Qt::ControlButton){
+    addPoint(position);
+    close();
+    _startMovePoint[0] = position[0];
+    _startMovePoint[1] = position[1];
+  }
+  /***************** selection mode **********************************/
+  else{
+    
   }
 }
+
+std::vector<gml::Point3D> Polyline::discretize()
+{
+  std::vector<gml::Point3D> pointsList;
+  pointsList.clear();
+
+  return pointsList;
+}  

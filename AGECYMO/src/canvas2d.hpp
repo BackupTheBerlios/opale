@@ -62,7 +62,6 @@ class Canvas2D : public AbsCanvas
   virtual void mouseMoveEvent   (QMouseEvent*);
   virtual void mouseReleaseEvent(QMouseEvent*);
   virtual void mouseDoubleClickEvent(QMouseEvent*);
-  virtual void keyPressEvent (QKeyEvent *);
 
   void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
 
@@ -74,6 +73,8 @@ class Canvas2D : public AbsCanvas
   void setNurbsMode();
   void deleteAllPoints();
   void deleteSelectedPoints();
+  void selectAllPoints();
+  void deselectAllPoints();
 
 };
 

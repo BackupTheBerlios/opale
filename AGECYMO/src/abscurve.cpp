@@ -70,16 +70,25 @@ AbsCurve::~AbsCurve()
 }
 
 //for events management
-void AbsCurve::manageEvent(QMouseEvent* event,
-			   unsigned short toolType,
-			   unsigned short canvasType)
+void AbsCurve::managePressEvent(QMouseEvent* event,
+				unsigned short toolType,
+				unsigned short canvasType)
 {}
 
-void AbsCurve::manageKeyEvent(QKeyEvent* event,
-			   unsigned short toolType,
-			   unsigned short canvasType)
+void AbsCurve::manageMoveEvent(QMouseEvent* event,
+			       unsigned short toolType,
+			       unsigned short canvasType)
 {}
 
+void AbsCurve::manageReleaseEvent(QMouseEvent* event,
+			unsigned short toolType,
+			unsigned short canvasType)
+{}
+
+void AbsCurve::manageDbClickEvent(QMouseEvent* event,
+				  unsigned short toolType,
+				  unsigned short canvasType)
+{}
 
 void AbsCurve::addPoint(gml::Point3D newPoint){
     _pointsVector.push_back(newPoint);
@@ -157,6 +166,14 @@ void AbsCurve::render()
 
 void AbsCurve::noSelection(){
   _isSelected.clear();
+}
+
+void AbsCurve::selectAll()
+{
+  noSelection();
+  for(unsigned i = 0; i<_pointsVector.size(); i++){
+    select(i);
+  }
 }
 
 void AbsCurve::select(unsigned short index){

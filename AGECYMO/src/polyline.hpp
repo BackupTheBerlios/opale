@@ -16,13 +16,25 @@ public:
 	   Canvas2D *parent);
   Polyline(const Polyline &source);
   void render();
-  void manageEvent(QMouseEvent* event,
-		   unsigned short toolType,
-		   unsigned short canvasType);
+
   std::vector<gml::Point3D> discretize();
-  void manageKeyEvent(QKeyEvent * event,
-		      unsigned short toolType,
-		      unsigned short canvasType);
+
+  void managePressEvent(QMouseEvent* event,
+			unsigned short toolType,
+			unsigned short canvasType);
+
+  void manageMoveEvent(QMouseEvent* event,
+		       unsigned short toolType,
+		       unsigned short canvasType);
+
+  void manageReleaseEvent(QMouseEvent* event,
+			  unsigned short toolType,
+			  unsigned short canvasType);
+
+  void manageDbClickEvent(QMouseEvent* event,
+			  unsigned short toolType,
+			  unsigned short canvasType);
+
 };
 
 #endif

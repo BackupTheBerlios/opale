@@ -60,12 +60,21 @@ class AbsCurve
   
 
   virtual void render() = 0;
-  virtual void manageEvent(QMouseEvent* event,
-                           unsigned short toolType,
-                           unsigned short canvasType);
-  virtual void manageKeyEvent(QKeyEvent* event,
-			      unsigned short toolType,
-			      unsigned short canvasType);
+  virtual void managePressEvent(QMouseEvent* event,
+				unsigned short toolType,
+				unsigned short canvasType);
+
+  virtual void manageMoveEvent(QMouseEvent* event,
+			       unsigned short toolType,
+			       unsigned short canvasType);
+
+  virtual void manageReleaseEvent(QMouseEvent* event,
+				  unsigned short toolType,
+				  unsigned short canvasType);
+
+  virtual void manageDbClickEvent(QMouseEvent* event,
+				  unsigned short toolType,
+				  unsigned short canvasType);
 
   //virtual methods (can be redefined)
   virtual void addPoint(gml::Point3D newPoint);
@@ -84,6 +93,7 @@ class AbsCurve
   void select(unsigned short index);
   bool isSelected(int index);
   void noSelection();
+  void selectAll();
   void setColor(double red, double green, double blue);
   void setSelectionColor(double red, double green, double blue);
   double getRed() const;
