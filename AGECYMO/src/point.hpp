@@ -9,7 +9,6 @@ namespace gml
 {
   using namespace std;
 
-  const double EPSILON = 0.000001;
   
   template<typename T = double, int N = 3>
   class Point : public AbsVector<T, N>
@@ -36,7 +35,8 @@ namespace gml
     template <typename T2>
     bool isOnEdge(Point<T2, N> const & p1, Point<T2, N> const & p2,
                   double tolerance, double * t) const;
-    
+
+
     
   };
   

@@ -8,7 +8,9 @@
 namespace gml
 {
   using namespace std;
-  
+
+  const double EPSILON = 0.000001;
+
   /**
    * This class modelises a N dimensional vector of type T. 
    *
