@@ -5,6 +5,8 @@ CylinderGenerator::CylinderGenerator(Canvas3D & acanvas)
     : _canvas(acanvas),
       _points(NULL),
       _faces(NULL),
+      _minProfile(-1.0),
+      _maxProfile(1.0),
       _isWayClosed(false),
       _chronometer()
 
@@ -36,6 +38,30 @@ CylinderGenerator::setTorsionEnabled(bool torsion)
   _torsionEnabled = torsion;
 }
 
+void
+CylinderGenerator::updateMinMaxProfile( const std::vector<Point3D> & profilePts )
+{
+  _minProfile = profilePts[0][1];
+  _maxProfile = profilePts[0][1];
+
+
+  for(unsigned int i=1; i<profilePts.size(); i++)
+  {
+    if ( _minProfile > profilePts[i][1])
+    {
+      _minProfile = profilePts[i][1];
+    }
+    
+    if ( _maxProfile < profilePts[i][1])
+    {
+      _maxProfile = profilePts[i][1];
+    }
+  }
+  qDebug("New _minProfile = %f", _minProfile);
+  qDebug("New _maxProfile = %f", _maxProfile);
+}
+
+  
 int
 CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
                             const std::vector<Point3D> & sectionPts,
@@ -46,6 +72,10 @@ CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
 
   _chronometer.start();
 
+  _nbPtWay = wayPts.size();
+  updateMinMaxProfile(profilePts);
+  
+  
   generatePoints( wayPts, sectionPts, profilePts);
   generateFaces(wayPts.size(), sectionPts.size() );
 
@@ -66,7 +96,23 @@ int
 CylinderGenerator::profileToWayByIndex( const std::vector<Point3D> & profilePts,
                                       int profileIndex)
 {
-  return static_cast<int>( ( (profilePts[profileIndex][1] + 1) / 2.0 ) * (_nbPtWay-1) );
+  qDebug("Dans profileToWayByIndex ");
+  
+  Point3D p = profilePts[profileIndex];
+  std::cout << p << std::endl;
+
+  double index = (_nbPtWay-1) *
+    ( (p[1] - _minProfile) / (_maxProfile - _minProfile) );
+    
+  std::cout << "index calculé = "<< index << std::endl;
+  std::cout << "index calculé entier = "
+            << static_cast<int>( round( index ) )
+            << std::endl;
+  
+  
+  return 0;
+  
+  //  return static_cast<int>( ( (profilePts[profileIndex][1] + 1) / 2.0 ) * (_nbPtWay-1) );
   
 }
 
@@ -80,7 +126,7 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
 //   {
 //     delete _points;
 //   }
-  _nbPtWay = wayPts.size();
+
   _points = new std::vector<Point3D>();
 
   Matrix3D profileMatrix;
@@ -92,9 +138,13 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   previousFrame.loadIdentity();
   
   
-//  int startIndex = profileToWayByIndex(profilePts, 0);
+  int startIndex = profileToWayByIndex(profilePts, (sectionPts.size()-1));
+  qDebug("startIndex = %d\n", startIndex);
   
-  initFrenetFrame( wayPts[0], wayPts[1], currentFrame);
+
+  initFrenetFrame( wayPts[startIndex], wayPts[startIndex+1], currentFrame);
+  
+  //initFrenetFrame( wayPts[0], wayPts[1], currentFrame);
 
 //   computeProfileMatrix(profilePts, 0, profileMatrix);
 //   tmpFrame = currentFrame;
@@ -158,7 +208,7 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
   test = cross(tplus, tmoins);
 
   //Check this particular case
-  if (test.norm() < EPSILON)
+  if (test.norm() < gml::EPSILON)
   {
 //    qDebug("PROOOOOOOOOOOOOOOOOOOOOOBLEM");
     
@@ -384,8 +434,8 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
 //   //Shall we close the cylinder
   if ( _isWayClosed)
   {
-    int i1 = _points->size() - nbPtSection;
-    int i2 = _points->size();
+//     int i1 = _points->size() - nbPtSection;
+//     int i2 = _points->size();
 
 
     for (int i=(nbPtWay-1); i<nbPtWay; i++)

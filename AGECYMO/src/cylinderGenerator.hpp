@@ -15,7 +15,7 @@ class Canvas3D;
 
 using namespace gml;
 
-const double EPSILON = 0.0000001;
+
 
 
 class CylinderGenerator
@@ -27,6 +27,9 @@ class CylinderGenerator
   std::vector<Point3D >  * _points;
   std::vector<AbsFace *> * _faces;
 
+  double _minProfile;
+  double _maxProfile;
+  
   int _nbPtWay; //number of points on the way;
   
   //Faces* _model; //model cached
@@ -55,6 +58,8 @@ class CylinderGenerator
 
   private:
 
+  void updateMinMaxProfile( const std::vector<Point3D> & profilePts );
+  
   int profileToWayByIndex( const std::vector<Point3D> & profilePts,
                          int profileIndex);
   
