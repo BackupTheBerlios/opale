@@ -47,6 +47,7 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
     
     getPopupMenu()->setItemEnabled(2,false);
     getPopupMenu()->setItemEnabled(3,false);
+    getPopupMenu()->setItemEnabled(4,false);
     
   }
 

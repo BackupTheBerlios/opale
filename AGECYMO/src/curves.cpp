@@ -97,7 +97,7 @@ void Curves::deleteAllCurves()
   _parent->getPopupMenu()->setItemEnabled(3,true);
   _parent->getPopupMenu()->setItemEnabled(4,true);
 
-  if(_parent->getCanvasType() == SECTION_CANVAS){
+  if(_parent->getCanvasType() == PROFIL_CANVAS){
     _parent->getPopupMenu()->setItemEnabled(2,false);
     _parent->getPopupMenu()->setItemEnabled(3,false);
     _parent->getPopupMenu()->setItemEnabled(4,false);
