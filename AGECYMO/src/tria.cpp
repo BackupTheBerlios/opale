@@ -87,3 +87,32 @@ operator<<(std::ostream& os, Tria const& t)
   
   return os;
 }
+
+std::vector<int> *
+Tria::getIndexes()
+{
+  std::vector<int> *indices;
+  indices = new std::vector<int>;
+
+  indices->push_back(_i1);
+  indices->push_back(_i2);
+  indices->push_back(_i3);
+
+  return indices;
+}
+
+
+// int Tria::nbPoints(){
+//   return 3;
+// }
+
+// int Tria::getIndex(int num){
+//   if((num>(nbPoints()-1)) || (index<0)){
+//     exit(-1);
+//   }
+//   else{
+//     if(num == 0) return _i1; 
+//     if(num == 1) return _i2; 
+//     if(num == 2) return _i3; 
+//   }
+// }

@@ -16,10 +16,16 @@ class Tria : public AbsFace
   public:
   Tria(std::vector<gml::Point3D> *points, int i1 = 0, int i2 = 1, int i3= 2);
   Tria(Tria const & t1);
-  
+  //virtual int nbPoints();
+  //virtual int getIndex(int num);
+
   void render();
 
+  std::vector<int> *Tria::getIndexes();
+
   Tria& operator=(Tria const & t1);
+
+  
 
   friend std::ostream& operator<<(std::ostream& os, Tria const& t);
 };

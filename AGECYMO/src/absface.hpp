@@ -23,8 +23,13 @@ class AbsFace
   // void setPoints(gml::Point3D * pts);
   void setPoints(std::vector<gml::Point3D> * pts);
   
+  //virtual int nbPoints();
+  
+  //virtual int getIndex(int num);
   
   virtual void render() = 0;
+
+  virtual std::vector<int> *getIndexes()=0;
   
 //   {
 //     std::cout << "render de absface" << std::endl;

@@ -17,9 +17,14 @@ class Quad : public AbsFace
   Quad(std::vector<gml::Point3D> *points,
        int i1 = 0, int i2 =1,
        int i3 = 2, int i4 = 3);
+
+  virtual void render();
   
-  void render();
-  
+  virtual std::vector<int> *getIndexes();
+
+//   virtual int nbPoints();
+//   virtual int getIndex(int num);
+
 };
 
 

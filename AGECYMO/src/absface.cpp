@@ -61,7 +61,12 @@ std::ostream& operator<<(std::ostream& os, AbsFace const& f)
 }
 
 
+/*int AbsFace::nbPoints()
+{}
 
+int AbsFace::getIndex(int num)
+{}
+*/
 
 
 
