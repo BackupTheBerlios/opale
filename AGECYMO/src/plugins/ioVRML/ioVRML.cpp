@@ -230,6 +230,7 @@ int load(MainWindow *mainW){
     //cout << word << endl;
     VRMLFile >> word;
     allFile = allFile + word + SPACE;
+    qApp->processEvents();
   }
 
   // In order to receive the list of words
@@ -290,7 +291,9 @@ int load(MainWindow *mainW){
         }
       }
     }
+    qApp->processEvents();
   }
+  
 
 	
   while(stillIndexes) {
@@ -366,8 +369,10 @@ int load(MainWindow *mainW){
     }
 
     indexesTranslation = indexesTranslation + listPoint->size();
-      
+
+    qApp->processEvents();
   }
+  
 
   
   int timeToRead = _chronometer.restart();
