@@ -23,7 +23,8 @@ HEADERS		= absVector.hpp \
             canvas3d.hpp \
             window3d.hpp \
             pluginmanager.hpp \
-            mainwindow.hpp 
+            mainwindow.hpp \
+            polyline.hpp
 
 SOURCES		= testVector.cpp \
             matrix.cpp \
@@ -41,6 +42,7 @@ SOURCES		= testVector.cpp \
             window3d.cpp \
             pluginmanager.cpp \
             mainwindow.cpp \
+            polyline.cpp \
             main.cpp
 
 TARGET		= modeler
