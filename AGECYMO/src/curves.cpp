@@ -378,7 +378,6 @@ void Curves::managePressEvent(QMouseEvent* event,
 
   //Selection MODE
   if(event->state() != Qt::ControlButton){
-
     //add to selection group with shift
     if(event->state() == Qt::ShiftButton){
       if((index=isExistingPoint(*position)) != NO_EXIST){
@@ -406,12 +405,12 @@ void Curves::managePressEvent(QMouseEvent* event,
 
   //creation MODE
   else{
-    cout<<"demande de creation d'un point de controle"<<endl;
 
     //changement de courbe
     if(toolType != _currentToolType){
+
+      //polyline creation
       if(toolType == POLY_MODE){
-	cout<<"creation d'une polyline"<<endl;
 	_listOfCurves.push_back(new Polyline());
 	_currentToolType = POLY_MODE;
 
@@ -421,7 +420,12 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
       }
+
+      //rectangle creation
       if(toolType == REC_MODE){
+	_listOfCurves.push_back(new Polyline());
+	_currentToolType = REC_MODE;
+
 	//management of the popupMenu
 	_parent->getPopupMenu()->setItemEnabled(0,false);
 	_parent->getPopupMenu()->setItemEnabled(1,false);
@@ -429,14 +433,16 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(3,false);
       }
       if(toolType == CIRCLE_MODE){
+	_listOfCurves.push_back(new Polyline());
+	_currentToolType = CIRCLE_MODE;
+
 	//management of the popupMenu
 	_parent->getPopupMenu()->setItemEnabled(0,false);
-	_parent->getPopupMenu()->setItemEnabled(1,true);
+	_parent->getPopupMenu()->setItemEnabled(1,false);
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
       }
       if(toolType == NURBS_MODE){
-	cout<<"creation d'une nurbs"<<endl;
 	_listOfCurves.push_back(new Polyline());
 	_currentToolType = NURBS_MODE;
 
@@ -450,7 +456,8 @@ void Curves::managePressEvent(QMouseEvent* event,
       //we add the last point of the last curve to the new curve
       //control if it's the first curve
       if(getNbCurves()!=1){
-	if((_listOfCurves[getNbCurves()-1]->addPoint(_listOfControlPoints[getNbControlPoints()-1]))==ADDED){
+	if((_listOfCurves[getNbCurves()-1]->addPoint(
+	    _listOfControlPoints[getNbControlPoints()-1]))==ADDED){
 	  addPoint(position);
 	}
       }
@@ -460,7 +467,6 @@ void Curves::managePressEvent(QMouseEvent* event,
       addPoint(position);
       noSelection();
       select(isExistingPoint(*position));
-      cout<<"control point added"<<endl;
     }
     else{
       delete(position);
