@@ -2,6 +2,14 @@
 #include "canvas3d.hpp"
 #include "mainwindow.hpp"
 
+/**************************************************************
+ *
+ *  Canvas3D constructor
+ *  @param mw the reference to the mainWindow
+ *  @param parent the parent widget
+ *  @param name the name
+ *
+ *************************************************************/
 Canvas3D::Canvas3D(MainWindow* mw, QWidget* parent, const char* name)
     : AbsCanvas(parent, name) ,//QGLWidget(parent, name),
       _axesEnabled(true),
@@ -63,6 +71,11 @@ Canvas3D::Canvas3D(MainWindow* mw, QWidget* parent, const char* name)
   
 }
 
+/**************************************************************
+ *
+ *  Canvas3D destructor
+ *
+ *************************************************************/
 Canvas3D::~Canvas3D()
 {
   if (_accel != NULL)
@@ -71,6 +84,11 @@ Canvas3D::~Canvas3D()
   }
 }
 
+/**************************************************************
+ *
+ *  build the display lists for axes
+ *
+ *************************************************************/
 void
 Canvas3D::buildAxesDPL()
 {
@@ -135,6 +153,11 @@ Canvas3D::buildAxesDPL()
 
 }
 
+/**************************************************************
+ *
+ *  draw the axes
+ *
+ *************************************************************/
 void
 Canvas3D::drawAxes()
 {
@@ -144,6 +167,11 @@ Canvas3D::drawAxes()
   }
 }
 
+/**************************************************************
+ *
+ *  draw the bounding box
+ *
+ *************************************************************/
 void
 Canvas3D::drawBoundingBox()
 {
@@ -153,6 +181,11 @@ Canvas3D::drawBoundingBox()
   }
 }
 
+/**************************************************************
+ *
+ *  draw the normals
+ *
+ *************************************************************/
 void
 Canvas3D::drawNormals()
 {
@@ -162,6 +195,11 @@ Canvas3D::drawNormals()
   }
 }
 
+/**************************************************************
+ *
+ *  draw info about model
+ *
+ *************************************************************/
 void
 Canvas3D::drawInfo()
 {
@@ -206,6 +244,12 @@ Canvas3D::drawInfo()
   
 }
 
+/**************************************************************
+ *
+ *  set the model
+ *  @param faces the model
+ *
+ *************************************************************/
 void
 Canvas3D::setModel(Faces& faces)
 {
@@ -308,15 +352,27 @@ Canvas3D::resizeGL(int width, int height)
                  200.0);
 }
 
+/**************************************************************
+ *
+ *  get the renderer
+ *  @return the renderer
+ *
+ *************************************************************/
 Renderer&
 Canvas3D::renderer()
 {
   return _renderer;
 }
 
+/**************************************************************
+ *
+ *  get the mainWindow reference
+ *
+ *************************************************************/
 MainWindow& Canvas3D::getMW() {
   return *_mw;
 }
+
 
 void
 Canvas3D::mousePressEvent(QMouseEvent* event)
@@ -347,6 +403,12 @@ Canvas3D::mouseReleaseEvent(QMouseEvent* event)
   
 }
 
+/**************************************************************
+ *
+ *  manage accel Event 
+ *  @param id the ID of the event
+ *
+ *************************************************************/
 void
 Canvas3D::accelEvent(int id)
 {

@@ -15,13 +15,20 @@
 class CylinderGenerator;
 class MainWindow;
 
+/******************************************************
+ *  dirived from AbsCanvas.manage a canvas for 3D context
+ *
+ ******************************************************/
 class Canvas3D : public AbsCanvas   //public QGLWidget
 {
   Q_OBJECT
   
-  //Public Members/Attributes
   public:
 
+  /******************************************************
+   *  enum for accelerator key
+   *
+   ******************************************************/
   enum AccelKey
   {
     CAMERA_TURN_RIGHT ,
@@ -49,38 +56,88 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
 
   private:
   
-  MainWindow* _mw;
+  MainWindow* _mw; /**referenceto the mainWindow*/
 
-  Renderer _renderer;
+  Renderer _renderer; /**the renderer class*/
 
-  bool     _axesEnabled;
-  bool     _boundingBoxEnabled;
-  bool     _normalEnabled;
-  bool     _infoEnabled;
+  bool     _axesEnabled; /**if axe mode enabled*/
+  bool     _boundingBoxEnabled; /**if bounding box mode enabled*/
+  bool     _normalEnabled; /**if normal mode enabled*/
+  bool     _infoEnabled; /**if info mode enabled*/
   
   
-  gml::Point2D _clickPos; //position saved when the user clicks
+  gml::Point2D _clickPos; /**position saved when the user clicks*/
 
-  gml::Point3D _lightPos; //position of the light which is used for gouraud shading
+  gml::Point3D _lightPos; /**position of the light which is used for gouraud shading*/
   
-  QAccel*  _accel;
+  QAccel*  _accel; /**accelerator key*/
   
   
   public:
+
+  /**************************************************************
+   *
+   *  Canvas3D constructor
+   *  @param mw the reference to the mainWindow
+   *  @param parent the parent widget
+   *  @param name the name
+   *
+   *************************************************************/
   Canvas3D(MainWindow* mw, QWidget* parent = 0, const char* name = 0);
+
+  /**************************************************************
+   *
+   *  Canvas3D destructor
+   *
+   *************************************************************/
   ~Canvas3D();
   
+  /**************************************************************
+   *
+   *  get the renderer
+   *  @return the renderer
+   *
+   *************************************************************/
   Renderer& renderer();
 
+  /**************************************************************
+   *
+   *  draw the bounding box
+   *
+   *************************************************************/
   void  drawBoundingBox();
+
+  /**************************************************************
+   *
+   *  draw the normals
+   *
+   *************************************************************/
   void  drawNormals();
+  
+  /**************************************************************
+   *
+   *  draw info about model
+   *
+   *************************************************************/
   void  drawInfo();
   
+  /**************************************************************
+   *
+   *  set the model
+   *  @param faces the model
+   *
+   *************************************************************/
   void  setModel(Faces& faces);
 
+  /**************************************************************
+   *
+   *  get the mainWindow reference
+   *
+   *************************************************************/
   MainWindow& getMW();
   
   protected:
+
   virtual void initializeGL     ();
   virtual void paintGL          ();
   virtual void resizeGL         (int, int);  
@@ -92,12 +149,29 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   
   private:
 
+  /**************************************************************
+   *
+   *  build the display lists for axes
+   *
+   *************************************************************/
   void buildAxesDPL();
+
+  /**************************************************************
+   *
+   *  draw the axes
+   *
+   *************************************************************/
   void drawAxes();
 
 
   private slots:
 
+  /**************************************************************
+   *
+   *  manage accel Event 
+   *  @param id the ID of the event
+   *
+   *************************************************************/
   void accelEvent(int id);
   
  
