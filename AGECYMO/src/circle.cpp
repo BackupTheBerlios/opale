@@ -73,29 +73,28 @@ std::vector<gml::Point3D> Circle::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> pointsList;
 
-  // Ray compute
-  float xRay = pow((float)(*_pointsVector[1])[0] - 
-		   (float)(*_pointsVector[0])[0],2);
-  float yRay = pow((float)(*_pointsVector[1])[1] - 
-		   (float)(*_pointsVector[0])[1],2);
-  
-  float r = sqrt(xRay + yRay);
+  gml::Vector3D ray = *(_pointsVector[1]) - *(_pointsVector[0]);
 
-  int step = 360/nbDiscretizedPoints;
+  const double rayon = ray.norm();
+  const double TWO_PI = 2 * M_PI;
   
-  for ( int i = 0 ; i < 360 ; i=i+step ) {
-    float angle = i * 3.14159F / 180 ;
-    float x = (float) ((*_pointsVector[0])[0] + r*cos(angle)) ;
-    float y = (float) ((*_pointsVector[0])[1] + r*sin(angle)) ;
+  double deltaT = 1.0 / nbDiscretizedPoints;
+
+  std::cout << deltaT << std::endl;
+  
+  for (double t=0.0; t < (1-gml::EPSILON); t += deltaT)
+  {
     Point3D p;
-    p[0] = x;
-    p[1] = y;
-    p[2] = 0.0;
+    p[0] = rayon * cos( TWO_PI * t);
+    p[1] = rayon * sin( TWO_PI * t);
+    p[2] = 0;
+    std::cout << "Discretization Circle Point p = " << p << std::endl;
+    p.stabilize();
     pointsList.push_back(p);
   }
-
+  
   return pointsList;
-}  
+}
 
 /*******************************************************
  * add a point to the polyline
