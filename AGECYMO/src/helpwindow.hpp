@@ -12,7 +12,11 @@
 #include <qtoolbar.h>
 #include <qtoolbutton.h>
 #include <qiconset.h>
+#include <qpixmap.h>
+#include <qpopupmenu.h>
+#include <qmenubar.h>
 #include <qmainwindow.h>
+#include <qstringlist.h>
 
 //class HelpWindow : public QVBox
 class HelpWindow : public QMainWindow
@@ -22,21 +26,30 @@ class HelpWindow : public QMainWindow
   private:
   QTextBrowser* _browser;
   
+  QStringList history;
+  
+  int backwardId, forwardId;
   
   public:
   HelpWindow(const QString& home);
 
   public slots:
-
-  void sourceChanged( const QString& url );
+ 
+ 
   
   void redirection( const QString& url );
 
-  void forward();
+//   void forward();
 
-  void backward();
+//   void backward();
   
-  
+  private slots:
+
+  void setBackwardAvailable( bool );
+
+  void setForwardAvailable( bool );
+
+  void sourceChanged( const QString& url ); 
 };
 
 #endif

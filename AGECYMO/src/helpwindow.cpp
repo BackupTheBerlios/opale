@@ -25,6 +25,19 @@ HelpWindow::HelpWindow(const QString& home)
   QIconSet icon_forward( QPixmap("./manual/forward.xpm") );
   QIconSet icon_home( QPixmap("./manual/home.xpm") );
 
+  //Go Menu
+  QPopupMenu* go = new QPopupMenu( this );
+  backwardId = go->insertItem( icon_back,
+                               tr("&Backward"), _browser, SLOT( backward() ),
+                               CTRL+Key_Left );
+  forwardId = go->insertItem( icon_forward,
+                              tr("&Forward"), _browser, SLOT( forward() ),
+                              CTRL+Key_Right );
+  go->insertItem( icon_home, tr("&Home"), _browser, SLOT( home() ) );
+
+  menuBar()->insertItem( tr("&Go"), go );
+  
+  //Tool Bar
   QToolBar* toolbar = new QToolBar( this );
   addToolBar( toolbar, "Toolbar");
 
@@ -49,14 +62,15 @@ HelpWindow::HelpWindow(const QString& home)
   
   button = new QToolButton( icon_home, tr("Home"), "", _browser, SLOT(home()), toolbar );
 
-  QFile file( home ); // Read the text from a file
-  if ( file.open( IO_ReadOnly ) )
-  {
-    QTextStream stream( &file );
-    _browser->setText( stream.read() );
-  }
+  
+//   QFile file( home ); // Read the text from a file
+//   if ( file.open( IO_ReadOnly ) )
+//   {
+//     QTextStream stream( &file );
+//     _browser->setText( stream.read() );
+//   }
 
-  file.close();
+//   file.close();
 
   setCentralWidget( _browser);
   resize(620, 700);
@@ -82,14 +96,13 @@ HelpWindow::redirection( const QString& url )
 
 
 void
-HelpWindow::forward()
+HelpWindow::setBackwardAvailable( bool b)
 {
+    menuBar()->setItemEnabled( backwardId, b);
 }
-
 
 void
-HelpWindow::backward()
+HelpWindow::setForwardAvailable( bool b)
 {
+    menuBar()->setItemEnabled( forwardId, b);
 }
-
-  
