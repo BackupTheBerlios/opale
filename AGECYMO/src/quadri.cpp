@@ -249,8 +249,32 @@ void Quadri::manageDbClickEvent(QMouseEvent* event,
 
 std::vector<gml::Point3D> Quadri::discretize()
 {
-  std::vector<gml::Point3D> pointsList;
-  pointsList.clear();
+  std::vector<gml::Point3D> listPoints;
 
-  return pointsList;
+  float diffx = _pointsVector[0][0] - _pointsVector[1][0];
+  float diffy = _pointsVector[0][1] - _pointsVector[1][1];
+
+  listPoints.push_back(_pointsVector[1]);
+  
+  Point3D p;
+  
+  p[0] = _pointsVector[1][0];
+  p[1] = _pointsVector[1][1]+ 2 * diffy;
+  p[2] = 0.0;
+
+  listPoints.push_back(p);
+
+  p[0] = _pointsVector[1][0] + 2 * diffx;
+  p[1] = _pointsVector[1][1] + 2 * diffy;
+  p[2] = 0.0;
+
+  listPoints.push_back(p);
+
+  p[0] = _pointsVector[1][0] + 2 * diffx;
+  p[1] = _pointsVector[1][1];
+  p[2] = 0.0;
+
+  listPoints.push_back(p);
+
+  return listPoints;
 }  
