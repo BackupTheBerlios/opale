@@ -8,7 +8,7 @@
 namespace gml
 {
   using namespace std;
-
+  
   /**
    * This class modelises a N dimensional vector of type T. 
    *
@@ -30,7 +30,8 @@ namespace gml
 
     template <typename T2>
     AbsVector<T, N>& operator=(AbsVector<T2, N> const& v2); //T must contains T2
-    
+
+    void stabilize();
   };
 
   template<typename T, int N>
@@ -86,6 +87,38 @@ namespace gml
     }    
     return *this;
   }
+
+  template<typename T, int N>
+  void AbsVector<T, N>::stabilize()
+  {
+    for (int i=0; i<N; i++)
+    {
+      if ( (_data[i] < EPSILON) && (_data[i] > -EPSILON) )
+      {
+        _data[i] = 0;
+      }
+    }
+  }
+
+  //Some usefull methods to compare
+
+//   int comp(double a, double b, double tolerance)
+//   {
+//     double delta = fabs( a - b);
+//     if (delta <= tolerance)
+//     {
+//       return 0;
+//     }
+//     else if(a > b)
+//     {
+//       return 1;
+//     }
+//     else
+//     {
+//       return -1;
+//     }
+//   }
   
 }
+
 #endif
