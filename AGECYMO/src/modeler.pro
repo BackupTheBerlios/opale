@@ -14,6 +14,7 @@ HEADERS		= absVector.hpp \
             abscurve.hpp \
             point.hpp \
             polyline.hpp \
+            polygone.hpp \
             nurbscurve.hpp \
             circle.hpp \
             quadri.hpp \
@@ -39,6 +40,7 @@ HEADERS		= absVector.hpp \
 SOURCES		= testVector.cpp \
             abscurve.cpp \
             polyline.cpp \
+            polygone.cpp \
             circle.cpp \
             nurbscurve.cpp \
             quadri.cpp \
