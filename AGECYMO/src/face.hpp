@@ -17,9 +17,8 @@ class Face : public AbsFace
   
   
   public:
-  Face(std::vector<gml::Point3D> *points, int numberOfPoints = 5);  
+  Face(std::vector<int> *indexes, std::vector<gml::Point3D> *points, int numberOfPoints = 5);
 
-  
   virtual std::vector<int> *getIndexes();
 
 //   virtual int nbPoints();

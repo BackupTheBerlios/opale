@@ -1,11 +1,14 @@
 #include "face.hpp"
 
 
-Face::Face(std::vector<gml::Point3D> *points, int numberOfPoints)
+Face::Face(std::vector<int> *indexes, std::vector<gml::Point3D> *points, int numberOfPoints)
     : AbsFace(points),
       _numberOfPts(numberOfPoints)
 {
   _indexPts = new int[numberOfPoints];
+  for(int i=0; i<numberOfPoints;i++) {
+    _indexPts[i] = (*indexes)[i];
+  }
   
 }
 
