@@ -17,7 +17,7 @@ NurbsCurve::NurbsCurve(Canvas2D *parent)
   AbsCurve(parent)
 {
 
-      nbPointsDefine = 4;
+      _nbPointsDefine = 4;
   
 }
 
@@ -56,7 +56,7 @@ void NurbsCurve::render(){
   
    
   // If the number of points it's enough to define the curve
-  if (getNbPoints() >= nbPointsDefine) {
+  if (getNbPoints() >= _nbPointsDefine) {
   
     // New table in order to get the points
     Vector_HPoint3Df ctrlpoints(getNbPoints());
@@ -70,28 +70,28 @@ void NurbsCurve::render(){
     glColor3f(0,1,0.5);
 
     // Knots contruction 
-    int nknots = getNbPoints() + nbPointsDefine;
+    int nknots = getNbPoints() + _nbPointsDefine;
     PlVector_float knots(nknots);
-    for (int i=nbPointsDefine; i<nknots-nbPointsDefine; i++) {
+    for (int i=_nbPointsDefine; i<nknots-_nbPointsDefine; i++) {
       
-      knots[i] = (float)i-nbPointsDefine + 1;
+      knots[i] = (float)i-_nbPointsDefine + 1;
     }
 
     knots[0] = 0;
     knots[1] = 0;
     knots[2] = 0;
     knots[3] = 0;
-    knots[nknots-1] = nknots-2*nbPointsDefine+1;
-    knots[nknots-2] = nknots-2*nbPointsDefine+1;
-    knots[nknots-3] = nknots-2*nbPointsDefine+1;
-    knots[nknots-4] = nknots-2*nbPointsDefine+1;
+    knots[nknots-1] = nknots-2*_nbPointsDefine+1;
+    knots[nknots-2] = nknots-2*_nbPointsDefine+1;
+    knots[nknots-3] = nknots-2*_nbPointsDefine+1;
+    knots[nknots-4] = nknots-2*_nbPointsDefine+1;
 
     
 
-    PLib::NurbsCurvef curve(ctrlpoints, knots, nbPointsDefine-1);
+    PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
     
     glBegin(GL_LINE_STRIP);
-    for (float i=0;i<=getNbPoints()-nbPointsDefine+1;i=i+0.01) {
+    for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
       PLib::HPoint3Df p = curve(i);  
       glVertex2f(p.x(), p.y());
     }
@@ -144,7 +144,7 @@ void NurbsCurve::managePressEvent(QMouseEvent* event,
       addPoint(position);
 
       // Management of the homogeneous coordinate
-      HCoordinateVector.push_back(1);
+      _HCoordinateVector.push_back(1);
 
       // Current point selection
       noSelection();
@@ -296,25 +296,25 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   glColor3f(0,1,0.5);
   
   // Knots contruction 
-  int nknots = getNbPoints() + nbPointsDefine;
+  int nknots = getNbPoints() + _nbPointsDefine;
   PlVector_float knots(nknots);
-  for (int i=nbPointsDefine; i<nknots-nbPointsDefine; i++) {
-    knots[i] = (float)i-nbPointsDefine + 1;
+  for (int i=_nbPointsDefine; i<nknots-_nbPointsDefine; i++) {
+    knots[i] = (float)i-_nbPointsDefine + 1;
   }
   
   knots[0] = 0;
   knots[1] = 0;
   knots[2] = 0;
   knots[3] = 0;
-  knots[nknots-1] = nknots-2*nbPointsDefine+1;
-  knots[nknots-2] = nknots-2*nbPointsDefine+1;
-  knots[nknots-3] = nknots-2*nbPointsDefine+1;
-  knots[nknots-4] = nknots-2*nbPointsDefine+1;
+  knots[nknots-1] = nknots-2*_nbPointsDefine+1;
+  knots[nknots-2] = nknots-2*_nbPointsDefine+1;
+  knots[nknots-3] = nknots-2*_nbPointsDefine+1;
+  knots[nknots-4] = nknots-2*_nbPointsDefine+1;
   
-  PLib::NurbsCurvef curve(ctrlpoints, knots, nbPointsDefine-1);
+  PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
   
   glBegin(GL_LINE_STRIP);
-  for (float i=0;i<=getNbPoints()-nbPointsDefine+1;i=i+0.01) {
+  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
     PLib::HPoint3Df p = curve(i);  
     p3D[0] = p.x();
     p3D[0] = p.y();

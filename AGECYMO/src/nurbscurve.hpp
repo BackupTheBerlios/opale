@@ -9,7 +9,8 @@ class NurbsCurve : public AbsCurve
 {
 private:
 
-  int nbPointsDefine;
+  int _nbPointsDefine;
+  std::vector<float> _HCoordinateVector;
   
 public:
 
