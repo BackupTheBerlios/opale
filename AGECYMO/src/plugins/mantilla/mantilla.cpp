@@ -41,24 +41,15 @@ void** query(void){
   std::string *name = new string("mantilla");
 
   //Total number of entries in the different components 
-  unsigned short *nbEntries = new unsigned short(2);
+  unsigned short *nbEntries = new unsigned short(1);
 
-  //get Epsilon action 
+  //get Epsilon action and validity calcul 
   MenuAddOn *menuLoadAdd = new MenuAddOn();
   menuLoadAdd->typeAppel = LOAD_CALL;
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuLoadAdd->emplacement->append("/&Tools/set mantilla Epsilon");
-  menuLoadAdd->image = new string("epsilon.png");
-  menuLoadAdd->texte = new string("CTRL+E");
-  
-
-  //Validity calcul action 
-  MenuAddOn *menuSaveAdd = new MenuAddOn();
-  menuSaveAdd->typeAppel = SAVE_CALL;
-  menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuSaveAdd->emplacement->append("/&Tools/mantilla validity");
-  menuSaveAdd->image = new string("validity.png");
-  menuSaveAdd->texte = new string("CTRL+V");
+  menuLoadAdd->emplacement->append("/&Tools/mantilla validity");
+  menuLoadAdd->image = new string("validity.png");
+  menuLoadAdd->texte = new string("CTRL+V");
 
   qDebug("INSIDE PLUGIN : Query mantilla type  = %d", *type);
   
@@ -66,7 +57,6 @@ void** query(void){
   parameters[1] = name;
   parameters[2] = nbEntries;
   parameters[3] = menuLoadAdd;
-  parameters[4] = menuSaveAdd;
 
   return parameters;
 }
@@ -105,8 +95,21 @@ int load(MainWindow *mainW){
     message = "Epsilon value set to ";
     message.append(num) ;
     mainW->getEventsWindow().writeComments( message);
+
+    QString message("Mantilla validity calcul launched on current model...");
+    mainW->getEventsWindow().writeComments( message );
+    
+    //here starts the validity calcul
+    validateModel(mainW->model());
+    //here ends the validity calcul 
+    
+    message = "Validity calcul over";
+    mainW->getEventsWindow().writeComments( message );
   }
   
+
+  
+
   return EXIT_SUCCESS;
 }
 
@@ -123,16 +126,6 @@ int load(MainWindow *mainW){
  ***************************************************************/
 extern "C"
 int save(MainWindow *mainWin){
-
-  QString message("Mantilla validity calcul launched on current model...");
-  mainWin->getEventsWindow().writeComments( message );
-
-  //here starts the validity calcul
-  validateModel(mainWin->model());
-  //here ends the validity calcul 
-
-  message = "Validity calcul over";
-  mainWin->getEventsWindow().writeComments( message );
 
   return EXIT_SUCCESS;
 }
