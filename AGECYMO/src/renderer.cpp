@@ -51,7 +51,7 @@ Renderer::render()
   {
     case WF:
     {
-      glPolygonMode(GL_FRONT, GL_LINE);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       break;
     }
 
