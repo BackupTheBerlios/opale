@@ -40,6 +40,11 @@ Canvas3D::Canvas3D(QWidget* parent, const char* name)
                     SIGNAL( activated( int ) ) ,
                     this ,
                     SLOT( accelEvent( int ) ) ) ;
+
+
+  //testing the CylinderGenerator
+  
+  
 }
 
 Canvas3D::~Canvas3D()
@@ -180,9 +185,14 @@ Canvas3D::drawInfo()
 void
 Canvas3D::setModel(Faces& faces)
 {
+  qDebug("Canvas3D : dans setModel");
+  
   _renderer.setModel(faces);
-  // glFinish();
+  glFinish();
   updateGL();
+
+  qDebug("Canvas3D : fin  de set Model");
+  
 }
 
 
@@ -230,6 +240,7 @@ Canvas3D::initializeGL()
   buildAxesDPL();
 
   _renderer.initDPL();
+
   
   _chronometer.start();
 }
@@ -246,7 +257,7 @@ Canvas3D::paintGL()
   setView();
   
   drawAxes();
-
+  
   _renderer.render();
 
   glFlush();
