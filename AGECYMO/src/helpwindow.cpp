@@ -1,8 +1,11 @@
 #include "helpwindow.hpp"
 
 
+//most of this code has been taken from Qt example
+
 HelpWindow::HelpWindow(const QString& home)
-    : QVBox()
+//    : QVBox()
+    : QMainWindow()
 {
   _browser = new QTextBrowser(this);
   _browser->setFrameStyle( QFrame::Panel | QFrame::Sunken );
@@ -17,6 +20,35 @@ HelpWindow::HelpWindow(const QString& home)
   connect( _browser, SIGNAL( linkClicked ( const QString&) ),
            this, SLOT ( redirection(const QString&) ) );
   
+  // The same three icons are used twice each.
+  QIconSet icon_back( QPixmap("./manual/back.xpm") );
+  QIconSet icon_forward( QPixmap("./manual/forward.xpm") );
+  QIconSet icon_home( QPixmap("./manual/home.xpm") );
+
+  QToolBar* toolbar = new QToolBar( this );
+  addToolBar( toolbar, "Toolbar");
+
+  QToolButton* button;
+  
+  button = new QToolButton( icon_back, tr("Backward"), "",
+                            _browser, SLOT(backward()), toolbar );
+
+  connect( _browser, SIGNAL( backwardAvailable(bool) ),
+           button, SLOT( setEnabled(bool) ) );
+
+  button->setEnabled( FALSE );
+
+  button = new QToolButton( icon_forward, tr("Forward"), "",
+                            _browser, SLOT(forward()),
+                            toolbar );
+
+  connect( _browser, SIGNAL( forwardAvailable(bool) ),
+           button, SLOT( setEnabled(bool) ) );
+
+  button->setEnabled( FALSE );
+  
+  button = new QToolButton( icon_home, tr("Home"), "", _browser, SLOT(home()), toolbar );
+
   QFile file( home ); // Read the text from a file
   if ( file.open( IO_ReadOnly ) )
   {
@@ -25,11 +57,13 @@ HelpWindow::HelpWindow(const QString& home)
   }
 
   file.close();
-  
+
+  setCentralWidget( _browser);
   resize(620, 700);
 }
+
 void
-HelpWindow::sourceChanged( const QString& url )
+HelpWindow::sourceChanged( const QString& url)
 {
 }
 
@@ -45,3 +79,17 @@ HelpWindow::redirection( const QString& url )
   }
   file.close();
 }
+
+
+void
+HelpWindow::forward()
+{
+}
+
+
+void
+HelpWindow::backward()
+{
+}
+
+  

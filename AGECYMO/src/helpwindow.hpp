@@ -9,9 +9,13 @@
 #include <qvbox.h>
 #include <qmime.h>
 #include <qstylesheet.h>
+#include <qtoolbar.h>
+#include <qtoolbutton.h>
+#include <qiconset.h>
+#include <qmainwindow.h>
 
-
-class HelpWindow : public QVBox
+//class HelpWindow : public QVBox
+class HelpWindow : public QMainWindow
 {
   Q_OBJECT
   
@@ -27,6 +31,10 @@ class HelpWindow : public QVBox
   void sourceChanged( const QString& url );
   
   void redirection( const QString& url );
+
+  void forward();
+
+  void backward();
   
   
 };
