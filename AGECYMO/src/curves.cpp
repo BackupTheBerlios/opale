@@ -160,11 +160,10 @@ bool Curves::isClosed() const{
  *************************************************************/
 void Curves::close(){
   if(getNbCurves() != 0){
-    if((_listOfCurves[getNbCurves()-1]->addPoint(_listOfControlPoints[0]))
-       == ADDED){
-      _isClosed = true;
-    }
+    _listOfCurves[getNbCurves()-1]->addPoint(_listOfControlPoints[0])
+      == ADDED;
   }
+  _isClosed = true;
 }
 
 
@@ -382,6 +381,8 @@ void Curves::managePressEvent(QMouseEvent* event,
   _startMovePoint[0] = (*position)[0];
   _startMovePoint[1] = (*position)[1];
 
+  AbsCurve *newCurve;
+
   //Selection MODE
   if(event->state() != Qt::ControlButton){
     //add to selection group with shift
@@ -417,7 +418,8 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //polyline creation
       if(toolType == POLY_MODE){
-	_listOfCurves.push_back(new Polyline());
+	newCurve = new Polyline();
+	_listOfCurves.push_back(newCurve);
 	_currentToolType = POLY_MODE;
 
 	//management of the popupMenu
@@ -430,7 +432,9 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //polygone creation
       if(toolType == POLYG_MODE){
-	_listOfCurves.push_back(new Polygone(_parent));
+	newCurve = new Polygone(_parent);
+	close();
+	_listOfCurves.push_back(newCurve);
 	_currentToolType = POLYG_MODE;
 	
 	//management of the popupMenu
@@ -443,7 +447,9 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //rectangle creation
       if(toolType == REC_MODE){
-	_listOfCurves.push_back(new Quadri());
+	newCurve = new Quadri();
+	close();
+	_listOfCurves.push_back(newCurve);
 	_currentToolType = REC_MODE;
 
 	//management of the popupMenu
@@ -454,7 +460,9 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == CIRCLE_MODE){
-	_listOfCurves.push_back(new Circle());
+	newCurve = new Circle();
+	close();
+	_listOfCurves.push_back(newCurve);
 	_currentToolType = CIRCLE_MODE;
 	
 	//management of the popupMenu
@@ -465,7 +473,8 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == NURBS_MODE){
-	_listOfCurves.push_back(new NurbsCurve());
+	newCurve = new NurbsCurve();
+	_listOfCurves.push_back(newCurve);
 	_currentToolType = NURBS_MODE;
 	
 	//management of the popupMenu
