@@ -64,17 +64,18 @@ void** query(void){
   MenuAddOn *menuLoadAdd = new MenuAddOn();
   menuLoadAdd->typeAppel = LOAD_CALL;
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuLoadAdd->emplacement->append("/file/loadVRML");
+  menuLoadAdd->emplacement->append("/&File/Load Model");
   menuLoadAdd->image = NULL;
-  menuLoadAdd->texte = NULL;
+  menuLoadAdd->texte = new string("CTRL+L");
+  
 
   //Save Action 
   MenuAddOn *menuSaveAdd = new MenuAddOn();
   menuSaveAdd->typeAppel = SAVE_CALL;
   menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
-  menuSaveAdd->emplacement->append("/file/saveVRML");
+  menuSaveAdd->emplacement->append("/&File/Save Model");
   menuSaveAdd->image = NULL;
-  menuSaveAdd->texte = NULL;
+  menuSaveAdd->texte = new string("CTRL+S");
 
   qDebug("INSIDE PLUGIN : Query IOVRML type  = %d", *type);
   
