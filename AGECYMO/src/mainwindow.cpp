@@ -609,17 +609,12 @@ MainWindow::generateCylinder()
   {
     return;
   }
-
-  _cylGenerator->setTorsionEnabled( _controlPanel->isTorsionEnabled());
   
   //Set the OpenGL Context to the 3D Canvas
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
   canvas.makeCurrent();
 
-  int paramDiscretisationCHEMIN  = 20;
-  int paramDiscretisationSECTION = 15;
-  int paramDiscretisationPROFIL  = 15;
-
+  //Retrieve the curves !!!
   Canvas2D & canvasSection =  dynamic_cast<Canvas2D &>(_wSection->canvas());
   Canvas2D & canvasChemin  =  dynamic_cast<Canvas2D &>(_wChemin->canvas());
   Canvas2D & canvasProfil  =  dynamic_cast<Canvas2D &>(_wProfil->canvas());
@@ -627,92 +622,172 @@ MainWindow::generateCylinder()
   Curves* section =  canvasSection.getFigure();
   Curves* chemin =  canvasChemin.getFigure();
   Curves* profil = canvasProfil.getFigure();
-
-
-//  QMessageBox::warning( this, "ERROR",
-//                        "Impossible to generate a cylinder without curves .\n");
-    
-
-  std::cout << "Chemin is closed = " << chemin->isClosed() << std::endl;
+  
   _cylGenerator->setWayClosed( chemin->isClosed() );
 
+  int nbSegmentsChemin  =  chemin->globalNbSegments();
+  int nbSegmentsProfil  =  profil->globalNbSegments();
+  int nbSegmentsSection =  section->globalNbSegments();
 
-  int nbSegmentsChemin  =  chemin->getNbControlPoints() - 1;
-  int nbSegmentsProfil  =  profil->getNbControlPoints() - 1;
-  int nbSegmentsSection =  section->getNbControlPoints() - 1;
-  
-  std::cout << "nb de segments " << std::endl
-            << "chemin  = " << nbSegmentsChemin << std::endl
-            << "profil  = " << nbSegmentsProfil << std::endl
-            << "section = " << nbSegmentsSection << std::endl;
 
-  int nWay = _controlPanel->wayDiscretizeValue();
-  int nSection = _controlPanel->sectionDiscretizeValue();
-
-  paramDiscretisationSECTION = nSection / nbSegmentsSection;
-  paramDiscretisationPROFIL  = nWay / nbSegmentsProfil;
-  paramDiscretisationCHEMIN  = nWay / nbSegmentsChemin;
-
-  qDebug("nWay recupere = %d", nWay);
-  qDebug("paramDiscretisationSECTION = %d", paramDiscretisationSECTION);
-  qDebug("paramDiscretisationPROFIL = %d", paramDiscretisationPROFIL);
-  qDebug("paramDiscretisationCHEMIN = %d", paramDiscretisationCHEMIN);
-  
-  
-  std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
-  adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
-
-  int nProfile = nWay / nbSegmentsProfil;
-  nProfile = (nProfile < 2) ? (2) : (nProfile);
-
-  qDebug("nProfile = %d", nProfile);
-  
-  std::vector<Point3D> ptsProfile = profil->discretize( nProfile );
-  
-  int discretizeWay;
-  int u = ptsProfile.size()/ nbSegmentsChemin;
-  qDebug(" nombre de points sur le profil = %d", ptsProfile.size() );
-  qDebug("u = %d", u);
-  qDebug("nbSegmentsChemin = %d", nbSegmentsChemin);
-  
-  std::vector<Point3D> ptsChemin  = chemin->discretize( u );
-//  std::vector<Point3D> ptsChemin  = chemin->discretize( ptsProfile.size() );
-
-  qDebug("size de ptsChemin = %d", ptsChemin.size() );
-  
-   while (  (discretizeWay = ptsChemin.size()) < ptsProfile.size() )
-   {
-     u++;
-     ptsChemin = chemin->discretize( u );
-   }
-
-   while( ptsChemin.size() != (ptsProfile.size()) )
-   {
-     ptsChemin.pop_back();
-   }
-  
-  
-  adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
-  
-  qDebug("Apres Discretisation");
-  qDebug(" nb pt chemin = %d",  ptsChemin.size());
-  qDebug(" nb pt profile = %d", ptsProfile.size());
-    
-
-  if ( ptsChemin.size() == 0 )
+  if (nbSegmentsChemin == 0)
   {
     QMessageBox::warning( this, "ERROR",
                           "Impossible to generate a cylinder without a way curve .\n");
     return;
   }
 
-  if ( ptsSection.size() == 0)
+  if (nbSegmentsSection == 0)
   {
     QMessageBox::warning( this, "ERROR",
                           "Impossible to generate a cylinder without a section curve .\n");
     return;
   }
+
+
   
+  if (nbSegmentsProfil == 0)
+  {
+    QMessageBox::warning( this, "ERROR",
+                          "Impossible to generate a cylinder without a profile curve .\n");
+    return;
+  }
+  
+
+  
+  
+  std::cout << "nb de segments " << std::endl
+            << "chemin  = " << nbSegmentsChemin << std::endl
+            << "profil  = " << nbSegmentsProfil << std::endl
+            << "section = " << nbSegmentsSection << std::endl;
+
+
+  int nWay = _controlPanel->wayDiscretizeValue();
+
+    
+  std::vector<Point3D> ptsProfile;
+  std::vector<Point3D> ptsChemin;
+
+  if ( nbSegmentsChemin == 1)
+  {
+    qDebug("Cas chemin = un segment");
+    
+    int n = (nWay / nbSegmentsProfil);
+    qDebug("n = %d", n);
+    ptsProfile = profil->discretize( n );
+    ptsChemin = chemin->discretize( ptsProfile.size() );
+  }
+  else if ( nbSegmentsProfil == 1)
+  {
+    qDebug("Cas profil = un segment");
+    
+    int n = (nWay / nbSegmentsChemin);
+    qDebug("n = %d", n);
+    ptsChemin  = chemin->discretize( n );
+    ptsProfile = profil->discretize( ptsChemin.size() );
+  }
+  else if ( nbSegmentsChemin == nbSegmentsProfil) 
+  {
+    qDebug("Cas MEME Nombre de segments ");
+    int n = (nWay / nbSegmentsProfil);
+    qDebug("n = %d", n);
+    ptsProfile = profil->discretize( n );
+    ptsChemin = chemin->discretize( n );
+  }
+  else 
+  {
+    qDebug("ICI  !!!!!!!!!!!!");
+    
+    int nbPtCtrlProfile = nbSegmentsProfil + 1;
+    int nbPtCtrlChemin  = nbSegmentsChemin + 1;
+
+    bool found  = false;
+
+    int partieEntiere1 = 0;
+    int partieEntiere2 = 0;
+
+    qDebug("nWay = %d", nWay);
+    qDebug("n point de controle profile = %d", nbPtCtrlProfile);
+    
+    int i=0;
+    
+    while (  !found)
+    {
+      partieEntiere1 =  (int)  ( (nWay - nbPtCtrlProfile) / nbSegmentsProfil );
+      int reste1  =  (nWay - nbPtCtrlProfile) % nbSegmentsProfil;
+
+      qDebug("partieEntiere1  = %d", partieEntiere1);
+      qDebug("reste1  = %d", reste1);
+      
+      if ( reste1 == 0)
+      {
+
+      }
+      else
+      {
+        partieEntiere1++;
+        nWay = nbSegmentsProfil * partieEntiere1 + nbPtCtrlProfile;
+      }
+      
+      
+      partieEntiere2 = (int) ( ( nWay - nbPtCtrlChemin) / nbSegmentsChemin );
+      int reste2 = ( nWay - nbPtCtrlChemin) % nbSegmentsChemin;
+      
+      qDebug("partieEntiere2  = %d", partieEntiere2);
+      qDebug("reste2  = %d", reste2);
+      
+      if (reste2 == 0)
+      {
+        found = true;
+      }
+      else
+      {
+        nWay = ((partieEntiere1 + 1) * nbSegmentsProfil) + nbPtCtrlProfile;
+      }
+      qDebug("current nway before looping = %d ", nWay);
+    }
+    
+    
+    qDebug("nWay found is %d", nWay);
+    qDebug("partie entiere1 found is %d", partieEntiere1);
+    qDebug("partie entiere2 found is %d", partieEntiere2);
+
+
+    assert( nWay == (partieEntiere1 * nbSegmentsProfil + nbPtCtrlProfile) );
+    assert( nWay == (partieEntiere2 * nbSegmentsChemin + nbPtCtrlChemin) );
+
+    ptsProfile = profil->discretize( partieEntiere1 + 2 );
+    ptsChemin = chemin->discretize( partieEntiere2 + 2 );
+    
+  }
+  
+  adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
+  
+ 
+  std::cout << "We have " << ptsProfile.size() << "pts on the profile curve" << std::endl;
+  std::cout << "We have " << ptsChemin.size() << " pts on the WAY curve" << std::endl;
+
+  
+  
+
+  //Hack
+  if ( ptsProfile.size() > ptsChemin.size() )
+  {
+
+    ptsProfile.pop_back();
+  }
+  else if ( ptsChemin.size() > ptsProfile.size()  )
+  {
+    ptsChemin.pop_back();
+    
+  }
+  
+  assert (ptsProfile.size() == ptsChemin.size() );
+  
+  
+  int nSection = _controlPanel->sectionDiscretizeValue();
+  std::vector<Point3D> ptsSection = section->discretize( nSection / nbSegmentsSection);
+  adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
   
   if ( ptsProfile.size() == 0)
   {
@@ -748,9 +823,176 @@ MainWindow::generateCylinder()
                                                     ptsSection,
                                                     ptsProfile) );
     
-
-  displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);
+  displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);  
 }
+
+
+// void
+// MainWindow::generateCylinder()
+// {
+//   qDebug("Mainwindow : Dans generateCylinder ");
+
+//   if ( ! (_controlPanel->controlWayValue()) )
+//   {
+//     return;
+//   }
+
+//   if ( ! (_controlPanel->controlSectionValue()) )
+//   {
+//     return;
+//   }
+  
+//   if ( ! (_controlPanel->controlScaleSectionValue()) )
+//   {
+//     return;
+//   }
+  
+//   if ( ! (_controlPanel->controlScaleWayValue()) )
+//   {
+//     return;
+//   }
+
+//   _cylGenerator->setTorsionEnabled( _controlPanel->isTorsionEnabled());
+  
+//   //Set the OpenGL Context to the 3D Canvas
+//   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
+//   canvas.makeCurrent();
+
+//   int paramDiscretisationCHEMIN  = 20;
+//   int paramDiscretisationSECTION = 15;
+//   int paramDiscretisationPROFIL  = 15;
+
+//   Canvas2D & canvasSection =  dynamic_cast<Canvas2D &>(_wSection->canvas());
+//   Canvas2D & canvasChemin  =  dynamic_cast<Canvas2D &>(_wChemin->canvas());
+//   Canvas2D & canvasProfil  =  dynamic_cast<Canvas2D &>(_wProfil->canvas());
+
+//   Curves* section =  canvasSection.getFigure();
+//   Curves* chemin =  canvasChemin.getFigure();
+//   Curves* profil = canvasProfil.getFigure();
+
+
+// //  QMessageBox::warning( this, "ERROR",
+// //                        "Impossible to generate a cylinder without curves .\n");
+    
+
+//   std::cout << "Chemin is closed = " << chemin->isClosed() << std::endl;
+//   _cylGenerator->setWayClosed( chemin->isClosed() );
+
+
+//   int nbSegmentsChemin  =  chemin->getNbControlPoints() - 1;
+//   int nbSegmentsProfil  =  profil->getNbControlPoints() - 1;
+//   int nbSegmentsSection =  section->getNbControlPoints() - 1;
+  
+//   std::cout << "nb de segments " << std::endl
+//             << "chemin  = " << nbSegmentsChemin << std::endl
+//             << "profil  = " << nbSegmentsProfil << std::endl
+//             << "section = " << nbSegmentsSection << std::endl;
+
+//   int nWay = _controlPanel->wayDiscretizeValue();
+//   int nSection = _controlPanel->sectionDiscretizeValue();
+
+//   paramDiscretisationSECTION = nSection / nbSegmentsSection;
+//   paramDiscretisationPROFIL  = nWay / nbSegmentsProfil;
+//   paramDiscretisationCHEMIN  = nWay / nbSegmentsChemin;
+
+//   qDebug("nWay recupere = %d", nWay);
+//   qDebug("paramDiscretisationSECTION = %d", paramDiscretisationSECTION);
+//   qDebug("paramDiscretisationPROFIL = %d", paramDiscretisationPROFIL);
+//   qDebug("paramDiscretisationCHEMIN = %d", paramDiscretisationCHEMIN);
+  
+  
+//   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
+//   adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
+
+//   int nProfile = nWay / nbSegmentsProfil;
+//   nProfile = (nProfile < 2) ? (2) : (nProfile);
+
+//   qDebug("nProfile = %d", nProfile);
+  
+//   std::vector<Point3D> ptsProfile = profil->discretize( nProfile );
+  
+//   int discretizeWay;
+//   int u = ptsProfile.size()/ nbSegmentsChemin;
+//   qDebug(" nombre de points sur le profil = %d", ptsProfile.size() );
+//   qDebug("u = %d", u);
+//   qDebug("nbSegmentsChemin = %d", nbSegmentsChemin);
+  
+//   std::vector<Point3D> ptsChemin  = chemin->discretize( u );
+// //  std::vector<Point3D> ptsChemin  = chemin->discretize( ptsProfile.size() );
+
+//   qDebug("size de ptsChemin = %d", ptsChemin.size() );
+  
+//    while (  (discretizeWay = ptsChemin.size()) < ptsProfile.size() )
+//    {
+//      u++;
+//      ptsChemin = chemin->discretize( u );
+//    }
+
+//    while( ptsChemin.size() != (ptsProfile.size()) )
+//    {
+//      ptsChemin.pop_back();
+//    }
+  
+  
+//   adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
+  
+//   qDebug("Apres Discretisation");
+//   qDebug(" nb pt chemin = %d",  ptsChemin.size());
+//   qDebug(" nb pt profile = %d", ptsProfile.size());
+    
+
+//   if ( ptsChemin.size() == 0 )
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate a cylinder without a way curve .\n");
+//     return;
+//   }
+
+//   if ( ptsSection.size() == 0)
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate a cylinder without a section curve .\n");
+//     return;
+//   }
+  
+  
+//   if ( ptsProfile.size() == 0)
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate a cylinder without a profile curve .\n");
+//     return;
+//   }
+
+
+//   if (ptsChemin.size() < 2)
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate need more point for the way.\n");
+//     return;
+//   }
+
+//   if (ptsProfile.size() < 2)
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate need more points for the profile .\n");
+//     return;
+//   }
+
+//   if (ptsSection.size() < 3)
+//   {
+//     QMessageBox::warning( this, "ERROR",
+//                           "Impossible to generate need more points for the section .\n");
+//     return;
+//   }
+  
+
+//   int timeTiGenerateIt = ( _cylGenerator->generate( ptsChemin,
+//                                                     ptsSection,
+//                                                     ptsProfile) );
+    
+
+//   displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);
+// }
 
 /**************************************************************
  *
