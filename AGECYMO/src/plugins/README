@@ -1,16 +1,14 @@
 Ce repertoire contient les plugins
 
 Pour chaque plugin, le mettre dans un sous repertoire
-du nom du plugin
-avec son Makefile pour produire le .so (ie le .plg)
+du nom du plugin avec un fichier .pro du 
+meme nom que le sous repertoire.
 
-Le makefile de chaque plugin dans si la compilation du .so
-est reussie le mettre dans le rep parent (ie ../)
-de maniere a ce que plugins/ contiennent tous les .so
-que l appli va lire au demarrage.
+Ajouter dans le plugins.pro dans le sous repertoire
+du nouveau plugin a la variable SUBDIRS
 
-
- 
+Ne pas oublier de regenerer le Makefile
+du repertoire courant à l'aide du plugins.pro
 
 
 
