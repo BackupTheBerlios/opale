@@ -65,7 +65,7 @@ void** query(void){
   menuLoadAdd->typeAppel = LOAD_CALL;
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuLoadAdd->emplacement->append("/&File/Load Model");
-  menuLoadAdd->image = NULL;
+  menuLoadAdd->image = new string("fileopen.png");
   menuLoadAdd->texte = new string("CTRL+L");
   
 
@@ -74,7 +74,7 @@ void** query(void){
   menuSaveAdd->typeAppel = SAVE_CALL;
   menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuSaveAdd->emplacement->append("/&File/Save Model");
-  menuSaveAdd->image = NULL;
+  menuSaveAdd->image = new string("filesaveas.png");
   menuSaveAdd->texte = new string("CTRL+S");
 
   qDebug("INSIDE PLUGIN : Query IOVRML type  = %d", *type);
@@ -131,11 +131,11 @@ int load(MainWindow *mainW){
 
   // User chooses a file in order to load a VRML model
   QString fileName = QFileDialog::getSaveFileName(
-                    ".",
-                    "",
-                    mainW,
-                    "VRML load dialog box",
-                    "choose a name for VRML load" );
+    ".",
+    "",
+    mainW,
+    "VRML load dialog box",
+    "choose a name for VRML load" );
 
   // If no name defined exit
   if(fileName.isEmpty()){
@@ -172,32 +172,32 @@ int load(MainWindow *mainW){
       
       if (word != awaitedSequence1.front()) {
 
-	currentValue = atof(word.c_str());
+        currentValue = atof(word.c_str());
 	
-	// Coordinate X management
-	if (numCoord == 1) {
-	  xValue = currentValue;
-	  numCoord++;
-	}
-	else {
-	  // Coordinate Y management
-	  if (numCoord == 2) {
-	    yValue = currentValue;
-	    numCoord++;
-	  }
-	  // Coordinate Z management 
-	  else {
-	    zValue = currentValue;
-	    Point3D p;
-	    p[0] = xValue;
-	    p[1] = yValue;
-	    p[2] = zValue;
-	    cout << "x=" << p[0] << "y=" << p[1] << "z=" << p[2] << endl;
-	    listPoint->push_back(p);
-	    numCoord = 1;
+        // Coordinate X management
+        if (numCoord == 1) {
+          xValue = currentValue;
+          numCoord++;
+        }
+        else {
+          // Coordinate Y management
+          if (numCoord == 2) {
+            yValue = currentValue;
+            numCoord++;
+          }
+          // Coordinate Z management 
+          else {
+            zValue = currentValue;
+            Point3D p;
+            p[0] = xValue;
+            p[1] = yValue;
+            p[2] = zValue;
+            cout << "x=" << p[0] << "y=" << p[1] << "z=" << p[2] << endl;
+            listPoint->push_back(p);
+            numCoord = 1;
 	
-	  }
-	}
+          }
+        }
       }
     }
     
@@ -208,42 +208,42 @@ int load(MainWindow *mainW){
       
       if (word != awaitedSequence2.front()) {
       
-	currentIndex = atoi(word.c_str());
+        currentIndex = atoi(word.c_str());
 	
-	if (currentIndex == -1) {
+        if (currentIndex == -1) {
 
-	  if (nbPointsIndex < 3) {
-	    return EXIT_FAILURE;
-	  }
+          if (nbPointsIndex < 3) {
+            return EXIT_FAILURE;
+          }
 
-	  // Moving of indexes
-	  for (int i=0; i<=nbPointsIndex;i++) {
-	    indexValues[i] += indexesTranslation;
-	  }
+          // Moving of indexes
+          for (int i=0; i<=nbPointsIndex;i++) {
+            indexValues[i] += indexesTranslation;
+          }
 
-  	  if (nbPointsIndex == 3) {
-	    t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
-	    listFaces->push_back(t);
-	  }
-	  else {
-	    if (nbPointsIndex == 4) {
-	      q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
-	      listFaces->push_back(q);
-	    }
-	    else {
-	      f = new Face(&indexValues, listPoint, nbPointsIndex);
-	      listFaces->push_back(f);
-	    }
-	  }
+          if (nbPointsIndex == 3) {
+            t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
+            listFaces->push_back(t);
+          }
+          else {
+            if (nbPointsIndex == 4) {
+              q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
+              listFaces->push_back(q);
+            }
+            else {
+              f = new Face(&indexValues, listPoint, nbPointsIndex);
+              listFaces->push_back(f);
+            }
+          }
 
-	  nbPointsIndex = 0;
-	  indexValues.clear();
+          nbPointsIndex = 0;
+          indexValues.clear();
 	    
-	}
-	else {
-	  indexValues.push_back(currentIndex);
-	  nbPointsIndex++;
-	}
+        }
+        else {
+          indexValues.push_back(currentIndex);
+          nbPointsIndex++;
+        }
 	
 	
       }
@@ -277,8 +277,9 @@ int load(MainWindow *mainW){
   Faces* faces = new Faces(listPoint, listFaces);
   //cout << "La face :" << endl << *f;
   mainW->setModel(*faces);
-  
 
+  qDebug("Fin de la methode LOAD du plugin VRML");
+  
 
   return EXIT_SUCCESS;
 }
@@ -303,11 +304,11 @@ int save(MainWindow *mainWin){
 
   //user chooses a name for wrl file
   QString fileName = QFileDialog::getSaveFileName(
-                    ".",
-                    "",
-                    mainWin,
-                    "VRML save dialog box",
-                    "choose a name for VRML save" );
+    ".",
+    "",
+    mainWin,
+    "VRML save dialog box",
+    "choose a name for VRML save" );
 
   //if no name defined exit
   if(fileName.isEmpty()){
@@ -325,7 +326,7 @@ int save(MainWindow *mainWin){
   //file control
   if(!file.is_open()){
     QMessageBox::information( mainWin, "Generalized cylinder",
-    "Unable to open file for save.\n");
+                              "Unable to open file for save.\n");
     return EXIT_FAILURE;
   }
 
