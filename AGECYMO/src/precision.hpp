@@ -1006,8 +1006,8 @@ static void edgesCutFaces(std::vector<AbsFace*> & faces, std::vector< std::vecto
   oss << "Number of faces : " << faces.size() << std::endl
       << "Number of edges : " << edges.size() << std::endl
       << "Number of verifications : " << nbVerif << std::endl
-      << "Number of valid faces : " << nbValid << std::endl
-      << "Number of not valid faces : " << nbNotValid << std::endl;
+      << "Number of valid verifications : " << nbValid << std::endl
+      << "Number of not valid verifications : " << nbNotValid << std::endl;
   
   QMessageBox::information(0, "Third validation :", oss.str());
   
