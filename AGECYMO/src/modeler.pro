@@ -9,8 +9,14 @@ OBJECTS_DIR = obj
 
 INCLUDEPATH += ../lib/nurbs++/
 
+
+#uncomment this if you need core
+# LEVEL 3 is CORE precision
+#DEFINES = CORE_LEVEL=3
+
 # Comment or uncomment this to use CORE precision library 
 INCLUDEPATH += ../lib/core/ ../lib/gmp/
+
 
 #LIBS +=  ../lib/libmatrixI.a ../lib/libmatrixN.a ../lib/libmatrix.a ../lib/libnurbsd.a ../lib/libnurbsf.a
 #LIBS      +=  -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
@@ -20,6 +26,7 @@ LIBS      += -L../lib/ -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
 # Comment or uncomment this to use CORE precision library 
 LIBS      += -L../lib/ -lcore++ -lgmp
 
+
 LIBS      += -lm -Wl,-E -ldl -rdynamic
 
 LD_LIBRARY_PATH += ../lib/
@@ -27,6 +34,7 @@ LD_LIBRARY_PATH += ../lib/
 HEADERS		= absVector.hpp \
             abscurve.hpp \
             point.hpp \
+            precision.hpp \
             polyline.hpp \
             circle.hpp \
             quadri.hpp \
@@ -56,6 +64,7 @@ HEADERS		= absVector.hpp \
 
 SOURCES		= testVector.cpp \
             abscurve.cpp \
+            precision.cpp \
             polyline.cpp \
             circle.cpp \
             polygone.cpp \
