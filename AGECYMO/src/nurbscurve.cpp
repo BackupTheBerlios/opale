@@ -1,10 +1,14 @@
 #include "abscurve.hpp"
 #include "nurbscurve.hpp"
 #include <iostream>
+#include <vector>
 #include "canvas2d.hpp"
 #include <math.h>
 #include <qmessagebox.h> 
 #include <qinputdialog.h> 
+#include "nurbs.h"
+#include "hpoint_nd.h"
+
 
 using namespace std;
 
@@ -13,17 +17,8 @@ NurbsCurve::NurbsCurve(Canvas2D *parent)
   AbsCurve(parent)
 {
 
-  bool ok;
-  int res = QInputDialog::getInteger("General cylinder", 
-				     "Enter the number of points you want to use in order to define the curve :",
-				     4, 3, 10, 1,
-				     &ok, parent );
-  if ( ok ) {
+      nbPointsDefine = 4;
   
-    nbPointsDefine = res;
-  
-  } 
-
 }
 
 NurbsCurve::NurbsCurve(std::vector<gml::Point3D> pointsVector, 
@@ -64,44 +59,44 @@ void NurbsCurve::render(){
   if (getNbPoints() >= nbPointsDefine) {
   
     // New table in order to get the points
-    GLfloat ctrlpoints[getNbPoints()][4];
+    Vector_HPoint3Df ctrlpoints(getNbPoints());
   
     // Construction of this new table
     for (int i=0; i < getNbPoints() ;i++) {
-      ctrlpoints[i][0] = _pointsVector[i][0];
-      ctrlpoints[i][1] = _pointsVector[i][1];
-      ctrlpoints[i][2] = 0.0;
-      ctrlpoints[i][3] = 1.0;
+      ctrlpoints[i] = PLib::HPoint3Df(_pointsVector[i][0],_pointsVector[i][1] ,0 ,1);
     }
   
-    //glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, nbPointsDefine, &ctrlpoints[0][0]);
-    //glEnable(GL_MAP1_VERTEX_3);
-    /*glBegin(GL_LINE_STRIP);
-    for(int i = 0 ; i <= 30 ; i++ ) {
-      
-      glEvalCoord1f((GLfloat) i/30.0);
-    }
-    glEnd() ;*/
-
     // New color
-    glColor3f(0,1,1);
-
-    // Nurb object construction
-    GLUnurbsObj* nobj = gluNewNurbsRenderer();
+    glColor3f(0,1,0.5);
 
     // Knots contruction 
     int nknots = getNbPoints() + nbPointsDefine;
-    GLfloat knots[nknots];
-    for (int i=0; i<nknots; i++) {
-      knots[i] = (float)i;
+    PlVector_float knots(nknots);
+    for (int i=nbPointsDefine; i<nknots-nbPointsDefine; i++) {
+      
+      knots[i] = (float)i-nbPointsDefine + 1;
     }
 
-    gluBeginCurve(nobj);
-    //gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_TEXTURE_COORD_2);
-    //gluNurbsCurve(nobj, nknots, knots, 3, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_NORMAL);
-    gluNurbsCurve(nobj, nknots, knots, 4, &ctrlpoints[0][0], nbPointsDefine, GL_MAP1_VERTEX_4);
-    gluEndCurve(nobj);
+    knots[0] = 0;
+    knots[1] = 0;
+    knots[2] = 0;
+    knots[3] = 0;
+    knots[nknots-1] = nknots-2*nbPointsDefine+1;
+    knots[nknots-2] = nknots-2*nbPointsDefine+1;
+    knots[nknots-3] = nknots-2*nbPointsDefine+1;
+    knots[nknots-4] = nknots-2*nbPointsDefine+1;
+
     
+
+    PLib::NurbsCurvef curve(ctrlpoints, knots, nbPointsDefine-1);
+    
+    glBegin(GL_LINE_STRIP);
+    for (float i=0;i<=getNbPoints()-nbPointsDefine+1;i=i+0.01) {
+      PLib::HPoint3Df p = curve(i);  
+      glVertex2f(p.x(), p.y());
+    }
+    glEnd();
+
   }
   
 
@@ -148,6 +143,9 @@ void NurbsCurve::managePressEvent(QMouseEvent* event,
 
       addPoint(position);
 
+      // Management of the homogeneous coordinate
+      HCoordinateVector.push_back(1);
+
       // Current point selection
       noSelection();
       select(isExistingPoint(position));
@@ -183,6 +181,10 @@ void NurbsCurve::managePressEvent(QMouseEvent* event,
 	if(!isSelected(index)){
 	  noSelection();
 	  select(index);
+
+	  // Management of the weight
+	  cout << "coin" << endl;
+
 	}
 	_startMovePoint[0] = position[0];
 	_startMovePoint[1] = position[1];
@@ -256,26 +258,73 @@ void NurbsCurve::manageDbClickEvent(QMouseEvent* event,
 				unsigned short toolType,
 				unsigned short canvasType)
 {
+
   gml::Point3D position;
   calculateQtToOpenGL(event,&position);
+  int index;
 
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-    addPoint(position);
-    close();
+  if((index=isExistingPoint(position)) != NO_EXIST){
+    if(!isSelected(index)){
+      noSelection();
+      select(index);
+      
+      // Management of the weight
+      cout << "coin2" << endl;
+      
+    }
     _startMovePoint[0] = position[0];
     _startMovePoint[1] = position[1];
-  }
-  /***************** selection mode **********************************/
-  else{
     
   }
+
 }
 
 std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
-  pointsList.clear();
-
+  gml::Point3D p3D;
+  
+  // New table in order to get the points
+  Vector_HPoint3Df ctrlpoints(getNbPoints());
+  
+  // Construction of this new table
+  for (int i=0; i < getNbPoints() ;i++) {
+    ctrlpoints[i] = PLib::HPoint3Df(_pointsVector[i][0],_pointsVector[i][1] ,0 ,1);
+  }
+  
+  // New color
+  glColor3f(0,1,0.5);
+  
+  // Knots contruction 
+  int nknots = getNbPoints() + nbPointsDefine;
+  PlVector_float knots(nknots);
+  for (int i=nbPointsDefine; i<nknots-nbPointsDefine; i++) {
+    knots[i] = (float)i-nbPointsDefine + 1;
+  }
+  
+  knots[0] = 0;
+  knots[1] = 0;
+  knots[2] = 0;
+  knots[3] = 0;
+  knots[nknots-1] = nknots-2*nbPointsDefine+1;
+  knots[nknots-2] = nknots-2*nbPointsDefine+1;
+  knots[nknots-3] = nknots-2*nbPointsDefine+1;
+  knots[nknots-4] = nknots-2*nbPointsDefine+1;
+  
+  PLib::NurbsCurvef curve(ctrlpoints, knots, nbPointsDefine-1);
+  
+  glBegin(GL_LINE_STRIP);
+  for (float i=0;i<=getNbPoints()-nbPointsDefine+1;i=i+0.01) {
+    PLib::HPoint3Df p = curve(i);  
+    p3D[0] = p.x();
+    p3D[0] = p.y();
+    p3D[0] = p.z();
+    pointsList.push_back(p3D);
+  }
+  glEnd();
+  
   return pointsList;
-}  
+}
+
+
+
