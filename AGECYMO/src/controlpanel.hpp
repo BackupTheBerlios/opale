@@ -7,10 +7,12 @@
 #include <qlabel.h>
 #include <qvalidator.h>
 #include <qcheckbox.h>
-
+#include <qmessagebox.h>
 
 class ControlPanel : public QWidget
 {
+  Q_OBJECT
+  
   private:
 
   //intern widgets
@@ -28,8 +30,11 @@ class ControlPanel : public QWidget
   QCheckBox*  _torsionBox;
   
   
-  // QIntValidator _wayValidator;
-//  QIntValidator _sectionValidator;
+  QIntValidator*    _wayValidator;
+  QIntValidator*    _sectionValidator;
+
+  QDoubleValidator* _scaleValidator;
+
   
   //values the user may change
   int _nWay;
@@ -42,13 +47,26 @@ class ControlPanel : public QWidget
   ControlPanel(QWidget* parent);
   ~ControlPanel();
 
-  int wayDiscretizeValue() const;
-  int sectionDiscretizeValue() const;
+  int wayDiscretizeValue();
+  int sectionDiscretizeValue();
 
-  double scaleFactor() const;
+  double scaleFactor();
   bool isTorsionEnabled() const;
-  
 
+  void validateAll();
+
+  private:
+  void checkWay();
+  
+  private slots:
+  
+//  void validateWay(const QString& text);
+  void validateWay();
+
+  void validateSection();
+
+  void validateScale();
+  
 };
 
 
