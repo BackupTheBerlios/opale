@@ -1,10 +1,17 @@
 #include <iostream>
 #include <qapplication.h>
-#include "mainwindow.hpp"
+
 #include "testVector.hpp"
+
+#include "mainwindow.hpp"
+
 #include "hpoint_nd.h"
 #include "vector.h"
 #include "nurbs.h"
+
+#ifdef CORE_LEVEL
+#include "CORE/CORE.h"
+#endif
 
 const double W_RATIO = 0.8; //how many of the screen's width we use for our application
 const double H_RATIO = 0.07; //how many of the screen's height we use for our application
@@ -55,7 +62,7 @@ main(int argc, char **argv)
 
   //TODO : remove this 
   //Test the vector class 
-  //testVector();
+  testVector();
 
   //TODO: remove this
   //This is just to test the linking.. and the nurb++ lib..
@@ -78,6 +85,20 @@ main(int argc, char **argv)
                   PLib::Color(255, 0, 0),
                   20,
                   20);
+
+
+  //TODO: remove this
+  // This is just to test linking for CORE lib
+  
+//   Expr e1 = 12.44;
+//   Expr e = "1234.567890";
+
+//   std::cout << "e1 = " << e1 << std::endl;
+//   std::cout << "e = "  << e  << std::endl;
+//   std::cout << setprecision(10) << "e = "  << e  << std::endl;
+//   std::cout << setprecision(15) << "e = "  << e  << std::endl;
+  
+
   
   // execute the application (main loop)
   return application.exec();
