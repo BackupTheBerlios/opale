@@ -24,8 +24,9 @@ class ControlPanel : public QWidget
 
   QLineEdit*   _wayTF; //TF = textfield
   QLineEdit*   _sectionTF; 
-  //QLineEdit*   _torsionTF; 
-  QLineEdit*   _scaleTF; 
+
+  QLineEdit*   _scaleSectionTF;
+  QLineEdit*   _scaleWayTF; 
 
   QCheckBox*  _torsionBox;
   
@@ -40,7 +41,9 @@ class ControlPanel : public QWidget
   int _nWay;
   int _nSection;
 
-  double _scaleFactor;
+  double _scaleFactorSection;
+  double _scaleFactorWay;
+  
   bool   _torsionEnabled;
   
   public:
@@ -50,7 +53,9 @@ class ControlPanel : public QWidget
   int wayDiscretizeValue();
   int sectionDiscretizeValue();
 
-  double scaleFactor();
+  double scaleFactorSection();
+  double scaleFactorWay();
+  
   bool isTorsionEnabled() const;
 
   void validateAll();

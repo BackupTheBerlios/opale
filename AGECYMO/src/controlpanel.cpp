@@ -7,7 +7,8 @@ const QString CYLINDER_BOX_NAME   = QString("Cylinder Parameters ");
 const QString WAY_LABEL     = QString("Way");
 const QString SECTION_LABEL = QString("Section");
 const QString TORSION_LABEL = QString("Torsion");
-const QString SCALE_LABEL   = QString("Scale");
+const QString SCALE_LABEL   = QString("Section Scale");
+const QString SCALE_WAY_LABEL   = QString("Way Scale");
 
 
 //The maximum step to discretize the way curve
@@ -34,7 +35,8 @@ ControlPanel::ControlPanel(QWidget* parent)
     : QWidget(parent, "Control Panel"),
       _nWay(10),
       _nSection(10),
-      _scaleFactor(1.0),
+      _scaleFactorSection(1.0),
+      _scaleFactorWay(1.0),
       _torsionEnabled(false)
 {
   setMaximumWidth(170);
@@ -77,17 +79,32 @@ ControlPanel::ControlPanel(QWidget* parent)
   
   QLabel* scale = new QLabel( SCALE_LABEL, _cylinderBox);
 
-  _scaleTF   = new QLineEdit( _cylinderBox );
-  _scaleTF->setFixedSize(80, 20);
+  _scaleSectionTF   = new QLineEdit( _cylinderBox );
+  _scaleSectionTF->setFixedSize(80, 20);
 
   _scaleValidator = new QDoubleValidator(SCALE_MIN_VALUE,
                                          SCALE_MAX_VALUE,
                                          SCALE_PRECISION, _cylinderBox);
 
-  _scaleTF->setValidator( _scaleValidator);
-  _scaleTF->validateAndSet( SCALE_INIT, 0, 0, 0);
+  _scaleSectionTF->setValidator( _scaleValidator);
+  _scaleSectionTF->validateAndSet( SCALE_INIT, 0, 0, 0);
   
-  connect ( _scaleTF, SIGNAL( lostFocus() ),
+  connect ( _scaleSectionTF, SIGNAL( lostFocus() ),
+            this, SLOT( validateScale() ) );
+  
+  QLabel* scaleWay = new QLabel( SCALE_WAY_LABEL, _cylinderBox);
+
+  _scaleWayTF   = new QLineEdit( _cylinderBox );
+  _scaleWayTF->setFixedSize(80, 20);
+
+  _scaleValidator = new QDoubleValidator(SCALE_MIN_VALUE,
+                                         SCALE_MAX_VALUE,
+                                         SCALE_PRECISION, _cylinderBox);
+
+  _scaleWayTF->setValidator( _scaleValidator);
+  _scaleWayTF->validateAndSet( SCALE_INIT, 0, 0, 0);
+  
+  connect ( _scaleWayTF, SIGNAL( lostFocus() ),
             this, SLOT( validateScale() ) );
   
   _layout->addWidget( _discretizeBox);
@@ -114,11 +131,16 @@ ControlPanel::sectionDiscretizeValue()
   return _nSection;
 }
 
+double
+ControlPanel::scaleFactorSection() 
+{
+  return _scaleFactorSection;
+}
 
 double
-ControlPanel::scaleFactor() 
+ControlPanel::scaleFactorWay() 
 {
-  return _scaleFactor;
+  return _scaleFactorWay;
 }
 
 
@@ -189,26 +211,47 @@ void
 ControlPanel::validateScale()
 {
   qDebug("dans validate scale");
-  
-  QString s = _scaleTF->text();
+    
   int zero = 0;
+
+  QString s = _scaleSectionTF->text();
   QValidator::State isValid = _scaleValidator->validate( s, zero);
     
-  if (isValid != QValidator::Acceptable)
+  if( isValid != QValidator::Acceptable )
   {
     QMessageBox::warning( this,
                           "Wrong value for the scale factor",
                           "Wrong value !!!");
 
-    _scaleTF->setText(QString(""));
-    _scaleTF->setFocus();
+    _scaleSectionTF->setText(QString(""));
+    _scaleSectionTF->setFocus();
   }
   else
   {
     //TODO : mettre a jour _nWay
-    _scaleFactor = s.toDouble();
-    qDebug(" scale  = %f ", _scaleFactor);
+    _scaleFactorSection = s.toDouble();
+    qDebug(" scale section = %f ", _scaleFactorSection);
+
+  
   }
+
+  QString s1 = _scaleWayTF->text();
+  QValidator::State isValid2 = _scaleValidator->validate( s1, zero);
+  if ( isValid2 != QValidator::Acceptable )
+  {
+    QMessageBox::warning( this,
+                          "Wrong value for the scale factor",
+                          "Wrong value !!!");
+
+    _scaleWayTF->setText(QString(""));
+    _scaleWayTF->setFocus();
+  }
+  else
+  {
+    _scaleFactorWay = s1.toDouble();
+    qDebug(" scale WAY  = %f ", _scaleFactorWay);
+  }
+  
   
 }
 
