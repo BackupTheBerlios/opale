@@ -280,7 +280,7 @@ PluginManager::reloadPlugin(const QString & pluginID)
 
   if(!handler)
   {
-    qWarning("Plugin %s could NOT BE LOAD !!!! WONT BE USED !!!". pluginID.latin1());
+    qWarning("Plugin %s could NOT BE LOAD !!!! WONT BE USED !!!", pluginID.latin1());
     return;
   }
 
@@ -294,14 +294,20 @@ PluginManager::reloadPlugin(const QString & pluginID)
   {
     case LOAD_AND_SAVE:
     {
-      plgh->load = (loadFunction*) dlsym(plgh->handler, LOAD_SYMBOL);
-      plgh->save = (saveFunction*) dlsym(plgh->handler, SAVE_SYMBOL);
+      loadFunction lf = (loadFunction) dlsym(plgh->handler, LOAD_SYMBOL);
+      plgh->load = &lf;
+
+      saveFunction sf = (saveFunction) dlsym(plgh->handler, SAVE_SYMBOL);
+      plgh->save = &sf;
+      
       break;
     }
 
     case ACTION:
     {
-      plgh->run = (runFunction*) dlsym(plgh->handler, RUN_SYMBOL);
+      runFunction rf = (runFunction) dlsym(plgh->handler, RUN_SYMBOL);
+      plgh->run = &rf;
+            
       break;
     }
     
