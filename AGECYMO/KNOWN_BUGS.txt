@@ -1,0 +1,34 @@
+
+Nous sommes parfaitement conscients des bugs suivants :
+
+
+*) L'utilisation d'un polygone comme chemin ne fonctionne pas et
+ l'application echoue à cause d'une assertion
+
+*) L'utilisation d'un cercle comme chemin conjointement avec un profil
+ complexe semble ne pas generer un solide exact.
+
+*) La torsion est désactivée
+
+*) La discrétisation d'une NURBS n'est pas assez répartie pour un
+ faible nombre de points demandés.
+
+*) Discrétisation non adapative sur le profil. Notre discrétisation
+ n'est pas optimale sur le profil. En effet, il est inutile de
+ trop discrétiser des segments horizontaux du profil
+ puisqu'ils correspondent à la même position sur le chemin. On
+ pourrait donct envisager de discrétiser le profil en favorisant les
+ segments non horizontaux.
+
+
+Enfin, la principale cause de présence de ces bugs est le fait d'avoir pris
+conscience trop tard qu'il fallait gerer plusieurs types de courbes
+par Canvas.
+
+Bien sûr d'autre peuvent ne pas avoir encore été détectés.
+
+Cordialement
+
+Alexis Derrien
+Romain  Pacanowski
+Alexandre Viollet
