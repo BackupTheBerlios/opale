@@ -976,11 +976,10 @@
 	  inexacte. Ce principe s'applique sur les valeurs entre $0$ et $0.5$. Il 
 	  est détecté sur les tests une remontée significative
 	  des erreurs pour un epsilon entre $0.5$ et $1.0$. \\
-	  Ceci est dû au fait qu'une face est décidée invalide (non coplanaire) 
-	  si elle est constituée des mêmes points. Or si l'epsilon est 
-	  supérieur à $0.5$, tous les points de la face sont considérés 
-	  comme étant identiques (de part le fait qu'un segment s'étend entre $0.0$
-	  et $1.0$). Il est donc logique de trouver des un nombre d'erreur 
+	  Si l'epsilon est supérieur à $0.5$, tous les points de la
+	  face sont considérés comme étant identiques (de part le fait
+	  qu'un segment s'étend entre $0.0$ et $1.0$). Il est donc
+	  logique de trouver un nombre d'erreur 
 	  conséquent lorsque l'epsilon dépasse la valeur $0.5$.\\
 	  
 
