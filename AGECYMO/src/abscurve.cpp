@@ -69,6 +69,9 @@ AbsCurve::~AbsCurve()
   _pointsVector.clear();
 }
 
+std::vector<gml::Point3D> AbsCurve::discretize(int nbSegments)
+{}
+
 //for events management
 void AbsCurve::managePressEvent(QMouseEvent* event,
 				unsigned short toolType,

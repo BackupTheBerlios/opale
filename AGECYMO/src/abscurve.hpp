@@ -81,6 +81,7 @@ class AbsCurve
   virtual void deletePoint(int index);
   virtual void deleteSelected();
   virtual void movePoint(int index, gml::Point3D newPosition);
+  virtual std::vector<gml::Point3D> discretize(int nbSegments);
 
   //non virtual methods
   int getNbPoints() const;

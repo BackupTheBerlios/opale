@@ -199,10 +199,16 @@ void Polyline::manageDbClickEvent(QMouseEvent* event,
   }
 }
 
-std::vector<gml::Point3D> Polyline::discretize()
+std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
-  pointsList.clear();
+  gml::Point3D vec;
+ 
+  for(unsigned i = 0 ; i<_pointsVector.size(); i++){
+    
+  } 
+
+  //vector construction
 
   return pointsList;
 }  
