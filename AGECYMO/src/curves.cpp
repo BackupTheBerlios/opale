@@ -116,6 +116,12 @@ void Curves::addCurve(AbsCurve *newCurve)
   _listOfCurves.push_back(newCurve);
 }
 
+
+std::vector<AbsCurve*> Curves::getAllCurves()
+{
+  return _listOfCurves;
+}
+
 /**************************************************************
  *
  *  change the current tool type
@@ -125,6 +131,17 @@ void Curves::addCurve(AbsCurve *newCurve)
 void Curves::setCurrentToolType(unsigned short toolType)
 {
   _currentToolType = toolType;
+}
+
+/**************************************************************
+ *
+ *  get the current tool type
+ *  @return the current toolType
+ *
+ *************************************************************/
+unsigned short Curves::getCurrentToolType()
+{
+  return _currentToolType;
 }
 
 /**************************************************************
@@ -160,6 +177,11 @@ void Curves::movePoint(int index, gml::Point3D newPosition){
     (*_listOfControlPoints[index])[0] = newPosition[0];
     (*_listOfControlPoints[index])[1] = newPosition[1];
   }
+}
+
+gml::Point3D *Curves::getPointAtIndex(unsigned short index)
+{
+  return _listOfControlPoints[index];
 }
 
 /**************************************************************
@@ -284,10 +306,15 @@ void Curves::selectAll()
  *************************************************************/
 void Curves::render()
 {
+  cout<<"rendu de la curves"<<endl;
+
   double increment; 
   increment = Control_point_size / 2.0;
   
   //render for all the curves
+
+  cout<<"nb de courbes ="<<_listOfCurves.size()<<endl;
+
   for(unsigned i = 0; i<_listOfCurves.size(); i++){
     _listOfCurves[i]->render();
   }
@@ -393,6 +420,39 @@ void Curves::setSelectionColor(double red, double green, double blue){
   _blueComponentSelect = blue;
 }
 
+/**************************************************************
+ *
+ *  get the network control points color
+ *  @param red the red component
+ *  @param green the green component
+ *  @param blue the blue component
+ *
+ *************************************************************/
+gml::Point3D Curves::getColor()
+{
+  gml::Point3D colors;
+  colors[0] = (_redComponent);
+  colors[1] = (_greenComponent);
+  colors[2] = (_blueComponent);
+  return colors;
+}
+
+/**************************************************************
+ *
+ *  get the network control points color when selected
+ *  @param red the red component
+ *  @param green the green component
+ *  @param blue the blue component
+ *
+ *************************************************************/
+gml::Point3D Curves::getSelectionColor()
+{
+  gml::Point3D colors;
+  colors[0] = (_redComponentSelect);
+  colors[1] = (_greenComponentSelect);
+  colors[2] = (_blueComponentSelect);
+  return colors;
+}
 
 /**************************************************************
  *
@@ -466,7 +526,7 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //polygone creation
       if(toolType == POLYG_MODE){
-	newCurve = new Polygone(_parent);
+	newCurve = new Polygone();
 	close();
 	_listOfCurves.push_back(newCurve);
 	_currentToolType = POLYG_MODE;
