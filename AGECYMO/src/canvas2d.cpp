@@ -381,3 +381,17 @@ void Canvas2D::deselectAllPoints()
     _figure->noSelection();
   }
 }
+
+AbsCurve *Canvas2D::getFigure()
+{
+  return _figure;
+}
+
+unsigned short Canvas2D::getToolMode()
+{
+  return _toolMode;
+}
+unsigned short Canvas2D::getCanvasType()
+{
+  return _canvasType;
+}

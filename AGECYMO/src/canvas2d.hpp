@@ -29,6 +29,7 @@ const unsigned short POLY_MODE = 1;
 const unsigned short CIRCLE_MODE = 2;
 const unsigned short REC_MODE = 3;
 const unsigned short NURBS_MODE = 4;
+const unsigned short NO_TOOL_MODE = 0;
 
 class AbsCurve;
 
@@ -38,7 +39,9 @@ class Canvas2D : public AbsCanvas
 
   public:
   Canvas2D(QWidget* parent = 0, const char* name = 0);
-
+  AbsCurve *getFigure();
+  unsigned short getToolMode();
+  unsigned short getCanvasType();
 
   private:
   
