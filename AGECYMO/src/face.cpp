@@ -33,8 +33,21 @@ Face::render()
                tpoints[_indexPts[i]][2]);
   }
   glEnd();
-  
+}
 
+
+void
+Face::renderNormal()
+{
+  //TODO: implement it
+}
+
+
+void
+Face::renderWithNormal()
+{
+  render();
+  //TODO: call and implements the renderNormal method
 }
 
 

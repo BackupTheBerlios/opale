@@ -21,12 +21,14 @@ class Face : public AbsFace
 
   virtual std::vector<int> *getIndexes();
 
-//   virtual int nbPoints();
-//   virtual int getIndex(int num);
-
   ~Face();
 
   void render();
+
+  void renderNormal();
+  
+  void renderWithNormal();
+
   
   friend std::ostream& operator<<(std::ostream& os, Face const& f);
 };
