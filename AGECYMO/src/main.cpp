@@ -48,10 +48,10 @@ main(int argc, char **argv)
   QApplication application(argc, argv);
 
   int w_app;
-  initApplicationSizeAndPosition(120, w_app); 
+  initApplicationSizeAndPosition(170, w_app); 
   
   // creation of the central window...
-  MainWindow   mainWindow(w_app, w_app, 150, 400, 0, 0);
+  MainWindow   mainWindow(w_app, w_app, 200, 400, 0, 0);
 
   // connected the main window to the application
   application.setMainWidget(&mainWindow);
