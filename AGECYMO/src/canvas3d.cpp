@@ -418,7 +418,7 @@ Canvas3D::accelEvent(int id)
     {
       _renderer.setRenderMode(Renderer::FLAT);
 
-      glPolygonMode(GL_FRONT, GL_FILL);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       glShadeModel(GL_FLAT);
 
       glEnable(GL_LIGHTING);
@@ -435,7 +435,7 @@ Canvas3D::accelEvent(int id)
     {
       _renderer.setRenderMode(Renderer::GOURAUD);
 
-      glPolygonMode(GL_FRONT, GL_FILL);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       glShadeModel(GL_SMOOTH);
 
       glEnable(GL_LIGHTING);
