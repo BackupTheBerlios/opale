@@ -57,6 +57,14 @@ AbsFace::operator=(AbsFace const& f2)
 std::ostream& operator<<(std::ostream& os, AbsFace const& f)
 {
   os << "[ Face point's address is :" << f._points << std::endl;
+
+  std::vector<gml::Point3D>::iterator i;  
+  for(i = f._points->begin(); i != f._points->end(); i++)
+  {
+    std::cout << (*i) << std::endl;
+  }    
+  
+  
   return os;
 }
 

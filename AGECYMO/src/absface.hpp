@@ -39,8 +39,7 @@ class AbsFace
   AbsFace& operator=(AbsFace const& f2);
 
   friend std::ostream& operator<<(std::ostream& os, AbsFace const& f);
-
-  
+    
 };
 
 #endif

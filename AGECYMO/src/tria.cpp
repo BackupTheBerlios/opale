@@ -83,8 +83,6 @@ operator<<(std::ostream& os, Tria const& t)
      << ", " << t._i3
      << " ] " << std::endl;
   
-  
-  
   return os;
 }
 

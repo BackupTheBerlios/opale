@@ -83,3 +83,17 @@ Quad::getIndexes()
 
 
 
+
+std::ostream&
+operator<<(std::ostream& os, Quad const& q)
+{
+  os << "Quad points address is " << q._points << std::endl;
+  
+  os << " [ " << q._i1
+     << ", "  << q._i2
+     << ", "  << q._i3
+     << ", "  << q._i4
+     << " ] " << std::endl;
+  
+  return os;
+}

@@ -43,3 +43,30 @@ Faces::faces()
   return *_faces;
 }
 
+
+std::ostream&
+operator<<(std::ostream& os, Faces const& f)
+{
+  os << "Model contains [ " << f._nbPoints << " points; " 
+     << f._nbFaces << " faces ] " << std::endl
+     << "Points : " << std::endl;
+  
+  for (int i=0; i<f._points.size(); i++)
+  {
+    os << f._points[i];
+  }
+
+  os << std::endl << "Faces : " << std::endl;
+  
+  std::vector<AbsFace*> lesfaces = *(f._faces);
+  
+  for (int i=0; i<f._faces->size(); i++)
+  {
+    os << *(lesfaces[i]);
+  }
+  
+  return os;
+    
+}
+
+  

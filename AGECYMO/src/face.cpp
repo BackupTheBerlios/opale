@@ -49,18 +49,20 @@ Face::getIndexes()
   return indices;
 }
 
-// int 
-// Face::nbPoints(){
-//   return _numberOfPts;
-// }
+std::ostream&
+operator<<(std::ostream& os, Face const& f)
+{
 
-// int Face::getIndex(int num){
-//   if((num>(nbPoints()-1)) || (index<0)){
-//     exit(-1);
-//   }
-//   else{
-//     return _indexPts[num];
-//   }
-// }
+  os << "Face [ " ;
+
+  for (int i=0; i<f._numberOfPts; i++)
+  {
+    os << f._indexPts[i] << ", " ;
+  }
+
+  os << " ] " << std::endl;
+  return os;
+}
+
 
 

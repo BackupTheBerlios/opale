@@ -24,7 +24,7 @@ class Quad : public AbsFace
 
 //   virtual int nbPoints();
 //   virtual int getIndex(int num);
-
+  friend std::ostream& operator<<(std::ostream& os, Quad const& q);
 };
 
 

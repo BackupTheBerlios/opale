@@ -31,7 +31,8 @@ class Faces
   std::vector<AbsFace*> const & faces();
   
   
-  
+
+  friend std::ostream& operator<<(std::ostream& os, Faces const& f);  
   
 };
 

@@ -1,6 +1,8 @@
 #ifndef CLASS_FACE_H
 #define CLASS_FACE_H
 
+#include <iostream>
+
 #include "qgl.h"
 
 #include "absface.hpp"
@@ -26,7 +28,8 @@ class Face : public AbsFace
   ~Face();
 
   void render();
-
+  
+  friend std::ostream& operator<<(std::ostream& os, Face const& f);
 };
 
 
