@@ -1,0 +1,591 @@
+Bon voila les résultats des tests core et mantilla
+sur les objets hand, bunny ,dragon et cube (ca a mis le temps...):
+
+Core test :
+
+**Hand
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102415
+Number of not valid intersections : 0
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6791463
+Number of not valid verifications : 13887
+
+**Bunny
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730520
+Number of not valid intersections : 146
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12841119
+Number of not valid verifications : 19861
+
+**Dragon
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections :8382437
+Number of not valid intersections : 28
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11157069
+Number of not valid verifications : 22281
+
+**Cube
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 5
+Number of not valid faces : 1
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 62
+Number of not valid verifications : 10
+
+Now Mantilla test (let's go....)
+
+**Hand
+*1.0
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102415
+Number of not valid intersections : 0
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805350
+Number of not valid verifications : 0
+
+*0.0
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102206
+Number of not valid intersections : 209
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805305
+Number of not valid verifications : 45
+
+*0.5
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102415
+Number of not valid intersections : 0
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805350
+Number of not valid verifications : 0
+
+*0.1
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5101687
+Number of not valid intersections : 728
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805313
+Number of not valid verifications : 37
+
+*0.001
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102414
+Number of not valid intersections : 1
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805349
+Number of not valid verifications : 1
+
+*10-6
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102415
+Number of not valid intersections : 0
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6805350
+Number of not valid verifications : 0
+
+*10-14
+test1:
+Number of edges : 3195
+Number of verifications : 5102415
+Number of valid intersections : 5102415
+Number of not valid intersections : 0
+test2:
+Number of faces : 2130
+Number of verifications : 2130
+Number of valid faces : 2130
+Number of not valid faces : 0
+test3:
+Number of faces : 2130
+Number of edges : 3195
+Number of verifications : 6805350
+Number of valid verifications : 6804299
+Number of not valid verifications : 1051
+
+
+
+
+**Bunny (le tit lapinou)
+*1.0
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730666
+Number of not valid intersections : 0
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860980
+Number of not valid verifications : 0
+
+*0.0
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730203
+Number of not valid intersections : 403
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860925
+Number of not valid verifications : 55
+
+*0.5
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730666
+Number of not valid intersections : 0
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860980
+Number of not valid verifications : 0
+
+*0.1
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730539
+Number of not valid intersections : 127
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860973
+Number of not valid verifications : 7
+
+*0.001
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730666
+Number of not valid intersections : 0
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860980
+Number of not valid verifications : 0
+
+*10-6
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730666
+Number of not valid intersections : 0
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860980
+Number of not valid verifications : 0
+
+*10-14
+test1:
+Number of edges : 4412
+Number of verifications : 9730666
+Number of valid intersections : 9730666
+Number of not valid intersections : 0
+test2:
+Number of faces : 2915
+Number of verifications : 2915
+Number of valid faces : 2915
+Number of not valid faces : 0
+test3:
+Number of faces : 2915
+Number of edges : 4412
+Number of verifications : 12860980
+Number of valid verifications : 12860753
+Number of not valid verifications : 227
+
+
+
+**dragon(last one)
+*1.0
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382465
+Number of not valid intersections : 0
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11179350
+Number of not valid verifications : 0
+
+*0.0
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382156
+Number of not valid intersections : 309
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 1117930
+Number of not valid verifications : 50
+
+*0.5
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382465
+Number of not valid intersections : 0
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11179350
+Number of not valid verifications : 0
+
+*0.1
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382465
+Number of not valid intersections : 0
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11179350
+Number of not valid verifications : 0
+
+*0.001
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382465
+Number of not valid intersections : 0
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11179350
+Number of not valid verifications : 0
+
+*10-6
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382463
+Number of not valid intersections : 2
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11179350
+Number of not valid verifications : 0
+
+*10-14
+test1:
+Number of edges : 4095
+Number of verifications : 8382465
+Number of valid intersections : 8382465
+Number of not valid intersections : 0
+test2:
+Number of faces : 2730
+Number of verifications : 2730
+Number of valid faces : 2730
+Number of not valid faces : 0
+test3:
+Number of faces : 2730
+Number of edges : 4095
+Number of verifications : 11179350
+Number of valid verifications : 11177603
+Number of not valid verifications : 1747
+
+**Cube
+*1.0
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 0
+Number of not valid faces : 6
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*0.0
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 4
+Number of not valid faces : 2
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*0.5
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 6
+Number of not valid faces : 0
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*0.1
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 6
+Number of not valid faces : 0
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*0.001
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 5
+Number of not valid faces : 1
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*10-6
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 5
+Number of not valid faces : 1
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
+
+*10-14
+test1:
+Number of edges : 12 
+Number of verifications : 66
+Number of valid intersections : 66
+Number of not valid intersections : 0
+test2:
+Number of faces : 6
+Number of verifications : 6
+Number of valid faces : 5
+Number of not valid faces : 1
+test3:
+Number of faces : 6
+Number of edges : 12
+Number of verifications : 72
+Number of valid verifications : 72
+Number of not valid verifications : 0
