@@ -103,6 +103,7 @@ Renderer::rebuildDPL()
   
   glNewList(_modelWireFrameDPL, GL_COMPILE);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  qDebug("about to render faces = %p", _faces);
   _faces->render();
   glEndList();
     
@@ -172,6 +173,7 @@ Renderer::updateCurrentDPL()
     }
   }
 
+  qDebug("currentDPL = %d", _currentDPL);
   qDebug("\n Dans Exiting updateCurrentDPL \n");
   
 }
@@ -230,6 +232,8 @@ Renderer::setModel(Faces & faces)
   
   _faces = &faces;
 
+  qDebug(" faces = %p", _faces);
+  
   rebuildDPL();
 }
 
