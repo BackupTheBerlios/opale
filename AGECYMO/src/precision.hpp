@@ -213,20 +213,52 @@
     }
     else     //test if the point is between the two points on the edge
     {
-      double deltaX, deltaY, deltaZ;
-      deltaX = (p[0] - a[0])/(b[0] - a[0]);
-      deltaY = (p[1] - a[1])/(b[1] - a[1]);
-      deltaZ = (p[2] - a[2])/(b[2] - a[2]);
+
+      //OLD FASHION
+//       double deltaX, deltaY, deltaZ;
+
+//       double p0 = p[0]; double p1 = p[1]; double p2 = p[2];
+//       double a0 = a[0]; double a1 = a[1]; double a2 = a[2];
+//       double b0 = b[0]; double b1 = b[1]; double b2 = b[2];
       
-      if ( isEqual(deltaX, deltaY) && isEqual(deltaY, deltaZ))
+      
+//       deltaX = (p0 - a0)/(b0 - a0);
+//       deltaY = (p1 - a1)/(b1 - a1);
+//       deltaZ = (p2 - a2)/(b2 - a2);
+      
+//       deltaX = (p[0] - a[0])/(b[0] - a[0]);
+//       deltaY = (p[1] - a[1])/(b[1] - a[1]);
+//       deltaZ = (p[2] - a[2])/(b[2] - a[2]);
+
+      
+//       if ( isEqual(deltaX, deltaY) && isEqual(deltaY, deltaZ))
+//       {
+//         if (isGreaterOrEqual(deltaX, null_value) && isLesserOrEqual(deltaX, one) )
+//         {
+//           *t = deltaX;
+//           return true;
+//         }
+//       }
+      
+       //NEW FASHION
+      double ux = b[0] - a[0];
+      double uy = b[1] - a[1];
+      double uz = b[2] - a[2];
+
+      double segmentLength2 = ux*ux + uy*uy + uz*uz;
+      double inprod = ux*(p[0] - a[0]) + uy*(p[1] - a[1]) + uz*(p[2] - a[2]);
+
+      if ( isGreaterOrEqual(inprod, null_value) && isLesserOrEqual(inprod, segmentLength2) )
       {
-        if (isGreaterOrEqual(deltaX, null_value) && isLesserOrEqual(deltaX, one) )
-        {
-          *t = deltaX;
-          return true;
-        }
-      } 
+        *t = inprod / segmentLength2;
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
+    
     return false;    
   } //end of method isOnEdge
 
