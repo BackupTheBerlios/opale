@@ -6,12 +6,24 @@
 
 using namespace std;
 
+/*******************************************************
+ * the default Circle constructor
+ *
+ ******************************************************/
 Circle::Circle() {
 }
 
+/*******************************************************
+ * the Circle destructor
+ *
+ ******************************************************/
 Circle::~Circle() {
 }
 
+/*******************************************************
+ * draw the circle in the openGL widget
+ *
+ ******************************************************/
 void Circle::render(){
 
   double increment; 
@@ -20,22 +32,19 @@ void Circle::render(){
   glColor3f(_redColor, _greenColor, _blueColor);
 
   glBegin(GL_LINE_STRIP);
-
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
     glVertex2f((float)(*_pointsVector[i])[0], (float)(*_pointsVector[i])[1]);
   }
-
   glEnd();
 
-  // Circle
   if (getNbPoints() == 2) {
     glBegin(GL_LINE_LOOP);
    
     // Ray compute
-    float x = pow((float)(*_pointsVector[1])[0] - (float)(*_pointsVector[0])[0],2);
-    float y = pow((float)(*_pointsVector[1])[1] - (float)(*_pointsVector[0])[1],2);
-
-    //cout << "x = " << x << endl;
+    float x = pow((float)(*_pointsVector[1])[0] - 
+		  (float)(*_pointsVector[0])[0],2);
+    float y = pow((float)(*_pointsVector[1])[1] - 
+		  (float)(*_pointsVector[0])[1],2);
 
     float r = sqrt(x + y);
 
@@ -53,15 +62,22 @@ void Circle::render(){
   
 }
 
+
+/*******************************************************
+ * discretize the circle
+ * @param nbSegments the discretization resolution
+ * @return the vector of points (the discretized polyline)
+ *
+ ******************************************************/
 std::vector<gml::Point3D> Circle::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
 
   // Ray compute
-  float xRay = pow((float)(*_pointsVector[1])[0] - (float)(*_pointsVector[0])[0],2);
-  float yRay = pow((float)(*_pointsVector[1])[1] - (float)(*_pointsVector[0])[1],2);
-  
-  //cout << "x = " << x << endl;
+  float xRay = pow((float)(*_pointsVector[1])[0] - 
+		   (float)(*_pointsVector[0])[0],2);
+  float yRay = pow((float)(*_pointsVector[1])[1] - 
+		   (float)(*_pointsVector[0])[1],2);
   
   float r = sqrt(xRay + yRay);
 
@@ -81,9 +97,14 @@ std::vector<gml::Point3D> Circle::discretize(int nbSegments)
   return pointsList;
 }  
 
+/*******************************************************
+ * add a point to the polyline
+ * @param point the point to add
+ * @return ADDED or NOT_ADDED
+ *
+ ******************************************************/
 int Circle::addPoint(gml::Point3D *point)
 {
-
   if (_pointsVector.size() <= 1) {
     _pointsVector.push_back(point);
     return ADDED;

@@ -6,12 +6,24 @@
 
 using namespace std;
 
+/*******************************************************
+ * the default Quadri constructor
+ *
+ ******************************************************/
 Quadri::Quadri() {
 }
 
+/*******************************************************
+ * the Quadri destructor
+ *
+ ******************************************************/
 Quadri::~Quadri() {
 }
 
+/*******************************************************
+ * draw the quadri in the openGL widget
+ *
+ ******************************************************/
 void Quadri::render(){
 
   double increment; 
@@ -20,11 +32,9 @@ void Quadri::render(){
   glColor3f(_redColor, _greenColor, _blueColor);
 
   glBegin(GL_LINE_STRIP);
-
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
     glVertex2f((*_pointsVector[i])[0], (*_pointsVector[i])[1]);
   }
-
   glEnd();
 
   // Quadri
@@ -35,21 +45,24 @@ void Quadri::render(){
     float diffy = (*_pointsVector[0])[1] - (*_pointsVector[1])[1];
 
     glVertex2f((*_pointsVector[0])[0], (*_pointsVector[0])[1]);
-
     glVertex2f((*_pointsVector[1])[0], (*_pointsVector[1])[1]);
-
     glVertex2f((*_pointsVector[1])[0], (*_pointsVector[1])[1] + 2 * diffy);
-
-    glVertex2f((*_pointsVector[1])[0] + 2 * diffx, (*_pointsVector[1])[1] + 2 * diffy);
-
-    glVertex2f((*_pointsVector[1])[0] + 2 * diffx, (*_pointsVector[1])[1]);  
-
+    glVertex2f((*_pointsVector[1])[0] + 
+	       2 * diffx, (*_pointsVector[1])[1] + 2 * diffy);
+    glVertex2f((*_pointsVector[1])[0] + 
+	       2 * diffx, (*_pointsVector[1])[1]);  
     glVertex2f((*_pointsVector[1])[0], (*_pointsVector[1])[1]);
     
     glEnd() ;
   }
 }
 
+/*******************************************************
+ * discretize the quadri
+ * @param nbSegments the discretization resolution
+ * @return the vector of points (the discretized polyline)
+ *
+ ******************************************************/
 std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> listPoints;
@@ -65,7 +78,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   
   Point3D p;
 
-  for (double i=perim/(float)nbSegments; i<2*diffy ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbSegments; 
+       i<2*diffy ; i += perim/(float)nbSegments) {
     p[0] = fourPoints[0][0];
     p[1] = fourPoints[0][1] + i;
     p[2] = 0.0;
@@ -78,7 +92,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[1]);
 
-  for (double i=perim/(float)nbSegments; i<2*diffx ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbSegments; 
+       i<2*diffx ; i += perim/(float)nbSegments) {
     p[0] = fourPoints[1][0] - i;
     p[1] = fourPoints[1][1];
     p[2] = 0.0;
@@ -91,7 +106,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[2]);
 
-  for (double i=perim/(float)nbSegments; i<2*diffy ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbSegments; 
+       i<2*diffy ; i += perim/(float)nbSegments) {
     p[0] = fourPoints[2][0];
     p[1] = fourPoints[2][1] - i;
     p[2] = 0.0;
@@ -104,19 +120,24 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[3]);
 
-  for (double i=perim/(float)nbSegments; i<2*diffx ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbSegments; 
+       i<2*diffx ; i += perim/(float)nbSegments) {
     p[0] = fourPoints[3][0] + i;
     p[1] = fourPoints[3][1];
     p[2] = 0.0;
     listPoints.push_back(p);
   }
-
   return listPoints;
 }  
 
+/*******************************************************
+ * add a point to the quadri
+ * @param point the point to add
+ * @return ADDED or NOT_ADDED
+ *
+ ******************************************************/
 int Quadri::addPoint(gml::Point3D *point)
 {
-
   if (_pointsVector.size() <= 1) {
     _pointsVector.push_back(point);
     return ADDED;

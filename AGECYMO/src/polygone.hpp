@@ -12,38 +12,50 @@ const double RED_CIRCLE = 0.25;
 const double GREEN_CIRCLE = 0.25;
 const double BLUE_CIRCLE = 0.25;
 
+/*******************************************************
+ * derived class of AbsCurve in order to draw a polygone
+ *
+ ******************************************************/
 class Polygone : public AbsCurve 
 {
 private:
 
-  int _nbPoints;
-
-  /* le canvas parent est défini dans curves.hpp */
-  //Canvas2D *_parent;
-  
-  /* la couleur de la courbe est définie dans abscurve.hpp */
-  //color for figure render
-  
-  //double _red_circle;
-  //double _green_circle;
-  //double _blue_circle;
-
-  //PS : si c'est une classe pour les polygones, circle ??
+  int _nbPoints; /**number of vertices*/
 
 public:
 
-  /*le constructeur de polygone ne prend pas ce parametre
-    c'est la classe Curves qui s'en charge*/
-  //Polygone(Canvas2D *parent);
-
+  /*******************************************************
+   * the default Polygone constructor
+   *
+   ******************************************************/
   Polygone();
 
+  /*******************************************************
+   * the Polygonee destructor
+   *
+   ******************************************************/
   ~Polygone();
   
+  /*******************************************************
+   * draw the polygone in the openGL widget
+   *
+   ******************************************************/
   void render();
 
+  /*******************************************************
+   * discretize the polygone
+   * @param nbSegments the discretization resolution
+   * @return the vector of points (the discretized polyline)
+   *
+   ******************************************************/
   std::vector<gml::Point3D> discretize(int nbSegments);
 
+  /*******************************************************
+   * add a point to the polygone
+   * @param point the point to add
+   * @return ADDED or NOT_ADDED
+   *
+   ******************************************************/
   int addPoint(gml::Point3D *point);
 
 };
