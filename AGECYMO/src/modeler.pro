@@ -5,6 +5,10 @@ CONFIG		+= qt opengl thread warn_on debug
 MOC_DIR = moc
 OBJECTS_DIR = obj
 
+INCLUDEPATH += ../lib/nurbs++/
+LIBS      += -lm -Wl,-E -ldl -rdynamic
+LIBS      += -L../lib/ -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
+
 HEADERS		= absVector.hpp \
             abscurve.hpp \
             point.hpp \
@@ -54,7 +58,7 @@ SOURCES		= testVector.cpp \
             main.cpp
 
 TARGET		= modeler
-LIBS      = -lm -Wl,-E -ldl -rdynamic
+
 
 #Optimisation for Pentium 4
 #QMAKE_CFLAGS= -O4 -march=pentium4 -fomit-frame-pointer -ffast-math -fforce-addr -falign-functions=4 -fprefetch-loop-arrays -funroll-loops -pipe -fforce-mem
