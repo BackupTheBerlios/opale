@@ -1,6 +1,16 @@
 #include "mainwindow.hpp"
 
-
+/**************************************************************
+ *
+ *  MainWindow constructor
+ *  @param screen_w the width of the screen
+ *  @param screen_h the height of the screnn
+ *  @param w_app the width of the window
+ *  @param h_app the height of the window
+ *  @param x_app the x position of the window
+ *  @param y_app the y position of the window
+ *
+ *************************************************************/
 MainWindow::MainWindow(int screen_w,
                        int screen_h,
                        int w_app,
@@ -56,6 +66,11 @@ MainWindow::MainWindow(int screen_w,
   
 }
 
+/**************************************************************
+ *
+ *  MainWindow destructor
+ *
+ *************************************************************/
 MainWindow::~MainWindow()
 {
   delete _wSection;
@@ -72,6 +87,14 @@ MainWindow::~MainWindow()
   
 }
 
+/**************************************************************
+ *  This is the main method which update the GUI
+ *  according to the plugin's data
+ *  @param pluginID the id of the plugin 
+ *  @param type the type of the plugin
+ *  @param infos plugin informations
+ *
+ *************************************************************/
 void
 MainWindow::updateGUIWithPluginData(const QString & pluginID,
                                     PluginType type,
@@ -195,6 +218,11 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
   
 }
 
+/**************************************************************
+ *
+ *  add the static menu bars
+ *
+ *************************************************************/
 void
 MainWindow::addStaticMenuBarContent()
 {
@@ -270,6 +298,14 @@ MainWindow::addStaticMenuBarContent()
   
 }
 
+/**************************************************************
+ *
+ *  init the frames
+ *  @param screen_height the height of the screen
+ *  @param screen_width the width of the screen
+ *  @param application_width the width of the application
+ *
+ *************************************************************/
 void
 MainWindow::initViewFrames(int screen_height, int frame_width, int application_width)
 {
@@ -326,6 +362,13 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
   _w3d->show();
   _comments->show();
 }
+
+
+/**************************************************************
+ *
+ *  update the view frame
+ *
+ *************************************************************/
 void
 MainWindow::updateViewFramesPosition()
 {
@@ -334,41 +377,83 @@ MainWindow::updateViewFramesPosition()
 //  _w3d.move(x() + _w3d.width(), y() + _w3d.width() + height());
 }
 
+/**************************************************************
+ *
+ *  get the canvas3D
+ *  @return the 3d canvas
+ *
+ *************************************************************/
 Canvas3D&
 MainWindow::getCanvas3D()
 {
   return dynamic_cast<Canvas3D &>( _w3d->canvas() );
 }
 
+/**************************************************************
+ *
+ *  get the wayCanvas
+ *  @return the wayCanvas
+ *
+ *************************************************************/
 Canvas2D&
 MainWindow::getCheminCanvas()
 {
   return dynamic_cast<Canvas2D &>( _wChemin->canvas() );
 }
 
+/**************************************************************
+ *
+ *  get the profilCanvas
+ *  @return the profilCanvas
+ *
+ *************************************************************/
 Canvas2D&
 MainWindow::getProfilCanvas()
 {
   return dynamic_cast<Canvas2D &>( _wProfil->canvas() );
 }
 
+/**************************************************************
+ *
+ *  get the sectionCanvas
+ *  @return the sectionCanvas
+ *
+ *************************************************************/
 Canvas2D& 
 MainWindow::getSectionCanvas()
 {
   return dynamic_cast<Canvas2D &>( _wSection->canvas() );
 }
 
+/**************************************************************
+ *
+ *  get the eventWindow
+ *  @return the eventWindow
+ *
+ *************************************************************/
 EventsWindow&
 MainWindow::getEventsWindow() {
   return *_comments;
 }
 
+/**************************************************************
+ *
+ *  get the model
+ *  @return the model (all faces)
+ *
+ *************************************************************/
 Faces&
 MainWindow::model()
 {
   return dynamic_cast<Canvas3D &>( _w3d->canvas() ).renderer().model();
 }
 
+/**************************************************************
+ *
+ *  set the model
+ *  @param faces the model
+ *
+ *************************************************************/
 void
 MainWindow::setModel(Faces& faces)
 {
@@ -392,7 +477,12 @@ MainWindow::setModel(Faces& faces)
 }
 
 
-//Qt EVENTS
+/**************************************************************
+ *
+ *  manage moce events
+ *  @param event the event
+ *
+ *************************************************************/
 void
 MainWindow::moveEvent(QMoveEvent* event)
 {
@@ -401,7 +491,11 @@ MainWindow::moveEvent(QMoveEvent* event)
 }
 
 
-//SLOTS
+/**************************************************************
+ *
+ *  display about window
+ *
+ *************************************************************/
 void
 MainWindow::about()
 {
@@ -419,6 +513,11 @@ MainWindow::about()
 
 }
 
+/**************************************************************
+ *
+ *  display manual window
+ *
+ *************************************************************/
 void
 MainWindow::manual()
 {
@@ -486,6 +585,12 @@ MainWindow::manual()
 
 // }
 
+
+/**************************************************************
+ *
+ *  generate the cylinder
+ *
+ *************************************************************/
 void
 MainWindow::generateCylinder()
 {
@@ -599,6 +704,13 @@ MainWindow::generateCylinder()
   displayTimeStatus("Cylinder generated in %1", timeTiGenerateIt);
 }
 
+/**************************************************************
+ *
+ *  adjust the way via a scale
+ *  @param ptsChemin the way's points
+ *  @param scaleFactor the scale
+ *
+ *************************************************************/
 void
 MainWindow::adjustWay(std::vector<Point3D> & ptsChemin, double scaleFactor)
 {
@@ -616,7 +728,13 @@ MainWindow::adjustWay(std::vector<Point3D> & ptsChemin, double scaleFactor)
   
 }
                       
-
+/**************************************************************
+ *
+ *  adjust the section via a scale
+ *  @param ptsSection the section's points
+ *  @param scaleFactor the scale
+ *
+ *************************************************************/
 void
 MainWindow::adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor)
 {
@@ -700,7 +818,13 @@ MainWindow::adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor)
 // }
 
   
-
+/**************************************************************
+ *
+ *  display time indications
+ *  @param operation the name of the operation
+ *  @param timeInMilliSeconds the operation time
+ *
+ *************************************************************/
 void
 MainWindow::displayTimeStatus(const char* operation, int timeInMilliSeconds)
 {
