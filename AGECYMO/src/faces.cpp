@@ -3,6 +3,13 @@
 #include <iostream>
 #include <cstdlib>
 
+/**************************************************************
+ *
+ *  constructor for Faces class
+ *  @param points the points used in the faces
+ *  @param faces the vector of faces
+ *
+ *************************************************************/
 Faces::Faces(std::vector<gml::Point3D> *points,
              std::vector<AbsFace*> *faces)
     : _nbPoints(points->size()),
@@ -19,7 +26,11 @@ Faces::Faces(std::vector<gml::Point3D> *points,
   updateVertexNormals();
 }
 
-
+/**************************************************************
+ *
+ *  destructor for Faces class
+ *
+ *************************************************************/
 Faces::~Faces()
 {
   qDebug("Faces : DESTRUCTOR");
@@ -30,7 +41,11 @@ Faces::~Faces()
   qDebug("END of destructor ");
 }
 
-
+/**************************************************************
+ *
+ *  draw the faces in the openGL context
+ *
+ *************************************************************/
 void
 Faces::render() const
 {
@@ -43,7 +58,11 @@ Faces::render() const
   }  
 }
 
-
+/**************************************************************
+ *
+ *  draw the face in the openGL context with the normals
+ *
+ *************************************************************/
 void
 Faces::renderWithNormal() const
 {
@@ -56,6 +75,12 @@ Faces::renderWithNormal() const
   }  
 }
 
+
+/**************************************************************
+ *
+ *  draw the normals of the faces
+ *
+ *************************************************************/
 void
 Faces::renderNormals() const
 {
@@ -68,6 +93,11 @@ Faces::renderNormals() const
   }  
 }
 
+/**************************************************************
+ *
+ *  draw the bounding box of the entiere object
+ *
+ *************************************************************/
 void
 Faces::renderBoundingBox() const
 {
@@ -111,45 +141,83 @@ Faces::renderBoundingBox() const
 }
 
 
-
+/**************************************************************
+ *
+ *  get all the points
+ *  @return a vector of points
+ *
+ *************************************************************/
 std::vector<gml::Point3D> const &
 Faces::points()
 {
   return *_points;
 }
 
+/**************************************************************
+ *
+ *  get all the faces
+ *  @return a vector of AbsFace
+ *
+ *************************************************************/
 std::vector<AbsFace*> const &
 Faces::faces()
 {
   return *_faces;
 }
 
-
+/**************************************************************
+ *
+ *  get the number of vertices
+ *  @return the number of vertices
+ *
+ *************************************************************/
 int
 Faces::numberOfVertex() const
 {
   return _nbPoints;
 }
 
+/**************************************************************
+ *
+ *  get the number of triangles
+ *  @return the number of triangles
+ *
+ *************************************************************/
 int
 Faces::numberOfTriangles() const
 {
   return _nbTriangles;
 }
 
+/**************************************************************
+ *
+ *  get the number of quads
+ *  @return the number of quads
+ *
+ *************************************************************/
 int
 Faces::numberOfQuads() const
 {
   return _nbQuads;
 }
 
+/**************************************************************
+ *
+ *  get the numbers of the others faces types
+ *  @return the numbers of the others faces types
+ *
+ *************************************************************/
 int
 Faces::numberOfOthers() const
 {
   return _nbOthers;
 }
 
-
+/**************************************************************
+ *
+ *  redefine the display stream operator for debug
+ *
+ *************************************************************/
 std::ostream&
 operator<<(std::ostream& os, Faces const& f)
 {
@@ -183,7 +251,11 @@ operator<<(std::ostream& os, Faces const& f)
 }
 
   
-
+/**************************************************************
+ *
+ *  update the bounding box
+ *
+ *************************************************************/
 void
 Faces::updateBoundingBox()
 {
@@ -227,6 +299,11 @@ Faces::updateBoundingBox()
     
 }
 
+/**************************************************************
+ *
+ *  update data infos about faces
+ *
+ *************************************************************/
 void
 Faces::updateDataInfo()
 {  
@@ -267,6 +344,11 @@ Faces::updateDataInfo()
   
 }
 
+/**************************************************************
+ *
+ *  update all the normals
+ *
+ *************************************************************/
 void
 Faces::updateVertexNormals()
 {
@@ -306,6 +388,13 @@ Faces::updateVertexNormals()
   qDebug("FACES : end of updateVertexNormal ");
 }
 
+/**************************************************************
+ *
+ *  compute the average of normals
+ *  @param normals the vactor of the normals
+ *  @return the average of the normals
+ *
+ *************************************************************/
 gml::Vector3D
 Faces::computeAverageNormal(const std::vector<gml::Vector3D> & normals)
 {
