@@ -1,6 +1,7 @@
 #ifndef CLASS_MAINWINDOW
 #define CLASS_MAINWINDOW
 
+//qt stuff
 #include <qdict.h>
 #include <qstringlist.h>
 #include <qkeysequence.h>
@@ -11,8 +12,12 @@
 #include <qmainwindow.h>
 #include <qapplication.h>
 #include <qsignalmapper.h>
+#include <qiconset.h>
+#include <qpixmap.h>
+#include <qtoolbar.h>
+#include <qtoolbutton.h>
 
-
+//Our stuff
 #include "pluginmanager.hpp"
 
 #include "canvas2d.hpp"
@@ -25,6 +30,9 @@ const QString INPUT_COMPONENT_SEPARATOR = "/";
 
 const QString FILE_KEY = "&File";
 const QString HELP_KEY = "&Help";
+
+const QString IMAGES_DIR = "../images/";
+const QString QUIT_IMAGE = "exit.png";
 
 
 class MainWindow : public QMainWindow
@@ -46,6 +54,8 @@ class MainWindow : public QMainWindow
   QDict<QPopupMenu> _menus;
   
   PluginManager*  _pluginManager;
+
+  QToolBar*       _toolBar;
   
   
   public:
