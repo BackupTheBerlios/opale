@@ -33,12 +33,13 @@ void Polyline::render()
   glEnd();
 }
 
-/*******************************************************
- * add a point to the polyline
- * @param point the point to add
- * @return ADDED or NOT_ADDED
- *
- ******************************************************/
+
+ /*******************************************************
+  * discretize the polyline
+  * @param nbSegments the discretization resolution
+  * @return the vector of points (the discretized polyline)
+  *
+  ******************************************************/
 std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
@@ -76,13 +77,12 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
   return pointsList;
 }
 
-
- /*******************************************************
-  * discretize the polyline
-  * @param nbSegments the discretization resolution
-  * @return the vector of points (the discretized polyline)
-  *
-  ******************************************************/
+/*******************************************************
+ * add a point to the polyline
+ * @param point the point to add
+ * @return ADDED or NOT_ADDED
+ *
+ ******************************************************/
 int Polyline::addPoint(gml::Point3D *point)
 {
   cout<<"point ajoute dans addPoint"<<endl;
