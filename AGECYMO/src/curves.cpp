@@ -454,6 +454,8 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_listOfCurves.push_back(newCurve);
 	_currentToolType = POLY_MODE;
 
+	_parent->getMW().getEventsWindow().writeComments("fuck!!");
+
 	//management of the popupMenu
 	_parent->getPopupMenu()->setItemEnabled(0,false);
 	_parent->getPopupMenu()->setItemEnabled(1,true);
