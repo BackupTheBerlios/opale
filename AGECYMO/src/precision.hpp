@@ -695,7 +695,7 @@
     // Il y a alors deux cas :
     // - le segment est en dehors du plan
     // - le segment est sur le plan
-    if(isEqual((plane[0]*vectorEdgeX + plane[1]*vectorEdgeY +	plane[2]*vectorEdgeZ), null_value))
+    if(isEqual((plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + plane[2]*vectorEdgeZ), null_value))
     {
       // Si le segment ne se trouve pas sur le plan, alors on retourne 0
       if (!onPlane(a, points) && !onPlane(b, points)) {
@@ -704,6 +704,14 @@
 
       // Cas ou le segment se trouve sur le plan
       else {
+
+	/*if (onPlane(a, points) && !onPlane(b, points)) {
+	   std::cout << "a est sur le plan mais pas b" << std::endl;
+	 }
+
+	  if (!onPlane(a, points) && onPlane(b, points)) {
+	    std::cout << "b est sur le plan mais pas a" << std::endl;
+	    }*/
 
 	// Recherche si les points du segment ne correspondent pas aux points de la face
 	bool founda = false;
@@ -799,12 +807,12 @@
 		*t=1.0;
 		return 1;
 	      }
+	      return 0;
 	    }
 	  }
 	}
 
 	// Probleme de valeur
-	std::cout << "FUCK !! " << std::endl;
 	return -1;
 
       }
