@@ -300,8 +300,8 @@ Canvas2D::paintGL()
 void
 Canvas2D::resizeGL(int width, int height)
 {
-  double w2 = width / 2.0;
-  double h2 = height / 2.0;
+  //double w2 = width / 2.0;
+  //double h2 = height / 2.0;
   
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
@@ -490,6 +490,7 @@ QPopupMenu *Canvas2D::getPopupMenu()
 void Canvas2D::setPolyMode()
 {
   _toolMode = POLY_MODE;
+  _mw->getEventsWindow().writeComments("polylines selected in " + this->caption());
 }
 
 /**************************************************************
@@ -500,6 +501,7 @@ void Canvas2D::setPolyMode()
 void Canvas2D::setPolygMode()
 {
   _toolMode = POLYG_MODE;
+   _mw->getEventsWindow().writeComments("polygones selected in "+ this->caption());
 }
 
 /**************************************************************
@@ -510,6 +512,7 @@ void Canvas2D::setPolygMode()
 void Canvas2D::setCircleMode()
 {
   _toolMode = CIRCLE_MODE;
+  _mw->getEventsWindow().writeComments("circles selected in "+ this->caption());
 }
 
 /**************************************************************
@@ -520,6 +523,7 @@ void Canvas2D::setCircleMode()
 void Canvas2D::setRecMode()
 {
   _toolMode = REC_MODE;
+   _mw->getEventsWindow().writeComments("rectangles selected in "+ this->caption());
 }
 
 /**************************************************************
@@ -530,6 +534,7 @@ void Canvas2D::setRecMode()
 void Canvas2D::setNurbsMode()
 {
   _toolMode = NURBS_MODE;
+   _mw->getEventsWindow().writeComments("nurbs curves selected in "+ this->caption());
 }
 
 /**************************************************************
@@ -543,7 +548,7 @@ void Canvas2D::deleteAllPoints()
   //polyline default tool
   _toolMode = POLY_MODE;
 
-  _mw->getEventsWindow().writeComments("all points deleted");
+  _mw->getEventsWindow().writeComments("all points deleted in "+ this->caption());
 }
 
 /**************************************************************
@@ -559,7 +564,7 @@ void Canvas2D::selectAllPoints()
   for(unsigned i = 0; i<points.size(); i++){
     cout<<"x = "<<points[i][0]<<" y = "<<points[i][1]<<endl;
   }
-  _mw->getEventsWindow().writeComments("all points selected");
+  _mw->getEventsWindow().writeComments("all points selected in " + this->caption());
 }
 
 /**************************************************************
@@ -570,7 +575,7 @@ void Canvas2D::selectAllPoints()
 void Canvas2D::deselectAllPoints()
 {
   _figure->noSelection();
-  _mw->getEventsWindow().writeComments("all points deselected");
+  _mw->getEventsWindow().writeComments("all points deselected in "+ this->caption());
 }
 
 
