@@ -121,6 +121,7 @@ int load(MainWindow *mainWin){
     return EXIT_FAILURE;
   }
 
+  mainWin->getEventsWindow().writeComments("VRML model loading...");
 
   //opening file for writing
   ifstream file(fileName.latin1());
@@ -140,7 +141,7 @@ int load(MainWindow *mainWin){
       figure = new Curves(&mainWin->getProfilCanvas());
     }
     else{
-      //here a log error
+      mainWin->getEventsWindow().writeComments("error in curves loading : canvas type not recognized");
     }
 
     //get the close parameter
@@ -196,7 +197,7 @@ int load(MainWindow *mainWin){
 	curve = new NurbsCurve();
       }
       if(curve == NULL){
-	//here a log error
+	  mainWin->getEventsWindow().writeComments("error in curves loading : curves type not recognized");
       }
 
       file>>indexCurve;
@@ -226,6 +227,8 @@ int load(MainWindow *mainWin){
 
   //file closing
   file.close();
+
+  mainWin->getEventsWindow().writeComments("curves loaded");
   return EXIT_SUCCESS;
 }
 
@@ -261,6 +264,8 @@ int save(MainWindow *mainWin){
   if(fileName.find(".cur") == -1){
     fileName = fileName + ".cur";
   }
+
+  mainWin->getEventsWindow().writeComments("curves saving...");
 
   //opening file for writing
   ofstream file(fileName.latin1());
@@ -334,7 +339,7 @@ int save(MainWindow *mainWin){
 	  file<<REC_MODE<<SPACE;
 	}
 	else{
-	  //here a log error
+	  mainWin->getEventsWindow().writeComments("error in curves saving : curve type not recognized");
 	}
 
 	//write the index of the points
@@ -352,10 +357,15 @@ int save(MainWindow *mainWin){
       file<<CANVAS_END<<SPACE;
 
     }
+    else{
+      mainWin->getEventsWindow().writeComments("error in curves saving : curves not exists");
+    }
   }
 
   //file closing
   file.close();
+
+  mainWin->getEventsWindow().writeComments("curves saved");
 
   return EXIT_SUCCESS;
 }

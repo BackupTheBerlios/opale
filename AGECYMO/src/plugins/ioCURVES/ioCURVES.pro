@@ -18,6 +18,7 @@ HEADERS		= ../../vector.hpp \
             ../../polygone.hpp \
             ../../quadri.hpp \
             ../../canvas2d.hpp \
+            ../../eventswindow.hpp \
             ../../circle.hpp 
 
 SOURCES		= ../../nurbscurve.cpp \
@@ -29,6 +30,7 @@ SOURCES		= ../../nurbscurve.cpp \
             ../../quadri.cpp \
             ../../circle.cpp \
             ../../canvas2d.cpp \
+            ../../eventswindow.cpp \
             ioCURVES.cpp
 
 TARGET		= ioCURVES.plg
