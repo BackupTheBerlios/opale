@@ -218,11 +218,8 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
   else{
     if((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0)){
        
-      if(event->state() == Qt::ControlButton){
 	_figure->managePressEvent(event,_toolMode,_canvasType);
 	updateGL();
-      }
-      
     }
   }
 }
@@ -258,11 +255,9 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
     //creation only with control button
     if(((_canvasType != PROFIL_CANVAS) || (event->x() > width()/2.0))) {
 
-      if (event->state() == Qt::ControlButton){
       _figure->manageDbClickEvent(event,
 				  _toolMode,
 				  _canvasType);
-      }
     }
   }
 }
