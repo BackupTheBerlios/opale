@@ -41,7 +41,7 @@ AbsFace::setPoints(std::vector<gml::Point3D> * pts)
 AbsFace&
 AbsFace::operator=(AbsFace const& f2)
 {
-  std::cout << "Dans operator = de AbsFace" << std::endl;
+//  std::cout << "Dans operator = de AbsFace" << std::endl;
   
   if ( (void *) this == (void  *) &f2) //assignment to itself ?
   {
