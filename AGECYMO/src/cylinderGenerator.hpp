@@ -62,6 +62,13 @@ class CylinderGenerator
   
   int profileToWayByIndex( const std::vector<Point3D> & profilePts,
                          int profileIndex);
+
+  void profileToWayByPoints( const std::vector<Point3D> & wayPts,
+                             const std::vector<Point3D> & profilePts,
+                             int profileIndex,
+                             Point3D & previous,
+                             Point3D & current,
+                             Point3D & next);
   
   void generatePoints(const std::vector<Point3D> & wayPts,
                       const std::vector<Point3D> & sectionPts,
@@ -86,7 +93,12 @@ class CylinderGenerator
                        Matrix3D & frame);
   
   void computePointsAccordingToFrame( const std::vector<Point3D> & sectionPts,
-                                      Matrix3D & currentFrame);
+                                      Matrix3D & currentFrame,
+                                      Matrix3D & dilatationMatrix);
+  
+//   void computePointsAccordingToFrame( const std::vector<Point3D> & sectionPts,
+//                                       Matrix3D & currentFrame);
+  
   
   
   void computeProfileMatrix( const std::vector<Point3D> & profilePts,
