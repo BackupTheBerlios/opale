@@ -3,12 +3,18 @@ CONFIG		+= qt opengl thread warn_on debug
 #CONFIG		+= qt opengl thread warn_off release
 
 MOC_DIR = moc
-OBJECTS_DIR = obj 
+OBJECTS_DIR = obj
+
+#  ../lib/libmatrixI.a ../lib/libmatrixN.a ../lib/libmatrix.a/ ../lib/libnurbsd.a ../lib/libnurbsf.a
 
 INCLUDEPATH += ../lib/nurbs++/
+#LIBS +=  ../lib/libmatrixI.a ../lib/libmatrixN.a ../lib/libmatrix.a ../lib/libnurbsd.a ../lib/libnurbsf.a
+#LIBS      +=  -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
 LIBS      += -L../lib/ -lmatrixI -lmatrixN -lmatrix -lnurbsd -lnurbsf
+
 LIBS      += -lm -Wl,-E -ldl -rdynamic
 
+LD_LIBRARY_PATH += ../lib/
 
 HEADERS		= absVector.hpp \
             abscurve.hpp \
@@ -32,6 +38,7 @@ HEADERS		= absVector.hpp \
             window3d.hpp \
             pluginmanager.hpp \
             controlpanel.hpp \
+            helpwindow.hpp \
             mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
@@ -53,6 +60,7 @@ SOURCES		= testVector.cpp \
             window3d.cpp \
             pluginmanager.cpp \
             controlpanel.cpp \
+            helpwindow.cpp \
             mainwindow.cpp \
             main.cpp
 
