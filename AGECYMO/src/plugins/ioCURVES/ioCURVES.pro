@@ -6,33 +6,30 @@ MOC_DIR = moc
 OBJECTS_DIR = obj
 
 INCLUDEPATH=../../
+INCLUDEPATH+=../../../lib/nurbs++/ 
 
-HEADERS		= ../../point.hpp \
-            ../../vector.hpp \
-            ../../absface.hpp \
-            ../../face.hpp \
-            ../../tria.hpp \
-            ../../quad.hpp \
-            ../../faces.hpp \
+HEADERS		= ../../vector.hpp \
+            ../../point.hpp \
             ../../nurbscurve.hpp \
             ../../renderer.hpp \
             ../../abscurve.hpp \
             ../../polyline.hpp \
+            #../../nurbscurve.hpp \
+            ../../polygone.hpp \
             ../../quadri.hpp \
+            ../../canvas2d.hpp \
             ../../circle.hpp 
 
-SOURCES		=  ../../absface.cpp \
-             ../../face.cpp \
-             ../../tria.cpp \
-             ../../quad.cpp \
-             ../../faces.cpp \
-             ../../nurbscurve.cpp \
-             ../../renderer.cpp \
-             ../../abscurve.cpp \
-             ../../polyline.cpp \
-             ../../quadri.cpp \
-             ../../circle.cpp \
-             ioCURVES.cpp
+SOURCES		= ../../nurbscurve.cpp \
+            ../../renderer.cpp \
+            ../../abscurve.cpp \
+            ../../polyline.cpp \
+            #../../nurbscurve.cpp \
+            ../../polygone.cpp \
+            ../../quadri.cpp \
+            ../../circle.cpp \
+            ../../canvas2d.cpp \
+            ioCURVES.cpp
 
 TARGET		= ioCURVES.plg
 LIBS      = -lm -Wl,-E -ldl -rdynamic -shared
