@@ -22,14 +22,16 @@ MainWindow::MainWindow(int screen_w,
   _toolBar->setResizeEnabled(true);
   
   
+  
   resize(w_app, h_app);
   move(0, 0);
   setCaption(TITLE);
 
+  show();
 
   initViewFrames(800, screen_w, w_app);
 
-  show();
+
   
   //Tell the plugin manager to load and unload the available plugins
   //Plugins will be loaded on demand
@@ -37,7 +39,7 @@ MainWindow::MainWindow(int screen_w,
 
   addStaticMenuBarContent();
   moveDockWindow(_toolBar, Qt::DockLeft);
-  
+
 }
 
 MainWindow::~MainWindow()
@@ -346,7 +348,7 @@ MainWindow::setModel(Faces& faces)
   
   c3d.updateGL();
 
-  qApp->sendPostedEvents();
+//  qApp->sendPostedEvents();
 }
 
 
@@ -447,7 +449,7 @@ MainWindow::generateCylinder()
   
   std::vector<Point3D> ptsProfile;
 
-  int paramDiscretisationCHEMIN  = 10;
+  int paramDiscretisationCHEMIN  = 18;
   int paramDiscretisationSECTION = 15;
 
   Canvas2D & canvasSection=  dynamic_cast<Canvas2D &>(_wSection->canvas());
