@@ -20,11 +20,6 @@
 class MainWindow;
 
 
-// Type of components which may be pluged.
-const char* MENUBAR_CMP = "/Menu";
-const char* TOOLBAR_CMP = "/Toolbar";
-
-
 // Plugin types definition
 enum PluginType{ LOAD_AND_SAVE, ACTION }; //What's the type of the plugin ?
 
@@ -43,7 +38,14 @@ public:
 class PluginManager
 {
 
-  //Attributes
+  //Public Attributes/Constants 
+  public:
+
+  // Type of components which may be pluged.
+  static const char* MENUBAR_CMP;
+  static const char* TOOLBAR_CMP;
+  
+  //Private Attributes
   private:
 
   typedef void** (*queryFunction) (void);

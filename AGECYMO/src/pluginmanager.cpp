@@ -1,6 +1,11 @@
 #include "pluginmanager.hpp"
 
 
+  
+// Type of components which may be pluged.
+const char* PluginManager::MENUBAR_CMP = "/Menu";
+const char* PluginManager::TOOLBAR_CMP = "/Toolbar";
+
 const char*   PluginManager::QUERY_SYMBOL = "query";
 const char*   PluginManager::RUN_SYMBOL = "run";
 
@@ -57,13 +62,9 @@ PluginManager::readAvailablePlugins()
         std::cout << "Found a plugin named :" << fileInfo->fileName() << std::endl;
 
         loadAndUnloadPlugin(fileInfo->filePath());
-        
-        
       }
       ++it;
     }
-
-
   }
   else
   {
@@ -167,6 +168,11 @@ PluginManager::loadAndUnloadPlugin(const QString & pluginFullName)
   //Then we update the GUI because the functionalities
   //provided by the plugin should work
 
+  std::cout << "Plugin name is " << infos[0] << std::endl;
+  std::cout << "Plugin type is " << infos[1] << std::endl;
+  std::cout << "Number of entries " << infos[2] << std::endl;
+
+  
   //TODO: to call the appropriate method in the MainWindow class
         
   //finally we unload the plugin and store it as available but not loaded...
