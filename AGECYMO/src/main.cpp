@@ -4,7 +4,7 @@
 #include "testVector.hpp"
 #include "hpoint_nd.h"
 #include "vector.h"
-
+#include "nurbs.h"
 
 const double W_RATIO = 0.8; //how many of the screen's width we use for our application
 const double H_RATIO = 0.07; //how many of the screen's height we use for our application
@@ -59,7 +59,9 @@ main(int argc, char **argv)
 
   //TODO: remove this
   //This is just to test the linking.. and the nurb++ lib..
-  /*Vector_HPoint3Df pts(4);
+
+  Vector_HPoint3Df pts(4);
+
   pts[0] = PLib::HPoint3Df(0, 0, 0, 1);
   pts[1] = PLib::HPoint3Df(30, 0, 0, 1);
   pts[2] = PLib::HPoint3Df(60, 30, 0, 1);
@@ -75,9 +77,7 @@ main(int argc, char **argv)
                   1,
                   PLib::Color(255, 0, 0),
                   20,
-                  20);*/
-  
-  
+                  20);
   
   // execute the application (main loop)
   return application.exec();
