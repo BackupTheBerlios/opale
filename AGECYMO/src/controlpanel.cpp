@@ -168,7 +168,8 @@ ControlPanel::scaleFactorWay()
 bool
 ControlPanel::isTorsionEnabled() const
 {
-  return _torsionEnabled;
+//return _torsionEnabled;
+  return _torsionBox->isChecked();
 }
 
 /**************************************************************
