@@ -27,6 +27,8 @@ MainWindow::MainWindow(int screen_w,
   //Plugin Manager
   _pluginManager = new PluginManager(this);
 
+  _comments = new EventsWindow();
+
   //Toolbar
   _toolBar = new QToolBar("Operations", this);
   _toolBar->setHorizontallyStretchable(true);
@@ -271,8 +273,14 @@ MainWindow::addStaticMenuBarContent()
 void
 MainWindow::initViewFrames(int screen_height, int frame_width, int application_width)
 {
+  
+
+
+  _comments->writeComments("coincoin");
+
+
   _w3d = new Window3D();
-  Canvas3D* _canvas3d = new Canvas3D(_w3d);
+  Canvas3D* _canvas3d = new Canvas3D(this, _w3d);
   _canvas3d->setCaption("Perspective");
   _w3d->attachCanvas(_canvas3d);
   
@@ -280,17 +288,17 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
   
   
   _wChemin = new Window3D();
-  Canvas2D* _canvasChemin = new Canvas2D(_wChemin,"Chemin");
+  Canvas2D* _canvasChemin = new Canvas2D(this, _wChemin,"Chemin");
   _canvasChemin->setCaption("Chemin");
   _wChemin->attachCanvas(_canvasChemin);
 
   _wProfil = new Window3D();
-  Canvas2D* _canvasProfil = new Canvas2D(_wProfil,"Profil");
+  Canvas2D* _canvasProfil = new Canvas2D(this, _wProfil,"Profil");
   _canvasProfil->setCaption("Profil");
   _wProfil->attachCanvas(_canvasProfil);
 
   _wSection = new Window3D();
-  Canvas2D* _canvasSection = new Canvas2D(_wSection,"Section");
+  Canvas2D* _canvasSection = new Canvas2D(this, _wSection,"Section");
   _canvasSection->setCaption("Section");
   _wSection->attachCanvas(_canvasSection);
      
@@ -306,16 +314,17 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
   _wSection->setCaption("Section");
   _wProfil->setCaption("Profil");
   
-   _wChemin->move(x() + application_width, 0);
-   _wSection->move(x() + frame_width + application_width, 0);
-   _wProfil->move(x() + application_width, frame_width + 20 );
-   _w3d->move(x() + frame_width + application_width, frame_width + 20 );
+   _wChemin->move(x() + application_width +110, 0);
+   _wSection->move(x() + frame_width + application_width+110, 0);
+   _wProfil->move(x() + application_width+110, frame_width + 20 );
+   _w3d->move(x() + frame_width + application_width+110, frame_width + 20 );
   
   //ok show the frames !
   _wChemin->show();
   _wSection->show();
   _wProfil->show();
   _w3d->show();
+  _comments->show();
 }
 void
 MainWindow::updateViewFramesPosition()
@@ -347,6 +356,11 @@ Canvas2D&
 MainWindow::getSectionCanvas()
 {
   return dynamic_cast<Canvas2D &>( _wSection->canvas() );
+}
+
+EventsWindow&
+MainWindow::getEventsWindow() {
+  return *_comments;
 }
 
 Faces&
