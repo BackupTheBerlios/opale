@@ -7,6 +7,7 @@ OBJECTS_DIR = obj
 
 HEADERS		= absVector.hpp \
             point.hpp \
+            polyline.hpp \
             vector.hpp \
             matrix.hpp \
             absface.hpp \
@@ -23,10 +24,10 @@ HEADERS		= absVector.hpp \
             canvas3d.hpp \
             window3d.hpp \
             pluginmanager.hpp \
-            mainwindow.hpp \
-            polyline.hpp
+            mainwindow.hpp 
 
 SOURCES		= testVector.cpp \
+            polyline.cpp \
             matrix.cpp \
             absface.cpp \
             face.cpp \
@@ -42,7 +43,6 @@ SOURCES		= testVector.cpp \
             window3d.cpp \
             pluginmanager.cpp \
             mainwindow.cpp \
-            polyline.cpp \
             main.cpp
 
 TARGET		= modeler
