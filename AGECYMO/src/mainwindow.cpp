@@ -339,10 +339,14 @@ MainWindow::setModel(Faces& faces)
   qDebug("MainWindow : beginning setModel ");
     
   Canvas3D& c3d = dynamic_cast<Canvas3D &>( _w3d->canvas() );
+
+  c3d.makeCurrent();
   
   c3d.renderer().setModel(faces);
-
+  
   c3d.updateGL();
+
+  qApp->sendPostedEvents();
 }
 
 
@@ -437,10 +441,14 @@ MainWindow::generateCylinder()
 {
   qDebug("Mainwindow : Dans generateCylinder ");
 
+  
+  Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
+  canvas.makeCurrent();
+  
   std::vector<Point3D> ptsProfile;
 
-  int paramDiscretisationCHEMIN  = 100;
-  int paramDiscretisationSECTION = 20;
+  int paramDiscretisationCHEMIN  = 10;
+  int paramDiscretisationSECTION = 15;
 
   Canvas2D & canvasSection=  dynamic_cast<Canvas2D &>(_wSection->canvas());
   Canvas2D & canvasChemin=  dynamic_cast<Canvas2D &>(_wChemin->canvas());
@@ -457,13 +465,9 @@ MainWindow::generateCylinder()
   
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
-
   adjustSection(ptsSection);
   
-  
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
-
-
   _cylGenerator->generate( ptsChemin, ptsSection, ptsProfile);
 
 }
