@@ -2,6 +2,11 @@
 #define CLASS_CANVAS2D_H
 
 #include "abscanvas.hpp"
+#include "polyline.hpp"
+
+const int squareNumber = 50;
+const double glOrthoParameter = 4.0;
+
 
 class Canvas2D : public AbsCanvas
 {
@@ -11,9 +16,9 @@ class Canvas2D : public AbsCanvas
 
   private:
   
+  Polyline _polyline;
   void buildAxesDPL();
   void drawAxes();
-
     
   protected:
   virtual void initializeGL     ();
@@ -22,6 +27,7 @@ class Canvas2D : public AbsCanvas
   virtual void mousePressEvent  (QMouseEvent*);
   virtual void mouseMoveEvent   (QMouseEvent*);
   virtual void mouseReleaseEvent(QMouseEvent*);
+  virtual void mouseDoubleClickEvent(QMouseEvent*);
 
   
 

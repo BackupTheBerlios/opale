@@ -6,12 +6,15 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
 {
 }
 
-
 void
 Canvas2D::buildAxesDPL()
 {
-
   _axesIndexDPL = glGenLists(1);
+  double increment = (glOrthoParameter*2)/double(squareNumber);
+  double xposition = -glOrthoParameter + increment;
+  double yposition = -glOrthoParameter + increment;
+    
+
 
   qDebug("index DPL axes 2D = %d\n", _axesIndexDPL);
 
@@ -19,8 +22,36 @@ Canvas2D::buildAxesDPL()
   {
     glNewList(_axesIndexDPL, GL_COMPILE);
     
-    glColor3f(0.7, 0.0, 0.0);
+    glColor3f(0.6, 0.6, 0.6);
+
+    glBegin(GL_LINES);
+
+    //we draw vertical axes
+    for(int i = 0; i<squareNumber; i++){
+      glVertex2f(xposition , glOrthoParameter);
+      glVertex2f(xposition , -glOrthoParameter);
+      xposition += increment;
+    }
+
+    //we draw vertical axes
+    for(int i = 0; i<squareNumber; i++){
+      glVertex2f(glOrthoParameter , yposition);
+      glVertex2f(-glOrthoParameter, yposition);
+      yposition += increment;
+    }
+
+    glColor3f(0.2, 0.2, 0.2);
+
+    //we draw the repere axes
+    glVertex2f(0.0,glOrthoParameter);
+    glVertex2f(0.0,-glOrthoParameter);
+    glVertex2f(glOrthoParameter,0.0);
+    glVertex2f(-glOrthoParameter,0.0);
     
+    glEnd();
+
+    //ancien repère
+    /*
     glBegin(GL_LINES);
     glVertex2f(0.0, 0.0);
     glVertex2f(1.0, 0.0);
@@ -32,6 +63,7 @@ Canvas2D::buildAxesDPL()
     glVertex2f(0.0, 0.0);
     glVertex2f(0.0, 1.0);
     glEnd();
+    */
 
     glEndList();
     
@@ -91,8 +123,11 @@ Canvas2D::paintGL()
 
   drawAxes();
   
-  glColor3f(0.0, 0.0, 0.85);
+  //we draw the polyline
+  _polyline.render();
 
+  //updating buffers
+  swapBuffers();
 }
 
 
@@ -106,13 +141,30 @@ Canvas2D::resizeGL(int width, int height)
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  gluOrtho2D(-4, 4, -4, 4);
+  gluOrtho2D(-glOrthoParameter, 
+	     glOrthoParameter, 
+	     -glOrthoParameter, 
+	     glOrthoParameter);
 }
 
 
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
+  Point3D point;
+
+  //calcul de la coordonnée x QT -> openGL
+  point[0] =
+    -glOrthoParameter + 
+    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
+  //calcul de la coordonnée y QT -> openGL
+  point[1] =
+    glOrthoParameter - 
+    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
+
+  //ajout du point openGl
+  _polyline.addPoint(point);
+  paintGL();
 }
 
 void
@@ -124,4 +176,24 @@ void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 {
   
+}
+
+void
+Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
+{
+  Point3D point;
+   //calcul de la coordonnée x QT -> openGL
+  point[0] =
+    -glOrthoParameter + 
+    ((double)event->x() * ((glOrthoParameter*2)/(double)width()));
+  //calcul de la coordonnée y QT -> openGL
+  point[1] =
+    glOrthoParameter - 
+    ((double)event->y() * ((glOrthoParameter*2)/(double)height()));
+
+  //ajout du point openGl
+  _polyline.addPoint(point);
+  //polyline closing
+  _polyline.close();
+  paintGL();
 }
