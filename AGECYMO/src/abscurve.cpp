@@ -242,3 +242,8 @@ void AbsCurve::calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point)
     glOrthoParameter - 
     ((double)event->y() * ((glOrthoParameter*2)/(double)_parent->height()));
 }
+
+gml::Point3D AbsCurve::getPoint(int index)
+{
+  return _pointsVector[index];
+}
