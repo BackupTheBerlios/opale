@@ -1,6 +1,9 @@
 #include "canvas2d.hpp"
 #include "abscurve.hpp"
 #include "polyline.hpp"
+#include "circle.hpp"
+#include "quadri.hpp"
+#include "nurbscurve.hpp"
 #include <qaction.h>
 
 //a mettre dans les attributs de classe
@@ -230,12 +233,15 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
 	  }
 	  if(_toolMode == CIRCLE_MODE){
 	    cout<<"creation dun cercle !!!!"<<endl;
+	    _figure = new Circle(this);
 	  }
 	  if(_toolMode == REC_MODE){
 	    cout<<"creation rectangle !!!!"<<endl;
+	    _figure = new Quadri(this);
 	  }
 	  if(_toolMode == NURBS_MODE){
 	    cout<<"creation nurbs !!!!"<<endl;
+	    _figure = new NurbsCurve(this);
 	  }
 	}
       }
@@ -295,12 +301,15 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 	}
 	if(_toolMode == CIRCLE_MODE){
 	  //here a circle creation
+	  _figure = new Circle(this);
 	}
 	if(_toolMode == REC_MODE){
 	  //here a rectangle creation
+	  _figure = new Quadri(this);
 	}
 	if(_toolMode == NURBS_MODE){
 	  //here a nurb creation
+	  _figure = new NurbsCurve(this);
 	}
       }
       
