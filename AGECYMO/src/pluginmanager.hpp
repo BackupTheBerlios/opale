@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include <qobject.h>
 #include <qmap.h>
 #include <qpair.h>
 #include <qdict.h>
@@ -39,9 +40,10 @@ class PluginHandler
 };
 
 //Plugins manager for AGECYMO
-class PluginManager
+class PluginManager : public QObject
 {
-    
+  Q_OBJECT
+  
   //Public Attributes/Constants 
   public:
     
@@ -78,12 +80,6 @@ class PluginManager
     
   // public slots:
   void executePlugin(const QString & pluginFullName);
-    
-  void executeRun(const QString & pluginFullName);
-    
-  void executeLoad(const QString & pluginFullName);
-    
-  void executeSave(const QString & pluginFullName);
   
   
   //Private Methods
@@ -96,7 +92,15 @@ class PluginManager
   void loadAndUnloadPlugin(const QString & pluginFullName);
     
   PluginHandler* reloadPlugin(const QString & pluginFullName);
+
+  
+  public slots:
+  void executeRun(const QString & pluginFullName);
     
+  void executeLoad(const QString & pluginFullName);
+    
+  void executeSave(const QString & pluginFullName);
+
 };
 
 
