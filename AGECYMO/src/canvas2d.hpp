@@ -3,6 +3,7 @@
 
 #include "abscanvas.hpp"
 #include "point.hpp"
+#include "mainwindow.hpp"
 #include <qdict.h>
 #include <qmenubar.h>
 #include <qpopupmenu.h>
@@ -33,13 +34,14 @@ const unsigned short NURBS_MODE = 4;
 const unsigned short NO_TOOL_MODE = 0;
 
 class Curves;
+class MainWindow;
 
 class Canvas2D : public AbsCanvas
 {
   Q_OBJECT
 
   public:
-  Canvas2D(QWidget* parent = 0, const char* name = 0);
+  Canvas2D(MainWindow* mw, QWidget* parent = 0, const char* name = 0);
   Curves *getFigure();
   unsigned short getToolMode();
   unsigned short getCanvasType();
@@ -54,6 +56,8 @@ class Canvas2D : public AbsCanvas
   unsigned short _canvasType;
   QPopupMenu *_fileMenu;
   
+
+  MainWindow* _mw;
 
   void buildAxesDPL();
   void drawAxes();
@@ -72,6 +76,8 @@ class Canvas2D : public AbsCanvas
   void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
 
   public slots:
+
+  MainWindow& getMW();
 
   void setPolyMode();
   void setPolygMode();

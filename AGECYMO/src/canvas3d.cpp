@@ -1,13 +1,17 @@
 #include <typeinfo>
 #include "canvas3d.hpp"
+#include "mainwindow.hpp"
 
-Canvas3D::Canvas3D(QWidget* parent, const char* name)
+Canvas3D::Canvas3D(MainWindow* mw, QWidget* parent, const char* name)
     : AbsCanvas(parent, name) ,//QGLWidget(parent, name),
       _axesEnabled(true),
       _boundingBoxEnabled(false),
       _normalEnabled(false),
       _infoEnabled(false)
 {
+
+  _mw = mw;
+
   _lightPos[0] = 0;
   _lightPos[1] = 100;
   _lightPos[2] = 0;
@@ -291,6 +295,10 @@ Renderer&
 Canvas3D::renderer()
 {
   return _renderer;
+}
+
+MainWindow& Canvas3D::getMW() {
+  return *_mw;
 }
 
 void

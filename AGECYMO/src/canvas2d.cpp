@@ -2,6 +2,7 @@
 #include "abscurve.hpp"
 #include "polyline.hpp"
 #include "curves.hpp"
+#include "mainwindow.hpp"
 #include <qaction.h>
 
 //a mettre dans les attributs de classe
@@ -13,9 +14,12 @@ int mode = CREATION_MODE;
 
 
 
-Canvas2D::Canvas2D(QWidget* parent, const char* name)
+Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
     : AbsCanvas(parent, name)
 { 
+
+  _mw = mw;
+
   //set square number to default
   _squareNumber = SQUARE_NUMBER_DEFAULT; 
 
@@ -288,6 +292,11 @@ unsigned short Canvas2D::getToolMode()
 unsigned short Canvas2D::getCanvasType()
 {
   return _canvasType;
+}
+
+
+MainWindow& Canvas2D::getMW() {
+  return *_mw;
 }
 
 void Canvas2D::setFigure(Curves *figure)

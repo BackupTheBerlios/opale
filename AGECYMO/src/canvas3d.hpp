@@ -8,11 +8,12 @@
 #include "camera.hpp"
 #include "abscanvas.hpp"
 #include "renderer.hpp"
+#include "mainwindow.hpp"
 
 #include "cylinderGenerator.hpp"
 
 class CylinderGenerator;
-
+class MainWindow;
 
 class Canvas3D : public AbsCanvas   //public QGLWidget
 {
@@ -41,6 +42,8 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   };
 
   private:
+  
+  MainWindow* _mw;
 
   Renderer _renderer;
 
@@ -58,7 +61,7 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   
   
   public:
-  Canvas3D(QWidget* parent = 0, const char* name = 0);
+  Canvas3D(MainWindow* mw, QWidget* parent = 0, const char* name = 0);
   ~Canvas3D();
   
   Renderer& renderer();
@@ -68,7 +71,8 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   void  drawInfo();
   
   void  setModel(Faces& faces);
-  
+
+  MainWindow& getMW();
   
   protected:
   virtual void initializeGL     ();
