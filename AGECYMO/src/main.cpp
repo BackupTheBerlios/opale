@@ -5,6 +5,11 @@
 
 #include "testVector.hpp"
 
+#include "hpoint_nd.h"
+#include "vector.h"
+#include "nurbs.h"
+
+
 const double W_RATIO = 0.8; //how many of the screen's width we use for our application
 const double H_RATIO = 0.07; //how many of the screen's height we use for our application
 
@@ -46,7 +51,7 @@ main(int argc, char **argv)
   initApplicationSizeAndPosition(120, w_app); 
   
   // creation of the central window...
-  MainWindow   mainWindow(w_app, w_app, 150, 162, 0, 0);
+  MainWindow   mainWindow(w_app, w_app, 150, 400, 0, 0);
 
   // connected the main window to the application
   application.setMainWidget(&mainWindow);
@@ -55,6 +60,28 @@ main(int argc, char **argv)
   //TODO : remove this 
   //Test the vector class 
   //testVector();
+
+  //TODO: remove this
+  //This is just to test the linking.. and the nurb++ lib..
+  Vector_HPoint3Df pts(4);
+  pts[0] = PLib::HPoint3Df(0, 0, 0, 1);
+  pts[1] = PLib::HPoint3Df(30, 0, 0, 1);
+  pts[2] = PLib::HPoint3Df(60, 30, 0, 1);
+  pts[3] = PLib::HPoint3Df(90, 30, 0, 1);
+
+  PlVector_float knot(8);
+  knot[0] = knot[1] = knot[2] = knot[3] = 0;
+  knot[4] = knot[5] = knot[6] = knot[7] = 1;
+
+  PLib::NurbsCurvef curve(pts, knot, 3);
+  curve.writeVRML("essaiCurve.wrl",
+                  1,
+                  1,
+                  PLib::Color(255, 0, 0),
+                  20,
+                  20);
+  
+  
   
   // execute the application (main loop)
   return application.exec();
