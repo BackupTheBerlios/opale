@@ -1,3 +1,4 @@
 TEMPLATE= subdirs
 
-SUBDIRS = ioVRML ioOBJ ioPLY ioCURVES
+SUBDIRS = ioVRML ioOBJ ioPLY ioPOV ioCURVES
+
