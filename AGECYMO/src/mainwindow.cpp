@@ -15,6 +15,8 @@ MainWindow::MainWindow(int screen_w,
       _screen_h(screen_h)
 {
   _pluginManager = new PluginManager(this);
+
+  _toolBar = new QToolBar("Operations", this);
   
   resize(w_app, h_app);
   move(x_app, y_app);
@@ -73,17 +75,26 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
     //TODO: To IMPROVE the test
     if (component == "Menu")
     {
-      QPopupMenu* aMenu = _menus.find(decomposition[1]);
+      QPopupMenu* aMenu;
 
       for(int j=1; j<decomposition.size()-1; j++)
       {
-        
+        aMenu = _menus.find(decomposition[j]);
         //Do we already have built this menu
         if(!aMenu)
         {
+
           QPopupMenu * aMenu = new QPopupMenu( this );
           _menus.insert(decomposition[j], aMenu);
-          menuBar()->insertItem( decomposition[j], _menus[decomposition[j]]);
+          if (j == 1)
+          {
+            menuBar()->insertItem( decomposition[j], _menus[decomposition[j]]);
+          }
+          else
+          {
+            QPopupMenu* previousMenu = _menus.find(decomposition[j-1]);
+            previousMenu->insertItem( decomposition[j], aMenu);
+          }
         }
       }
       
@@ -98,9 +109,12 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
 
       if( infoMenu->image != NULL )
       {
+        aAction->setIconSet( QIconSet(
+                               QPixmap
+                               (
+                                 QString(IMAGES_DIR).append(infoMenu->image->c_str())
+                                 ) ) );
       }
-      
-
       
       QSignalMapper* _signalMapper = new QSignalMapper(this);
       _signalMapper->setMapping(aAction, pluginID);
@@ -166,9 +180,21 @@ MainWindow::addStaticMenuBarContent()
   }
 
   _menus[FILE_KEY]->insertSeparator();
-  _menus[FILE_KEY]->insertItem( "&Quit", qApp, SLOT(quit()), CTRL+Key_Q);
+
+  QAction* quitAction = new QAction("quit",
+                                    QIconSet( QPixmap(IMAGES_DIR + QUIT_IMAGE) ),
+                                    "&Quit",
+                                    CTRL+Key_Q,
+                                    this);
+  connect(quitAction,
+          SIGNAL( activated() ),
+          qApp,
+          SLOT( quit() ) );
+
+  quitAction->addTo(_menus[FILE_KEY]);
+  quitAction->addTo(_toolBar);
   
-  
+
   //Help Menu with about
   QPopupMenu* helpMenu =  _menus.find(HELP_KEY);
 
