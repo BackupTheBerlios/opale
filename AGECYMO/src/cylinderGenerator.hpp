@@ -27,6 +27,8 @@ class CylinderGenerator
   std::vector<Point3D >  * _points;
   std::vector<AbsFace *> * _faces;
 
+  int _nbPtWay; //number of points on the way;
+  
   //Faces* _model; //model cached
   bool _isWayClosed;
 
@@ -53,6 +55,9 @@ class CylinderGenerator
 
   private:
 
+  int profileToWayByIndex( const std::vector<Point3D> & profilePts,
+                         int profileIndex);
+  
   void generatePoints(const std::vector<Point3D> & wayPts,
                       const std::vector<Point3D> & sectionPts,
                       const std::vector<Point3D> & profilePts);

@@ -62,6 +62,14 @@ CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
   return _chronometer.elapsed();
 }
 
+int
+CylinderGenerator::profileToWayByIndex( const std::vector<Point3D> & profilePts,
+                                      int profileIndex)
+{
+  return static_cast<int>( ( (profilePts[profileIndex][1] + 1) / 2.0 ) * (_nbPtWay-1) );
+  
+}
+
 void
 CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
                                   const std::vector<Point3D> & sectionPts,
@@ -72,7 +80,7 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
 //   {
 //     delete _points;
 //   }
-  
+  _nbPtWay = wayPts.size();
   _points = new std::vector<Point3D>();
 
   Matrix3D profileMatrix;
@@ -83,7 +91,8 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   currentFrame.loadIdentity();
   previousFrame.loadIdentity();
   
-
+  
+//  int startIndex = profileToWayByIndex(profilePts, 0);
   
   initFrenetFrame( wayPts[0], wayPts[1], currentFrame);
 
@@ -98,7 +107,6 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   computePointsAccordingToFrame(sectionPts, currentFrame);
   
   const unsigned int size = wayPts.size();
-
   qDebug("We have %d points for the path", size);
   
   for (unsigned int i=1; i<size-1; i++)
