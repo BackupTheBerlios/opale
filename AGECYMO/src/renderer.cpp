@@ -1,7 +1,11 @@
 #include "renderer.hpp"
 
 
-
+/**************************************************************
+ *
+ *  constructor for Renderer class
+ *
+ *************************************************************/
 Renderer::Renderer()
     :  _renderMode(WF)
 {
@@ -15,6 +19,11 @@ Renderer::Renderer()
   _boundingBoxDPL = 0;
 }
 
+/**************************************************************
+ *
+ *  destructor for Renderer class
+ *
+ *************************************************************/
 Renderer::~Renderer()
 {
   qDebug("RENDERER : DESTRUCTOR");
@@ -28,6 +37,11 @@ Renderer::~Renderer()
   
 }
 
+/**************************************************************
+ *
+ *  render the model
+ *
+ *************************************************************/
 void
 Renderer::render()
 {
@@ -43,19 +57,33 @@ Renderer::render()
   qDebug("\n RENDERER : EXITING rendering \n");  
 }
 
+/**************************************************************
+ *
+ *  render the bounding box
+ *
+ *************************************************************/
 void
 Renderer::renderBoundingBox()
 {
   glCallList( _boundingBoxDPL );
 }
 
+/**************************************************************
+ *
+ *  render the normals
+ *
+ *************************************************************/
 void
 Renderer::renderNormals()
 {
   glCallList( _modelNormalsDPL );
 }
 
-
+/**************************************************************
+ *
+ *  initiliaze the display lists ID
+ *
+ *************************************************************/
 void
 Renderer::initDPL()
 {
@@ -86,6 +114,12 @@ Renderer::initDPL()
   
 }
 
+/**************************************************************
+ *
+ *  rebuild the display lists this is needed when the model 
+ *  to be rendered is changed.
+ *
+ *************************************************************/
 void
 Renderer::rebuildDPL()
 {
@@ -140,6 +174,11 @@ Renderer::rebuildDPL()
   updateCurrentDPL();  
 }
 
+/**************************************************************
+ *
+ *  update the cureent DPL (displayList)
+ *
+ *************************************************************/
 void
 Renderer::updateCurrentDPL()
 {
@@ -178,7 +217,11 @@ Renderer::updateCurrentDPL()
   
 }
 
-
+/**************************************************************
+ *
+ *  delete the display lists
+ *
+ *************************************************************/
 void
 Renderer::deleteDisplayLists()
 {
@@ -215,7 +258,12 @@ Renderer::deleteDisplayLists()
     
 }
 
-
+/**************************************************************
+ *
+ *  set the model
+ *  @param faces the faces
+ *
+ *************************************************************/
 void
 Renderer::setModel(Faces & faces)
 {
@@ -237,19 +285,36 @@ Renderer::setModel(Faces & faces)
   rebuildDPL();
 }
 
+/**************************************************************
+ *
+ *  get the model
+ *  @return the faces
+ *
+ *************************************************************/
 Faces&
 Renderer::model()
 {
   return *(_faces);
 }
 
+/**************************************************************
+ *
+ *  get the rendering mode 
+ *  @return the rendering mode
+ *
+ *************************************************************/
 int
 Renderer::renderMode() const
 {
   return (int) _renderMode;
 }
 
-
+/**************************************************************
+ *
+ *  set the rendering mode
+ *  @param r the rendering mode
+ *
+ *************************************************************/
 void
 Renderer::setRenderMode(RenderMode r)
 {
