@@ -28,6 +28,7 @@
 #include "window3d.hpp"
 #include "curves.hpp"
 #include "controlpanel.hpp"
+#include "helpwindow.hpp"
 
 class PluginManager;
 
@@ -71,6 +72,8 @@ class MainWindow : public QMainWindow
   QToolBar*       _toolBar;
 
   CylinderGenerator*  _cylGenerator;
+  
+  HelpWindow*          _helpFrame;
   
   
   public:
@@ -126,6 +129,8 @@ class MainWindow : public QMainWindow
   public slots:
 
   void about();
+
+  void manual();
   
   void generateCylinder();
   
