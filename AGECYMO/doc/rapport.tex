@@ -72,6 +72,23 @@
 
 \section{Introduction}
 
+Le principe de ce projet est de mettre en place une application capable de déterminer si un modèle 
+donné est valide ou non. La validité d'un modèle, dans ce projet, se définie selon trois critères :
+\begin{itemize}
+\item[-] le nombre d'intersections d'arètes dans un point à l'intérieur des arètes
+\item[-] le nombre de faces ayant des sommets non-coplanaires
+\item[-] le nombre d'intersections d'arètes et de faces dans un point intérieur
+\end{itemize}
+Plus ces valeurs sont proches de zéro, plus le modèle sera dit \emph{valide}. 
+Afin de calculer ces différentes valeurs, l'application propose deux méthodes :
+\begin{itemize}
+\item[-] la première, regroupée dans un plugin du nom de \textbf{mantyla}, permet d'effectuer des calculs 
+en acceptant les erreurs selon une certaine tolérance
+\item[-] la seconde, regroupée au sein du plugin nommé \textbf{core}, est basée sur la \emph{géométrie exacte}
+\end{itemize}
+
+Dans le but de parfaire notre projet de \emph{construction de cylindre généralisé}, nous avons choisi d'intégrer complétement le test de validité comme une nouvelle fonction. Ainsi, les modèles chargés, ainsi que les modèles construits via le moteur du cylindre généralisé peuvent être soumis au test de validité. 
+
 
 \section{Modèles testés et Résultats}
 
@@ -285,5 +302,24 @@ CORE &
 \onecolumn
 
 \section{Discussion et Conclusion}
+
+Comme cela a été précisé en introduction, la validation des modèles se déroule en trois étapes distinctes :
+
+\begin{itemize}
+\item[-] Dans un premier temps, un test est effectué pour déterminer le nombre d'intersections non valides existantes entre les arètes du modèle considéré. Entre deux arètes, il existe 3 cas possibles :
+	
+  \begin{itemize}
+  \item[-] CAS 1 :les deux arètes ne s'intersectent en aucune façon, le test d'intersection va alors considérer la situation valide
+  \item[-] CAS 2 : les deux arètes s'intersectent au niveau de leurs extrémités, le test d'intersection va aussi considérer cette situation aussi comme valide
+  \item[-] CAS 3 : enfin les deux arètes s'intersectent en un point situé à l'intérieur d'au moins une des deux arètes, le test d'intersection va alors repérer cette situation comme non valide
+  \end{itemize}
+
+Cependant, si les calculs sont effectués avec le plugin \textbf{mantyla}, l'utilisation d'une tolerance modifie légèrement l'appréciation de ces 3 cas. En effet la tolerance est une valeur qui va permettre au test de validité d'être plus \emph{perméable} aux erreurs éventuelles des modèles. Ainsi, si la tolerance est fixée à 0.2, le point de coordonnées (0.0;0.5;1.0) sera confondu avec le point de coordonnées (0.2;0.3;1.1). De ce fait, en ce qui concerne l'intersection entre deux arètes, si un modèle contient des arètes qui ne s'intersectent pas véritablement en leur extrémités, avec une tolérance suffisamment élevée, l'intersection se revélera au final valide. Il est donc logique de croire, qu'une tolérance de zéro ne vas révéler que les intersections \emph{réelles} c'est à dire que les intersections existantes physiquement dans le modèle. Plus on augmente la tolérance et plus on va trouver de nouvelles intersections. Le principe serait alors de trouver la bonne valeur pour la tolérance, afin de révéler d'une part les intersections \emph{réelles} ainsi que les intersections \emph{théoriques} c'est à dire celles qui devraient exister. Attention toutefois à ne pas augmenter de trop la tolérance, pour ne pas créer des intersections indésirables. 
+
+\item[-] Dans un second temps, un test est effectué sur chacune des faces afin de définir si les sommets associés sont tous coplanaires. Il est évident qu'une face triangulaire est obligatoirement coplanaire. Le problème n'est donc présent que pour des faces ayant au moins quatre sommets. Avec le plugin \textbf{mantyla}, la notion de tolérance est aussi présente. Plus cette dernière est élevée, plus une face a de chances d'être coplanaire.
+
+\item[-] Enfin, le dernier test consiste à trouver le nombre d'intersections entre les arètes et les faces en un point intérieur. Afin de simplifier l'algorithme, nous avons choisi de travailler uniquement sur des faces non concaves. Les mêmes remarques concernant \textbf{mantyla} et la tolérance sont applicables ici. 
+
+\end{itemize}
 
 \end{document}
