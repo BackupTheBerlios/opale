@@ -226,17 +226,17 @@ MainWindow::initViewFrames(int screen_height, int frame_width, int application_w
   _w3d->attachCanvas(_canvas3d);
 
   _wChemin = new Window3D();
-  Canvas2D* _canvasChemin = new Canvas2D(_wChemin);
+  Canvas2D* _canvasChemin = new Canvas2D(_wChemin,"Chemin");
   _canvasChemin->setCaption("Chemin");
   _wChemin->attachCanvas(_canvasChemin);
 
   _wProfil = new Window3D();
-  Canvas2D* _canvasProfil = new Canvas2D(_wProfil);
+  Canvas2D* _canvasProfil = new Canvas2D(_wProfil,"Profil");
   _canvasProfil->setCaption("Profil");
   _wProfil->attachCanvas(_canvasProfil);
 
   _wSection = new Window3D();
-  Canvas2D* _canvasSection = new Canvas2D(_wSection);
+  Canvas2D* _canvasSection = new Canvas2D(_wSection,"Section");
   _canvasSection->setCaption("Section");
   _wSection->attachCanvas(_canvasSection);
      
