@@ -26,6 +26,7 @@
 #include "canvas2d.hpp"
 #include "canvas3d.hpp"
 #include "window3d.hpp"
+#include "curves.hpp"
 #include "controlpanel.hpp"
 
 class PluginManager;
