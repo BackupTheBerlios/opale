@@ -1,7 +1,7 @@
 //
 //  curves.hpp
 //  
-//  allow to control fewers curves in canvas
+//  allow to control many curves in a canvas
 //
 
 #ifndef CURVES_CLASS
