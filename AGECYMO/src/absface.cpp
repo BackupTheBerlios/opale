@@ -45,6 +45,12 @@ AbsFace::setPoints(std::vector<gml::Point3D> * pts)
   _points = pts;
 }
 
+std::vector<gml::Point3D> const &
+AbsFace::getPoints() 
+{
+  return *_points;
+}
+
 /**************************************************************
  *
  *  get the normal

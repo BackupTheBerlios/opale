@@ -283,6 +283,23 @@ MainWindow::addStaticMenuBarContent()
   _toolBar->addSeparator();
   quitAction->addTo(_toolBar);
 
+
+  // Validation menu
+  QAction* validAction = new QAction("validation",
+                                    QIconSet( QPixmap(IMAGES_DIR + QUIT_IMAGE) ),
+                                    "&Validation",
+                                    CTRL+Key_V,
+                                    this);
+  connect(validAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT( validation() ) );
+
+  validAction->addTo(_menus[FILE_KEY]);
+
+  _toolBar->addSeparator();
+  validAction->addTo(_toolBar);
+
   //Help Menu with about
   QPopupMenu* helpMenu =  _menus.find(HELP_KEY);
 
@@ -1134,3 +1151,13 @@ MainWindow::displayTimeStatus(const char* operation, int timeInMilliSeconds)
 
 }
 
+void 
+MainWindow::validation() {
+
+
+  Faces & allFaces = model();
+  
+
+  allFaces.validModel();
+  
+}

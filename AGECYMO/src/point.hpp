@@ -11,11 +11,13 @@ namespace gml
 {
   using namespace std;
 
-  
+  // The class Point.
   template<typename T = double, int N = 3>
   class Point : public AbsVector<T, N>
   {
-    public:
+  
+  public:
+
     template <typename T2>
     Point<T, N>& operator=(Point<T2, N> const& v2); //T must contains T2
 
@@ -36,7 +38,6 @@ namespace gml
 
     //Test if the current point belongs to the edge composed by the two
     // passed points with a given epsilon and sets the value t if the test is true
-    //
     template <typename T2>
     bool isOnEdge(Point<T2, N> const & p1, Point<T2, N> const & p2,
                   double tolerance, double * t) const;
@@ -49,6 +50,9 @@ namespace gml
 
     template <typename T2>
     int inter(vector< Point<T2, N> > const &points, double* t1, double* t2, double tolerance) const;
+     
+    template <typename T2>
+    bool interPlan(Point<T2,N> point, vector < Point<T2,N> > const & points, double *t, double tolerance) const; 
     
   };
   
@@ -204,7 +208,7 @@ namespace gml
       yi = points[i][1];
       zi = points[i][2];
       
-      iNxt= (i == points.size()-1)?0:i+1;
+      iNxt= (i == (int)points.size()-1)?0:i+1;
       xj = points[iNxt][0];
       yj = points[iNxt][1];
       zj = points[iNxt][2];
@@ -217,7 +221,7 @@ namespace gml
       zc += zi;
       len++;
       i++;
-    } while( i < points.size() );
+    } while( i < (int)points.size() );
     
     norm = sqrt( a * a + b * b + c * c );
     if(!isEqual(norm, 0.0, tolerance)) {
@@ -231,7 +235,7 @@ namespace gml
     return result;
   }
 
-
+  // Allows to know if the point is in the same plane that points
   template<typename T, int N>
   template <typename T2>
   bool Point<T,N>::onPlane(vector < Point<T2,N> > const & points, double tolerance) const {
@@ -242,17 +246,10 @@ namespace gml
 
     vector < Point<T2,N> > allPoints;
 
-    for (int i=0; i<(int)points.size();i++) {
-      allPoints.push_back(points[i]);
-      
-    }
-    
-
-    
-    
-    for(int i=0; i<(int)allPoints.size(); i++) {
-      for(int j=i+1; j<(int)allPoints.size();j++) {
-	if (isEqual(allPoints[i][0], allPoints[j][0], tolerance) && isEqual(allPoints[i][1], allPoints[j][1], tolerance) && isEqual(allPoints[i][2], allPoints[j][2], tolerance)) {
+    // Erase point if there are same point in points
+    for(int i=0; i<(int)points.size(); i++) {
+      for(int j=i+1; j<(int)points.size();j++) {
+	if (isEqual(points[i][0], points[j][0], tolerance) && isEqual(points[i][1], points[j][1], tolerance) && isEqual(points[i][2], points[j][2], tolerance)) {
 	  samePoints.push_back(i);
 	
 	}
@@ -275,20 +272,24 @@ namespace gml
       }
 	
       if (diff) {  
-
 	allPoints.push_back(points[i]);
       }
+      
       diff = true;
       
     }
 
     plane = definePlane(allPoints, tolerance);
     if(plane.empty()) {
-      
       return false;
     }
-    
-    dist = _data[0]*plane[0] + _data[1]*plane[1] + _data[2]*plane[2] + _data[3]*plane[3];
+
+    if (N==3) {
+      dist = _data[0]*plane[0] + _data[1]*plane[1] + _data[2]*plane[2] + plane[3];
+    }
+    else {
+      dist = _data[0]*plane[0] + _data[1]*plane[1] + _data[2]*plane[2] + _data[3]*plane[3];
+    }
     
     if(isEqual(dist, 0.0, tolerance)) {
       return true;
@@ -303,36 +304,25 @@ namespace gml
   template<typename T, int N>
   template <typename T2>
   bool Point<T,N>::onFace(vector < Point<T2,N> > const & points, double tolerance) const {
+
     vector<double> plane;
     double dist= 0.0;
-    
-
-
-
     vector <int> samePoints;
-
     vector < Point<T2,N> > allPoints;
-
-    for (int i=0; i<(int)points.size();i++) {
-      allPoints.push_back(points[i]);
-      
-    }
-       
     
-    for(int i=0; i<(int)allPoints.size(); i++) {
-      for(int j=i+1; j<(int)allPoints.size();j++) {
-	if (isEqual(allPoints[i][0], allPoints[j][0], tolerance) && isEqual(allPoints[i][1], allPoints[j][1], tolerance) && isEqual(allPoints[i][2], allPoints[j][2], tolerance)) {
+    // Firstly copy of the vector points in the vector samePoints, if all the points are different
+    for(int i=0; i<(int)points.size(); i++) {
+      for(int j=i+1; j<(int)points.size();j++) {
+	if (isEqual(points[i][0], points[j][0], tolerance) && isEqual(points[i][1], points[j][1], tolerance) && isEqual(points[i][2], points[j][2], tolerance)) {
 	  samePoints.push_back(i);
-	
 	}
       }
     }
-	
-    bool diff=true;
     
+    // Construction of the vector allPoints, with only the different points
+    bool diff=true;
     for (int i=0; i<(int)points.size();i++) {
       int j=0;
-
       while (j<(int)samePoints.size() && diff) {
 	if (i==samePoints[j]) {
 	  diff = false;
@@ -340,50 +330,82 @@ namespace gml
 	else {
 	  j++;
 	}
-
       }
-	
       if (diff) {  
-
 	allPoints.push_back(points[i]);
       }
       diff = true;
-      
     }
 
 
-    
-
+    // 1) Check if the vector allPoints is a really a plan
     plane = definePlane(allPoints, tolerance);
     if(plane.empty()) {
+
       return false;
     }
     
-    vector< Point<T2, N> > newplane;
+    // 2) Check if the current point is on the plan
+    if(!onPlane(allPoints, tolerance)) {
 
-    for (int i=0; i<allPoints.size()-1; i=i+2) {
-      Point <T2, N> origine;
-      for (int j=0; j<3; j++) {
-	origine[j] = 0.0;
+      return false;
+    }
+
+    // 3) Check if the point belows to one of edge of the face
+    for (int i=0 ; i<(int)allPoints.size() ; i++) {
+      int next = i+1;
+      if (next == (int)allPoints.size()) {
+	next = 0;
       }
-      newplane.push_back(origine);
-      newplane.push_back(allPoints[i]);
-      newplane.push_back(allPoints[i+1]);
-      
-      double t1, t2;
+      double t;
 
-      for (int i=0; i<newplane.size();i++) {
-	cout << newplane[i][0] << " " << newplane[i][1] << " " << newplane[i][2] << endl;
-      }
+      if (isOnEdge(allPoints[i], allPoints[next], tolerance, &t)) {
 
-      if ((*this).inter(newplane, &t1, &t2, tolerance)==1) {
 	return true;
       }
     }
+   
+    // 4) Compute of a line
+    double diffx = allPoints[0][0] - allPoints[1][0];
+    double diffy = allPoints[0][1] - allPoints[1][1];
+    double diffz = allPoints[0][2] - allPoints[1][2];
 
+    Point<T,N> newPoint;
+    newPoint[0] = (*this)[0] + diffx;
+    newPoint[1] = (*this)[1] + diffy;
+    newPoint[2] = (*this)[2] + diffz;
+    
+    // 5) Check if the line cut or not the plan
+    int nbCut = 0;
+    for (int i=0 ; i<(int)allPoints.size() ; i++) {
+      int next = i+1;
+      if (next == (int)allPoints.size()) {
+	next = 0;
+      }
 
+      vector< Point<T2, N> > newPlane;
+      newPlane.push_back(newPoint);
+      newPlane.push_back(allPoints[i]);
+      newPlane.push_back(allPoints[next]);
+
+      double t1, t2;
+      int valueCut = (*this).inter(newPlane, &t1, &t2, tolerance);
+      if (valueCut > 0) {
+	if (isGreaterOrEqual(t1, 0, tolerance) && isGreaterOrEqual(t2, 0, tolerance) && isLesserOrEqual(t2, 1, tolerance)) { 
+	  nbCut++;
+	}
+      }
+
+      if (nbCut == 1) {
+	return true;
+      }
+    }
+    
     return false;
+      
   }
+
+
 
   template<typename T, int N>
   template <typename T2>
@@ -456,6 +478,66 @@ namespace gml
   }
   
   
+
+
+  template<typename T, int N>
+  template <typename T2>
+  bool Point<T,N>::interPlan(Point<T2,N> point, vector < Point<T2,N> > const & points, double *t, double tolerance) const {
+
+    vector<double> plane;
+
+    // 1) If the normal of the plan and the vector of the edge are perpendicular, then there is no verification
+    double vectorEdgeX = _data[0] - point[0];
+    double vectorEdgeY = _data[1] - point[1];
+    double vectorEdgeZ = _data[2] - point[2];
+
+    plane = definePlane(points, tolerance);
+    if(plane.empty()) {
+      return false;
+    }
+
+    if (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + plane[2]*vectorEdgeZ == 0.0) {
+      return false;
+    }
+    
+    // 2) If the edge is a edge of the face
+    bool found1 = false;
+    bool found2 = false;
+    int i=0;
+    while ((!found1 || !found2 ) && i<points.size()) {
+      if (points[i][0] == _data[0] && points[i][1] == _data[1] && points[i][2] == _data[2]) {
+	found1 = true;
+      }
+      if (points[i][0] == point[0] && points[i][1] == point[1] && points[i][2] == point[2]) {
+	found2 = true;
+      }
+      i++;
+    }
+    
+    if (found1 && found2) {
+      return false;
+    }
+
+    // 3) Compute of t
+    *t = (-plane[0]*_data[0] - plane[1]*_data[1] - plane[2]*_data[2] - plane[3]) / (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY + plane[2]*vectorEdgeZ);
+    
+    if (*t < -tolerance || *t > 1.0+tolerance) {
+      return false;
+    }
+    else {
+      Point<T,N> interPoint = collinear(point, *t);
+      if (!interPoint.onFace(points, tolerance)) {
+	return false;
+      }
+      else {
+	return true;
+      }
+    }
+
+  }
+
+  
+
 
   inline bool isEqual(double a, double b, double tolerance) {
     double delta = fabs(a-b);

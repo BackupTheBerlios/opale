@@ -1,7 +1,14 @@
 #include "faces.hpp"
 #include <exception>
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <cstdlib>
+#include <qmessagebox.h> 
+
+using namespace std;
+
+#define TOLERANCE 0.0
 
 /**************************************************************
  *
@@ -430,4 +437,143 @@ Faces::computeAverageNormal(const std::vector<gml::Vector3D> & normals)
   result[2] = mz;
 
   return result;
+}
+
+
+void
+Faces::validModel() const{
+  
+  std::vector< std::vector<gml::Point3D> > edges; 
+  int nbEdges;
+
+  int nbVerif = 0;
+  int nbValid = 0;
+  int nbNotValid = 0;
+
+  ostringstream oss1;
+  ostringstream oss2;
+  ostringstream oss3;
+
+  // Verification if there is not edges intersection
+  for (int i=0 ; i<(int)(*_faces).size() ; i++) {
+    for (int j=0 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++) {
+
+      std::vector <gml::Point3D> temp;
+      temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j]]);
+
+      if (j+1 == (int)(*(*_faces)[i]->getIndexes()).size()) {
+	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[0]]);
+      }
+      else {
+	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j+1]]);
+      }
+      edges.push_back(temp);
+    }
+  }
+
+  for (int i=0 ; i<(int)edges.size() ; i++) {
+    for (int j=i+1 ; j<(int)edges.size() ; j++) {
+      std::vector <gml::Point3D> temp;
+      temp.push_back(edges[i][1]);
+      temp.push_back(edges[j][0]);
+      temp.push_back(edges[j][1]);
+      nbVerif++;
+      double t1, t2;
+      int value = edges[i][0].inter(temp, &t1, &t2, TOLERANCE);
+      if (value == 1) {
+	if (((t1 > -TOLERANCE && t1 < TOLERANCE) || (t1 > 1.0-TOLERANCE && t1 < 1.0+TOLERANCE)) && ((t2 > -TOLERANCE && t2 < TOLERANCE) || (t2 > 1.0-TOLERANCE && t2 < 1.0+TOLERANCE))) {
+	  nbValid ++;
+	}
+	else {
+	  nbNotValid++;
+	}
+      }
+      else {
+	nbValid++;
+      }
+    }
+  }
+
+  
+  oss1 << "Number of edges : " << edges.size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid intersections : " << nbValid << endl << "Number of not valid intersections : " << nbNotValid << endl;
+  
+  QMessageBox::information(0, "Validation 1 :", oss1.str());
+
+  nbVerif = 0;
+  nbValid = 0;
+  nbNotValid = 0;
+	
+
+  // Verification if each faces are in the same plane
+  for (int i=0 ; i<(int)(*_faces).size() ; i++) {
+
+    nbVerif++;
+
+    gml::Point3D firstPoint = (*_points)[(*(*_faces)[i]->getIndexes())[0]];
+
+    // The verification is necessary only if the face owns more of three points
+    if ((int)(*(*_faces)[i]->getIndexes()).size() > 3) {
+      
+      std::vector <gml::Point3D> temp;
+
+      for (int j=1 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++) {
+	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j]]);
+      }
+      
+      if (!firstPoint.onPlane(temp, TOLERANCE)) {
+	nbNotValid++;
+      }
+      else {
+	nbValid++;
+      }
+      
+    }
+    else {
+      nbValid++;
+    }
+  }
+
+  
+  
+  oss2 << "Number of faces : " << (*_faces).size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid faces : " << nbValid << endl << "Number of not valid faces : " << nbNotValid << endl;
+
+  QMessageBox::information(0, "Validation 2 :", oss2.str());
+
+
+  nbVerif = 0;
+  nbValid = 0;
+  nbNotValid = 0;
+
+
+
+
+  // Verification if each edge doesn't cut a face
+  for (int i=0 ; i<(int)edges.size() ; i++) {
+    for (int j=0 ; j<(int)(*_faces).size() ; j++) {
+      std::vector <gml::Point3D> temp;
+      nbVerif++;
+      for (int k=0 ; k<(int)(*(*_faces)[j]->getIndexes()).size() ; k++) {
+	temp.push_back((*_points)[(*(*_faces)[j]->getIndexes())[k]]);
+      }
+      double t;
+      
+
+      if (edges[i][0].interPlan(edges[i][1], temp, &t, TOLERANCE)) {
+	if (((t > -TOLERANCE && t < TOLERANCE) || (t > 1.0-TOLERANCE && t < 1.0+TOLERANCE))) {
+	  nbValid ++;
+	}
+	else {
+	  nbNotValid++;
+	}
+      }
+      else {
+	nbValid++;
+      }
+    }
+  }
+
+  oss3 << "Number of faces : " << (*_faces).size() << endl << "Number of edges : " << edges.size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid faces : " << nbValid << endl << "Number of not valid faces : " << nbNotValid << endl;
+
+   QMessageBox::information(0, "Validation 3 :", oss3.str());
+  
 }

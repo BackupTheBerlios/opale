@@ -53,6 +53,8 @@ class AbsFace
    *
    *************************************************************/
   void setPoints(std::vector<gml::Point3D> * pts);
+
+  std::vector<gml::Point3D> const & getPoints();
   
   /**************************************************************
    *

@@ -272,6 +272,8 @@ void about();
   void generateCylinder();
   
 
+  void validation();
+
 };
 
 #endif

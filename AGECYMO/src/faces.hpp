@@ -32,6 +32,7 @@ class Faces
     
   public:
 
+
   /**************************************************************
    *
    *  constructor for Faces class
@@ -76,6 +77,9 @@ class Faces
    *
    *************************************************************/
   void renderBoundingBox() const;
+
+
+  void validModel() const;
 
   //accessors
 
