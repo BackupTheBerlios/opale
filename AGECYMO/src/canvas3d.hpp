@@ -24,14 +24,15 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
     CAMERA_TURN_UPPER ,
     CAMERA_MOVE_AWAY  ,
     CAMERA_MOVE_CLOSER,
-    ENABLE_DRAW_AXES,
-    ENABLE_DRAW_FPS,
-    ENABLE_DRAW_BOUNDING_BOX,
-    ENABLE_DRAW_INFO_MODEL, //number of quads, tria etc
-    WIREFRAME_RENDERING_MODE,
-    FLAT_RENDERING_MODE,
-    GOURAUD_RENDERING_MODE,
-    WF_HDLR_RENDERING_MODE,
+    ENABLE_DRAW_AXES,         // F1 Key
+    ENABLE_DRAW_FPS,          // F2 Key
+    ENABLE_DRAW_BOUNDING_BOX, // F3 Key
+    ENABLE_DRAW_INFO_MODEL,   // F4 Key. Number of quads, tria etc
+    WIREFRAME_RENDERING_MODE, // F5 Key
+    FLAT_RENDERING_MODE,      // F6
+    GOURAUD_RENDERING_MODE,   // F7
+    WF_HDLR_RENDERING_MODE,   // F8
+    NORMAL_RENDERING_MODE,    // F9 displays the normals too.
   };
 
   private:
@@ -39,6 +40,10 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   Renderer _renderer;
 
   bool     _axesEnabled;
+
+  bool     _boundingBoxEnabled;
+  bool     _normalEnabled;
+  
   
   gml::Point2D _clickPos; //position saved when the user clicks
 
@@ -51,8 +56,12 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   Canvas3D(QWidget* parent = 0, const char* name = 0);
   ~Canvas3D();
   
-  
   Renderer& renderer();
+
+  void  drawBoundingBox();
+  void  drawNormals();
+
+  void  setModel(Faces& faces);
   
   
   protected:

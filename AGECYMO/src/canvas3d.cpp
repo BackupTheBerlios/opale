@@ -3,7 +3,9 @@
 
 Canvas3D::Canvas3D(QWidget* parent, const char* name)
     : AbsCanvas(parent, name) ,//QGLWidget(parent, name),
-      _axesEnabled(true)
+      _axesEnabled(true),
+      _boundingBoxEnabled(false),
+      _normalEnabled(false)
 {
   _lightPos[0] = 0;
   _lightPos[1] = 100;
@@ -30,7 +32,7 @@ Canvas3D::Canvas3D(QWidget* parent, const char* name)
   _accel->insertItem(Key_F6, FLAT_RENDERING_MODE);
   _accel->insertItem(Key_F7, GOURAUD_RENDERING_MODE);
   _accel->insertItem(Key_F8, WF_HDLR_RENDERING_MODE);
-
+  _accel->insertItem(Key_F9, NORMAL_RENDERING_MODE);
   
   
   QObject::connect( _accel ,
@@ -117,16 +119,36 @@ Canvas3D::drawAxes()
 {
   if (_axesEnabled)
   {
-
-    glPolygonMode( GL_FRONT_AND_BACK , GL_FILL ) ;
-    glEnable( GL_COLOR_MATERIAL ) ;
-    glColorMaterial( GL_FRONT_AND_BACK , GL_AMBIENT_AND_DIFFUSE ) ;
-    
     glCallList(_axesIndexDPL);
   }
-  
-  
 }
+
+
+void
+Canvas3D::drawBoundingBox()
+{
+  if (_boundingBoxEnabled)
+  {
+    _renderer.renderBoundingBox();
+  }
+}
+
+void
+Canvas3D::drawNormals()
+{
+  if (_normalEnabled)
+  {
+    _renderer.renderNormals();
+  }
+}
+
+void
+Canvas3D::setModel(Faces& faces)
+{
+  _renderer.setModel(faces);
+  updateGL();
+}
+
 
 void
 Canvas3D::initializeGL()
@@ -136,14 +158,13 @@ Canvas3D::initializeGL()
   glClearColor (0, 0, 0, 0);
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-//  glPolygonMode(GL_FRONT, GL_LINE);
-
+  
+  //  glPolygonMode(GL_FRONT, GL_LINE);
 //   GLfloat mat_diffuse[] = {1.0, 1.0, 0, 1.0};
 //   GLfloat mat_specular[] = {0, 1.0, 1.0, 1.0};
 //   GLfloat shininess = 100.0;
   
   GLfloat light_position[] = {0.0, 10.0, 0.0, 0.0};
-  
   GLfloat spot_direction[] = {0.0, -1.0, 0.0};
  
 //   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
@@ -164,8 +185,15 @@ Canvas3D::initializeGL()
   
   //TODO: Remove it and compute the normal inside the objet
 //  glEnable(GL_NORMALIZE);  
+
+  
+  //Renderer initialization
+  qDebug("************************ OPEN GL INITIALIZATION *********************");
+    
   
   buildAxesDPL();
+
+  _renderer.initDPL();
   
   _chronometer.start();
 }
@@ -185,6 +213,14 @@ Canvas3D::paintGL()
 
   _renderer.render();
 
+  glFlush();
+
+  drawBoundingBox();
+  drawNormals();
+
+  glFlush();
+  
+  
   _nFps++;
   drawFps();
 }
@@ -286,7 +322,13 @@ Canvas3D::accelEvent(int id)
       updateGL();
       break;
     }
-
+    
+    case ENABLE_DRAW_BOUNDING_BOX:
+    {
+      _boundingBoxEnabled = !_boundingBoxEnabled;
+      updateGL();
+      break;
+    }
     
     case ENABLE_DRAW_AXES:
     {
@@ -306,12 +348,13 @@ Canvas3D::accelEvent(int id)
     {
       _renderer.setRenderMode(Renderer::WF);
 
-//      glShadeModel(GL_FLAT);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
       
       glDisable(GL_LIGHT0);
       glDisable(GL_LIGHTING);
       
-      //     glDisable( GL_COLOR_MATERIAL ) ;
+      //  glDisable( GL_COLOR_MATERIAL ) ;
       
       updateGL();
       break;
@@ -320,7 +363,8 @@ Canvas3D::accelEvent(int id)
     case FLAT_RENDERING_MODE:
     {
       _renderer.setRenderMode(Renderer::FLAT);
-      
+
+      glPolygonMode(GL_FRONT, GL_FILL);
       glShadeModel(GL_FLAT);
 
       glEnable(GL_LIGHTING);
@@ -337,6 +381,7 @@ Canvas3D::accelEvent(int id)
     {
       _renderer.setRenderMode(Renderer::GOURAUD);
 
+      glPolygonMode(GL_FRONT, GL_FILL);
       glShadeModel(GL_SMOOTH);
 
       glEnable(GL_LIGHTING);
@@ -356,7 +401,15 @@ Canvas3D::accelEvent(int id)
       break;
     }
 
+    case NORMAL_RENDERING_MODE:
+    {
+      _normalEnabled = !_normalEnabled;
+      updateGL();
+      break;
+    }
+        
     default:
       break;
   }
 }
+

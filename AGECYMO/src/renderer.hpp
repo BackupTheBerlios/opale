@@ -27,18 +27,49 @@ class Renderer
 
   RenderMode _renderMode;
   
+  GLint _currentDPL;
+  
+  GLint _modelWireFrameDPL; //model display list withOUT normals being displayed
+  
+  GLint _modelFillDPL; //model display list with fill mode
+
+  GLint _modelNormalsDPL; // model's normals.
+  
+
+  GLint _boundingBoxDPL; //bounding box of the model Display List
+
+  
   public:
   Renderer();
   ~Renderer();
 
+
+  void initDPL(); //initiliaze the display lists ID
+
+  //maybe private
+  void rebuildDPL(); // rebuild the display lists this is needed when
+                     // the model to be rendered is changed.
+  
+  
   void setModel(Faces & faces);
 
   Faces& model();
-  
-  void render();
 
-  void setRenderMode(RenderMode r);
+  //Rendering methods
+  void render();
+  void renderBoundingBox();
+  void renderNormals();
   
+  
+  void setRenderMode(RenderMode r);
+
+  int renderMode() const;
+  
+  private:
+
+  void updateCurrentDPL();
+
+  void deleteDisplayLists();
   
 };
 
