@@ -52,7 +52,7 @@ Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
 
   QAction *circleAction = 
     new QAction(QIconSet(QPixmap("../images/ellipse.png")),
-		"Cercle",0,this);
+		"Circle",0,this);
 
   QAction *quadriAction = 
     new QAction(QIconSet(QPixmap("../images/quadri.png")),
@@ -60,7 +60,7 @@ Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
 
   QAction *polygAction = 
     new QAction(QIconSet(QPixmap("../images/polygone.png")),
-		"Polygone",0,this);
+		"Polygon",0,this);
 
   QAction *selectAllAction = 
     new QAction(QIconSet(QPixmap("../images/selectAll.png")),
