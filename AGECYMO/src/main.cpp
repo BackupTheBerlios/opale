@@ -9,9 +9,9 @@
 #include "vector.h"
 #include "nurbs.h"
 
-#ifdef CORE_LEVEL
-#include "CORE/CORE.h"
-#endif
+//#ifdef CORE_LEVEL
+//#include "CORE/CORE.h"
+//#endif
 
 const double W_RATIO = 0.8; //how many of the screen's width we use for our application
 const double H_RATIO = 0.07; //how many of the screen's height we use for our application
@@ -62,7 +62,7 @@ main(int argc, char **argv)
 
   //TODO : remove this 
   //Test the vector class 
-  testVector();
+  //testVector();
 
   //TODO: remove this
   //This is just to test the linking.. and the nurb++ lib..
