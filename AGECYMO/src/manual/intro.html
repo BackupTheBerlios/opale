@@ -17,12 +17,27 @@ nouveau format.
 </p>
 
 
-<h3>Gestion des Plugins</h3>
+<h3>Gestion des Plugins</h3> 
 <p>
-
+AGECYMO possède une gestion de plugins afin d'ajouter des
+fonctionnalités au logiciel. Ces plugins sont compilés séparemment. Il existe
+deux type de plugins : les plugins LOAD_AND_SAVE permettant de
+gérer les entrées sorties du logiciel (tel que l'import export en
+VRML) et les plugins ACTION (permettant de gerer un nouvel outil par
+exemple). Ces plugins sont chargés dynamiquement (seulement lorsque
+l'utilisateur les appelle). Ils ajoutent les boutons, icones et autres menus
+nécessaires à leur utilisation lors d'une opération de chargement et 
+déchargement lors du démarrage de l'application.
 </p>
 
 <h3>Format de sauvegarde du cylindre généralisé</h3>
 <p>
+Le cylindre généralisé peut être sauvegardé selon un format que nous
+avons défini. Ainsi un fichier ".cur" est créé et contient les courbes
+définies par l'utilisateur dans les fenêtres chemin, section et profil.
+Cette sauvegarde permet de recharger ces courbes dans le futur puis
+de regénérer l'objet.
+Le cylindre généralisé créé peut aussi etre exporté au format VRML
+afin d'etre utilisé par d'autres modelers.
 
 </p>
