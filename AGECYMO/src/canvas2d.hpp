@@ -32,7 +32,7 @@ const unsigned short REC_MODE = 3;
 const unsigned short NURBS_MODE = 4;
 const unsigned short NO_TOOL_MODE = 0;
 
-class AbsCurve;
+class Curves;
 
 class Canvas2D : public AbsCanvas
 {
@@ -40,15 +40,16 @@ class Canvas2D : public AbsCanvas
 
   public:
   Canvas2D(QWidget* parent = 0, const char* name = 0);
-  AbsCurve *getFigure();
+  Curves *getFigure();
   unsigned short getToolMode();
   unsigned short getCanvasType();
-  void setFigure(AbsCurve *figure);
+  void setFigure(Curves *figure);
+  QPopupMenu *getPopupMenu();
 
   private:
   
   int _squareNumber;
-  AbsCurve *_figure;
+  Curves *_figure;
   unsigned short _toolMode;
   unsigned short _canvasType;
   QPopupMenu *_fileMenu;
@@ -78,7 +79,6 @@ class Canvas2D : public AbsCanvas
   void setRecMode();
   void setNurbsMode();
   void deleteAllPoints();
-  void deleteSelectedPoints();
   void selectAllPoints();
   void deselectAllPoints();
 
