@@ -17,38 +17,40 @@ MainWindow::MainWindow(int screen_w,
   _labelStatus = NULL;
   
   _controlPanel = new ControlPanel(this);
-
-  _helpFrame = new HelpWindow( "./manual/index.html");
-
-  
   setCentralWidget(_controlPanel);
   
-    
+  //HelpWindow
+  QDir absoluteManualDir(MANUAL_DIR);
+  absoluteManualDir.convertToAbs();
+  _helpFrame = new HelpWindow( absoluteManualDir.absFilePath(MANUAL_INDEX) );
+  
+  //Plugin Manager
   _pluginManager = new PluginManager(this);
 
+  //Toolbar
   _toolBar = new QToolBar("Operations", this);
   _toolBar->setHorizontallyStretchable(true);
   _toolBar->setVerticallyStretchable(true);
   _toolBar->setResizeEnabled(true);
-  
+
+  //Geometry stuff
   resize(w_app, h_app);
   move(0, 0);
   setCaption(TITLE);
-
   
   show();
 
+  //Other View 
   initViewFrames(800, screen_w, w_app);
-
 
   
   //Tell the plugin manager to load and unload the available plugins
   //Plugins will be loaded on demand
   _pluginManager->recordAvailablePlugins();
 
+  //Other GUI Stuff
   addStaticMenuBarContent();
   moveDockWindow(_toolBar, Qt::DockLeft);
-
   
 }
 
@@ -260,9 +262,9 @@ MainWindow::addStaticMenuBarContent()
     _menus.insert(HELP_KEY, help);
     menuBar()->insertItem( HELP_KEY, _menus[HELP_KEY]);
   }
-  
-  _menus[HELP_KEY]->insertItem( "&About", this, SLOT(about()));
+
   _menus[HELP_KEY]->insertItem( "Getting &Started", this, SLOT(manual()));
+  _menus[HELP_KEY]->insertItem( "&About", this, SLOT(about()));
   
 }
 
@@ -475,12 +477,15 @@ MainWindow::generateCylinder()
 {
   qDebug("Mainwindow : Dans generateCylinder ");
 
+//  _controlPanel->validateAll();
   
+  //Set the OpenGL Context to the 3D Canvas
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
   canvas.makeCurrent();
 
   int paramDiscretisationCHEMIN  = 20;
   int paramDiscretisationSECTION = 15;
+  int paramDiscretisationPROFIL  = 15;
 
   Canvas2D & canvasSection =  dynamic_cast<Canvas2D &>(_wSection->canvas());
   Canvas2D & canvasChemin  =  dynamic_cast<Canvas2D &>(_wChemin->canvas());
@@ -498,13 +503,34 @@ MainWindow::generateCylinder()
   }
   
 
+  int nbSegmentsChemin  =  chemin->getNbControlPoints() - 1;
+  int nbSegmentsProfil  =  profil->getNbControlPoints() - 1;
+  int nbSegmentsSection =  section->getNbControlPoints() - 1;
+  
+  std::cout << "nb de segments " << std::endl
+            << "chemin  = " << nbSegmentsChemin << std::endl
+            << "profil  = " << nbSegmentsProfil << std::endl
+            << "section = " << nbSegmentsSection << std::endl;
+
+  int nWay = _controlPanel->wayDiscretizeValue();
+  int nSection = _controlPanel->sectionDiscretizeValue();
+
+  paramDiscretisationSECTION = nSection / nbSegmentsSection;
+  paramDiscretisationPROFIL  = nWay / nbSegmentsProfil;
+  paramDiscretisationCHEMIN  = nWay / nbSegmentsChemin;
+  
+
+  qDebug("paramDiscretisationSECTION = %d", paramDiscretisationSECTION);
+  qDebug("paramDiscretisationPROFIL = %d", paramDiscretisationPROFIL);
+  qDebug("paramDiscretisationCHEMIN = %d", paramDiscretisationCHEMIN);
+  
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
   adjustSection(ptsSection);
   
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
 
-  std::vector<Point3D> ptsProfile = profil->discretize(paramDiscretisationCHEMIN);
+  std::vector<Point3D> ptsProfile = profil->discretize(paramDiscretisationPROFIL);
 
   
   int timeTiGenerateIt = ( _cylGenerator->generate( ptsChemin,

@@ -39,6 +39,9 @@ const QString HELP_KEY = "&Help";
 const QString CYLINDER_KEY = "&Cylinder";
 
 
+const QString MANUAL_DIR = "./manual/";
+const QString MANUAL_INDEX= "index.html";
+
 const QString IMAGES_DIR = "../images/";
 const QString QUIT_IMAGE = "exit.png";
 const QString CYLINDER_IMAGE = "cylinder.png";
