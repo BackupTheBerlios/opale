@@ -210,9 +210,12 @@ int load(MainWindow *mainW){
 
   // If there is no name defined exit
   if(fileName.isEmpty()){
+    mainW->getEventsWindow().writeComments("error in loading VRML file");
     return EXIT_FAILURE;
   }
   
+  mainW->getEventsWindow().writeComments("VRML model loading...");
+
   // Open the file
   ifstream VRMLFile (fileName,ios::in);
 
@@ -324,6 +327,7 @@ int load(MainWindow *mainW){
 	  if (currentIndex == -1) {
 
 	    if (nbPointsIndex < 3) {
+	      mainW->getEventsWindow().writeComments("error in VRML file loading");
 	      return EXIT_FAILURE;
 	    }
 	    
@@ -375,7 +379,8 @@ int load(MainWindow *mainW){
 
   //cout << "La face :" << endl << *faces;
   mainW->setModel(*faces);
-      
+
+  mainW->getEventsWindow().writeComments("VRML model loaded");
 
   return EXIT_SUCCESS;
 }
@@ -391,6 +396,7 @@ int load(MainWindow *mainW){
  ***************************************************************/
 extern "C"
 int save(MainWindow *mainWin){
+
   //we load faces to write in the file
   Faces *faces_to_write;
   faces_to_write = new Faces(mainWin->model());
@@ -408,8 +414,11 @@ int save(MainWindow *mainWin){
 
   //if no name defined exit
   if(fileName.isEmpty()){
+    mainWin->getEventsWindow().writeComments("VRML model saving...");
     return EXIT_FAILURE;
   }
+
+  mainWin->getEventsWindow().writeComments("VRML model saving...");
 
   //opening file for writing
   ofstream file(fileName.latin1());
@@ -423,6 +432,7 @@ int save(MainWindow *mainWin){
   if(!file.is_open()){
     QMessageBox::information( mainWin, "Generalized cylinder",
                               "Unable to open file for save.\n");
+    mainWin->getEventsWindow().writeComments("error in saving VRML model");
     return EXIT_FAILURE;
   }
 
@@ -479,6 +489,8 @@ int save(MainWindow *mainWin){
 
   //file closing
   file.close();
+
+  mainWin->getEventsWindow().writeComments("VRML model saved");
 
   return EXIT_SUCCESS;
 }
