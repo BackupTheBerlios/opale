@@ -515,82 +515,82 @@ void Curves::managePressEvent(QMouseEvent* event,
 
       //polyline creation
       if(toolType == POLY_MODE){
-	newCurve = new Polyline();
-	_listOfCurves.push_back(newCurve);
-	_currentToolType = POLY_MODE;
+        newCurve = new Polyline();
+        _listOfCurves.push_back(newCurve);
+        _currentToolType = POLY_MODE;
 
-	_parent->getMW().getEventsWindow().writeComments("fuck!!");
+        _parent->getMW().getEventsWindow().writeComments("New point added!!");
 
-	//management of the popupMenu
-	_parent->getPopupMenu()->setItemEnabled(0,false);
-	_parent->getPopupMenu()->setItemEnabled(1,true);
-	_parent->getPopupMenu()->setItemEnabled(2,false);
-	_parent->getPopupMenu()->setItemEnabled(3,false);
-	_parent->getPopupMenu()->setItemEnabled(4,false);
+        //management of the popupMenu
+        _parent->getPopupMenu()->setItemEnabled(0,false);
+        _parent->getPopupMenu()->setItemEnabled(1,true);
+        _parent->getPopupMenu()->setItemEnabled(2,false);
+        _parent->getPopupMenu()->setItemEnabled(3,false);
+        _parent->getPopupMenu()->setItemEnabled(4,false);
       }
 
       //polygone creation
       if(toolType == POLYG_MODE){
-	newCurve = new Polygone();
-	close();
-	_listOfCurves.push_back(newCurve);
-	_currentToolType = POLYG_MODE;
+        newCurve = new Polygone();
+        close();
+        _listOfCurves.push_back(newCurve);
+        _currentToolType = POLYG_MODE;
 	
-	//management of the popupMenu
-	_parent->getPopupMenu()->setItemEnabled(0,false);
-	_parent->getPopupMenu()->setItemEnabled(1,false);
-	_parent->getPopupMenu()->setItemEnabled(2,false);
-	_parent->getPopupMenu()->setItemEnabled(3,false);
-	_parent->getPopupMenu()->setItemEnabled(4,false);
+        //management of the popupMenu
+        _parent->getPopupMenu()->setItemEnabled(0,false);
+        _parent->getPopupMenu()->setItemEnabled(1,false);
+        _parent->getPopupMenu()->setItemEnabled(2,false);
+        _parent->getPopupMenu()->setItemEnabled(3,false);
+        _parent->getPopupMenu()->setItemEnabled(4,false);
       }
 
       //rectangle creation
       if(toolType == REC_MODE){
-	newCurve = new Quadri();
-	close();
-	_listOfCurves.push_back(newCurve);
-	_currentToolType = REC_MODE;
+        newCurve = new Quadri();
+        close();
+        _listOfCurves.push_back(newCurve);
+        _currentToolType = REC_MODE;
 
-	//management of the popupMenu
-	_parent->getPopupMenu()->setItemEnabled(0,false);
-	_parent->getPopupMenu()->setItemEnabled(1,false);
-	_parent->getPopupMenu()->setItemEnabled(2,false);
-	_parent->getPopupMenu()->setItemEnabled(3,false);
-	_parent->getPopupMenu()->setItemEnabled(4,false);
+        //management of the popupMenu
+        _parent->getPopupMenu()->setItemEnabled(0,false);
+        _parent->getPopupMenu()->setItemEnabled(1,false);
+        _parent->getPopupMenu()->setItemEnabled(2,false);
+        _parent->getPopupMenu()->setItemEnabled(3,false);
+        _parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == CIRCLE_MODE){
-	newCurve = new Circle();
-	close();
-	_listOfCurves.push_back(newCurve);
-	_currentToolType = CIRCLE_MODE;
+        newCurve = new Circle();
+        close();
+        _listOfCurves.push_back(newCurve);
+        _currentToolType = CIRCLE_MODE;
 	
-	//management of the popupMenu
-	_parent->getPopupMenu()->setItemEnabled(0,false);
-	_parent->getPopupMenu()->setItemEnabled(1,false);
-	_parent->getPopupMenu()->setItemEnabled(2,false);
-	_parent->getPopupMenu()->setItemEnabled(3,false);
-	_parent->getPopupMenu()->setItemEnabled(4,false);
+        //management of the popupMenu
+        _parent->getPopupMenu()->setItemEnabled(0,false);
+        _parent->getPopupMenu()->setItemEnabled(1,false);
+        _parent->getPopupMenu()->setItemEnabled(2,false);
+        _parent->getPopupMenu()->setItemEnabled(3,false);
+        _parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == NURBS_MODE){
-	newCurve = new NurbsCurve();
-	_listOfCurves.push_back(newCurve);
-	_currentToolType = NURBS_MODE;
+        newCurve = new NurbsCurve();
+        _listOfCurves.push_back(newCurve);
+        _currentToolType = NURBS_MODE;
 	
-	//management of the popupMenu
-	_parent->getPopupMenu()->setItemEnabled(0,true);
-	_parent->getPopupMenu()->setItemEnabled(1,false);
-	_parent->getPopupMenu()->setItemEnabled(2,false);
-	_parent->getPopupMenu()->setItemEnabled(3,false);
-	_parent->getPopupMenu()->setItemEnabled(4,false);
+        //management of the popupMenu
+        _parent->getPopupMenu()->setItemEnabled(0,true);
+        _parent->getPopupMenu()->setItemEnabled(1,false);
+        _parent->getPopupMenu()->setItemEnabled(2,false);
+        _parent->getPopupMenu()->setItemEnabled(3,false);
+        _parent->getPopupMenu()->setItemEnabled(4,false);
       }
 
       //we add the last point of the last curve to the new curve
       //control if it's the first curve
       if(getNbCurves()!=1){
-	if((_listOfCurves[getNbCurves()-1]->addPoint(
-	    _listOfControlPoints[getNbControlPoints()-1]))==ADDED){
-	  addPoint(position);
-	}
+        if((_listOfCurves[getNbCurves()-1]->addPoint(
+              _listOfControlPoints[getNbControlPoints()-1]))==ADDED){
+          addPoint(position);
+        }
       }
     }
 
@@ -615,8 +615,8 @@ void Curves::managePressEvent(QMouseEvent* event,
  *
  *************************************************************/
 void Curves::manageMoveEvent(QMouseEvent* event,
-			     unsigned short toolType,
-			     unsigned short canvasType)
+                             unsigned short toolType,
+                             unsigned short canvasType)
 {
   gml::Point3D position;
   calculateQtToOpenGL(event,&position);
@@ -626,11 +626,11 @@ void Curves::manageMoveEvent(QMouseEvent* event,
     gml::Point3D newPos;
     for(unsigned i = 0; i<_listOfControlPoints.size(); i++){
       if(isSelected((int)i)){
-	newPos[0] = (*_listOfControlPoints[i])[0] 
-	  + (position[0] - _startMovePoint[0]);
-	newPos[1] = (*_listOfControlPoints[i])[1]
-	  + (position[1] - _startMovePoint[1]);
-	movePoint((int)i, newPos);
+        newPos[0] = (*_listOfControlPoints[i])[0] 
+          + (position[0] - _startMovePoint[0]);
+        newPos[1] = (*_listOfControlPoints[i])[1]
+          + (position[1] - _startMovePoint[1]);
+        movePoint((int)i, newPos);
       }
     }
     _startMovePoint[0] = position[0];
@@ -648,8 +648,8 @@ void Curves::manageMoveEvent(QMouseEvent* event,
  *
  *************************************************************/
 void Curves::manageReleaseEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType)
+                                unsigned short toolType,
+                                unsigned short canvasType)
 {
   gml::Point3D position;
   calculateQtToOpenGL(event,&position);
@@ -672,8 +672,8 @@ void Curves::manageReleaseEvent(QMouseEvent* event,
  *
  *************************************************************/
 void Curves::manageDbClickEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType)
+                                unsigned short toolType,
+                                unsigned short canvasType)
 {
   gml::Point3D position;
   calculateQtToOpenGL(event,&position);
