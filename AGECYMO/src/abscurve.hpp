@@ -1,3 +1,10 @@
+//
+//  abscurves.hpp
+//  
+//  allow to a generic curve
+//
+
+
 #ifndef CLASS_ABSCURVE
 #define CLASS_ABSCURVE
 

@@ -80,7 +80,7 @@ int Curves::getNbCurves()
 void Curves::deleteAllCurves()
 {
   
-  for(unsigned i = 0; i<getNbCurves(); i++){
+  for(int i = 0; i<getNbCurves(); i++){
     delete(_listOfCurves[i]);
   }
   _listOfCurves.clear();
@@ -116,7 +116,12 @@ void Curves::addCurve(AbsCurve *newCurve)
   _listOfCurves.push_back(newCurve);
 }
 
-
+/**************************************************************
+ *
+ *  get all the curves
+ *  @return a vector of curves
+ *
+ *************************************************************/
 std::vector<AbsCurve*> Curves::getAllCurves()
 {
   return _listOfCurves;
@@ -377,7 +382,7 @@ std::vector<gml::Point3D> Curves::discretize(int nbSegments)
   std::vector<gml::Point3D> pointsList;
   std::vector<gml::Point3D> tmp;
 
-  for(unsigned i = 0; i<getNbCurves(); i++){
+  for(int i = 0; i<getNbCurves(); i++){
     tmp = _listOfCurves[i]->discretize(nbSegments);
 
     //if it's the first curve, add the first point
