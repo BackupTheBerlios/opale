@@ -474,9 +474,9 @@ MainWindow::generateCylinder()
   Canvas2D & canvasChemin  =  dynamic_cast<Canvas2D &>(_wChemin->canvas());
   Canvas2D & canvasProfil  =  dynamic_cast<Canvas2D &>(_wProfil->canvas());
 
-  AbsCurve* section =  canvasSection.getFigure();
-  AbsCurve* chemin =  canvasChemin.getFigure();
-  AbsCurve* profil =  canvasProfil.getFigure();
+  Curves* section =  canvasSection.getFigure();
+  Curves* chemin =  canvasChemin.getFigure();
+  Curves* profil = canvasProfil.getFigure();
 
   if( (section == NULL) || (chemin == NULL) || (profil == NULL) )
   {
