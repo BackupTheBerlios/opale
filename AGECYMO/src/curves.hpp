@@ -317,6 +317,14 @@ public:
 			  unsigned short toolType,
 			  unsigned short canvasType);
 
+  /**************************************************************
+   *
+   *  return the global segment number
+   *  @return the global segment number
+   *
+   *************************************************************/
+  int globalNbSegments();
+
 private:
 
   Canvas2D *_parent; /**the parent widget*/

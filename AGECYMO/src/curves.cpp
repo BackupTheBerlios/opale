@@ -730,4 +730,18 @@ void Curves::manageDbClickEvent(QMouseEvent* event,
 
 }
 
+/**************************************************************
+ *
+ *  return the global segment number
+ *  @return the global segment number
+ *
+ *************************************************************/
+int Curves::globalNbSegments()
+{
+  int globalNbSegments = 0;
+  for(unsigned i=0; i<_listOfCurves.size(); i++){
+    globalNbSegments += _listOfCurves[i]->getNumberOfSegments();
+  }
+  return globalNbSegments;
+}
 
