@@ -17,7 +17,7 @@ namespace gml
     Point<T, N>& operator=(Point<T2, N> const& v2); //T must contains T2
 
     template <typename T2>
-    Vector<T, N> operator-(Point<T2, N> const& p2);
+    Vector<T, N> operator-(Point<T2, N> const& p2) const;
     
     
   };
@@ -32,7 +32,7 @@ namespace gml
 
   template<typename T, int N>
   template <typename T2>
-  Vector<T, N> Point<T, N>::operator-(Point<T2, N> const& p2)
+  Vector<T, N> Point<T, N>::operator-(Point<T2, N> const& p2) const
   {
     Vector<T, N> v;
 
@@ -42,6 +42,7 @@ namespace gml
     }
     return v;
   }
+  
   typedef Point<int, 2> Point2D;
   typedef Point<double, 3> Point3D;
   typedef Point<double, 4> PointH;
