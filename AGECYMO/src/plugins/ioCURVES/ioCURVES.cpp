@@ -24,7 +24,7 @@
 #include "abscurve.hpp"
 #include "circle.hpp"
 #include "quadri.hpp"
-#include "abscurve.hpp"
+//#include "abscurve.hpp"
 #include "polyline.hpp"
 
 using namespace std;
