@@ -1,12 +1,21 @@
 #include "matrix.hpp"
 
-
+/**************************************************************
+ *
+ *  Matrix default constructor
+ *
+ *************************************************************/
 Matrix3D::Matrix3D
 ()
 {
   loadIdentity();
 }
 
+/**************************************************************
+ *
+ *  Matrix constructor with all values
+ *
+ *************************************************************/
 Matrix3D::Matrix3D 
 (double m0_p,  double m1_p,  double m2_p,  double m3_p,
  double m4_p,  double m5_p,  double m6_p,  double m7_p,
@@ -19,6 +28,11 @@ Matrix3D::Matrix3D
   m[12]= m12_p; m[13]= m13_p; m[14]= m14_p; m[15]= m15_p;
 }
 
+/**************************************************************
+ *
+ *  load the identity matrix
+ *
+ *************************************************************/
 void
 Matrix3D::loadIdentity
 ()
@@ -29,6 +43,11 @@ Matrix3D::loadIdentity
   m[12]= 0;   m[13]= 0;   m[14]= 0;  m[15]= 1;
 }
 
+/**************************************************************
+ *
+ *  define * operator for vector
+ *
+ *************************************************************/
 Vector3D
 Matrix3D::operator*  // Multiplie (x,y,z,0) par la matrice puis jette la 4e comp (qui est nulle)
 (const Vector3D& vec_p)
@@ -46,6 +65,11 @@ Matrix3D::operator*  // Multiplie (x,y,z,0) par la matrice puis jette la 4e comp
 //              m[8]*vec_p[0] + m[9]*vec_p[1] + m[10]*vec_p[2]);
 }
 
+/**************************************************************
+ *
+ *  define * operator for point
+ *
+ *************************************************************/
 Point3D
 Matrix3D::operator*
 (const Point3D& pt_p)   // Multiplie (x,y,z,1) la matrice courante
@@ -63,6 +87,11 @@ Matrix3D::operator*
 //             m[8]*pt_p[0] + m[9]*pt_p[1] + m[10]*pt_p[2] + m[11];
 }
 
+/**************************************************************
+ *
+ *  define * operator for another matrix
+ *
+ *************************************************************/
 Matrix3D
 Matrix3D::operator*
 (const Matrix3D& m_p)
@@ -86,6 +115,11 @@ Matrix3D::operator*
                   0,0,0,1);
 }
 
+/**************************************************************
+ *
+ *  scale the matrix with x,y,z value
+ *
+ *************************************************************/
 Matrix3D Matrix3D::scale(double sx,double sy,double sz)
 {
   return Matrix3D(sx, 0, 0, 0,
@@ -95,6 +129,11 @@ Matrix3D Matrix3D::scale(double sx,double sy,double sz)
 
 }
 
+/**************************************************************
+ *
+ *  rotatation operation on X axe
+ *
+ *************************************************************/
 Matrix3D Matrix3D::rotationX(double angle)
 {
   double sinO, cosO;
@@ -105,10 +144,13 @@ Matrix3D Matrix3D::rotationX(double angle)
                    0, cosO, -sinO, 0,
                    0, sinO, cosO, 0,
                    0, 0, 0, 1);
-
 }
 
-
+/**************************************************************
+ *
+ *  rotatation operation on Y axe
+ *
+ *************************************************************/
 Matrix3D Matrix3D::rotationY(double angle)
 {
   double sinO, cosO;
@@ -121,6 +163,11 @@ Matrix3D Matrix3D::rotationY(double angle)
                   0, 0, 0, 1);  
 }
 
+/**************************************************************
+ *
+ * rotatation operation on Z axe
+ *
+ *************************************************************/
 Matrix3D Matrix3D::rotationZ(double angle)
 {
   double sinO, cosO;
@@ -133,7 +180,11 @@ Matrix3D Matrix3D::rotationZ(double angle)
                   0, 0, 0, 1);
 }
 
-
+/**************************************************************
+ *
+ *  translation with x,y,z value
+ *
+ *************************************************************/
 Matrix3D Matrix3D::translation(double tx, double ty, double tz)
 {
   return Matrix3D(1, 0, 0, tx,
@@ -141,6 +192,7 @@ Matrix3D Matrix3D::translation(double tx, double ty, double tz)
                   0, 0, 1, tz,
                   0, 0, 0, 1);
 }
+
 
 ostream&
 operator<<
