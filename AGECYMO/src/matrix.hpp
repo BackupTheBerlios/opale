@@ -75,21 +75,21 @@ class Matrix3D
 
   /**************************************************************
    *
-   *  rotatation operation on X axe
+   *  rotatation operation on X axis
    *
    *************************************************************/
   static Matrix3D rotationX(double);
 
   /**************************************************************
    *
-   *  rotatation operation on Y axe
+   *  rotatation operation on Y axis
    *
    *************************************************************/
   static Matrix3D rotationY(double);
 
   /**************************************************************
    *
-   * rotatation operation on Z axe
+   * rotatation operation on Z axis
    *
    *************************************************************/
   static Matrix3D rotationZ(double);
