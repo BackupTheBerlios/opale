@@ -1,5 +1,14 @@
 #include "tria.hpp"
 
+/**************************************************************
+ *
+ *  constructor for Tria class
+ *  @param points a vector of points used in the quad
+ *  @param i1 the first index of the quad
+ *  @param i2 the second index of the quad
+ *  @param i3 the third index of the quad
+ *
+ *************************************************************/
 Tria::Tria(std::vector<gml::Point3D> *points, int i1, int i2, int i3)
     : AbsFace(points),
       _i1(i1),
@@ -9,6 +18,13 @@ Tria::Tria(std::vector<gml::Point3D> *points, int i1, int i2, int i3)
   updateNormal();
 }
 
+
+/**************************************************************
+ *
+ *  copy constructor for Tria class
+ *  @param t1 another Tria
+ *
+ *************************************************************/
 Tria::Tria(Tria const & t1)
     : AbsFace(t1)
 {
@@ -19,6 +35,11 @@ Tria::Tria(Tria const & t1)
   updateNormal();
 }
 
+/**************************************************************
+ *
+ *  draw the triangle in the openGL context
+ *
+ *************************************************************/
 void
 Tria::render()
 {
@@ -32,7 +53,6 @@ Tria::render()
 
   glColor3f(0.0, 0.0, 1.0);
 
-//  glNormal3f(_normal[0], _normal[1], _normal[2]);
   glNormal3f(tnormals[_i1][0], tnormals[_i1][1], tnormals[_i1][2]);
 
   
@@ -56,6 +76,12 @@ Tria::render()
     
 }
 
+
+/**************************************************************
+ *
+ *  draw the normals of the triangle
+ *
+ *************************************************************/
 void
 Tria::renderNormal()
 {  
@@ -74,7 +100,11 @@ Tria::renderNormal()
   glEnd();
 }
 
-
+/**************************************************************
+ *
+ *  draw the triangle in the openGL context with the normals
+ *
+ *************************************************************/
 void
 Tria::renderWithNormal()
 {
@@ -82,8 +112,11 @@ Tria::renderWithNormal()
   renderNormal();
 }
 
-
-
+/**************************************************************
+ *
+ *  define the equal operator for Tria
+ *
+ *************************************************************/
 Tria&
 Tria::operator=(Tria const & t1)
 {
@@ -105,6 +138,11 @@ Tria::operator=(Tria const & t1)
   return *this;
 }
 
+/**************************************************************
+ *
+ *  redefine the display stream operator for debug
+ *
+ *************************************************************/
 std::ostream&
 operator<<(std::ostream& os, Tria const& t)
 {
@@ -118,6 +156,13 @@ operator<<(std::ostream& os, Tria const& t)
   return os;
 }
 
+/**************************************************************
+ *
+ *  define if the triangle contains a vertex
+ *  @param vertexIndex the index of the vertex
+ *  @return true if the quad contains the vertex, false else
+ *
+ *************************************************************/
 bool
 Tria::containVertex(int vertexIndex) const
 {
@@ -131,6 +176,12 @@ Tria::containVertex(int vertexIndex) const
   return false;
 }
 
+/**************************************************************
+ *
+ *  returns all the indexes of the triangle
+ *  @return a vector of indexes
+ *
+ *************************************************************/
 std::vector<int> *
 Tria::getIndexes()
 {
@@ -144,7 +195,11 @@ Tria::getIndexes()
   return indices;
 }
 
-
+/**************************************************************
+ *
+ *  update the normals of the triangle
+ *
+ *************************************************************/
 void
 Tria::updateNormal()
 {
