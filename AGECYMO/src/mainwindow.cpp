@@ -14,12 +14,22 @@ MainWindow::MainWindow(int screen_w,
       _screen_w(screen_w),
       _screen_h(screen_h)
 {
+  _pluginManager = new PluginManager(this);
+  
+  
   resize(w_app, h_app);
   move(x_app, y_app);
   setCaption(TITLE);
   show();
 
-  initViewFrames();  
+  initViewFrames();
+
+  //Tell the plugin manager to load and unload the available plugins
+  //Plugins will be loaded on demand
+  _pluginManager->readAvailablePlugins();
+
+  addStaticMenuBarContent();
+  
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +42,37 @@ MainWindow::~MainWindow()
   delete _wProfil;
   delete _wChemin;
   delete _w3d;
+  delete _pluginManager;
+}
+
+void
+MainWindow::addStaticMenuBarContent()
+{
+  //File
+  QPopupMenu* fileMenu = _menus.find(FILE_KEY);
+
+  if(!fileMenu)
+  {
+    QPopupMenu * file = new QPopupMenu( this );
+    _menus.insert(FILE_KEY, file);
+    menuBar()->insertItem( FILE_KEY, _menus[FILE_KEY]);
+  }
+
+  _menus[FILE_KEY]->insertSeparator();
+  _menus[FILE_KEY]->insertItem( "&Quit", qApp, SLOT(quit()), CTRL+Key_Q);
+
+  //Help Menu with about
+  QPopupMenu* helpMenu =  _menus.find(HELP_KEY);
+
+  if (!helpMenu)
+  {
+    QPopupMenu * help = new QPopupMenu( this );
+    _menus.insert(HELP_KEY, help);
+    menuBar()->insertItem( HELP_KEY, _menus[HELP_KEY]);
+  }
+  
+  _menus[HELP_KEY]->insertItem( "&About", this, SLOT(about()));
+  
 }
 
 void
@@ -84,12 +125,6 @@ MainWindow::initViewFrames()
   _wChemin->setCaption("Chemin");
   _wSection->setCaption("Section");
   _wProfil->setCaption("Profil");
-  
-  //Moves cameras for each frame !
-//   _wChemin->setCameraPosition(0, 0, 100);
-//   _wSection->setCameraPosition(0, 100, 0);
-//   _wSection->setCameraUp(1, 0, 0);
-//   _wProfil->setCameraPosition(-100, 0, 0);
   
   //Move the frames !
   _wChemin->move(x(), h2);
@@ -155,3 +190,22 @@ MainWindow::moveEvent(QMoveEvent* event)
   qDebug("Move event received\n");
   updateViewFramesPosition();
 }
+
+
+//SLOTS
+void
+MainWindow::about()
+{
+
+  std::cout << "dans ABOUT" << std::endl;
+  
+  QMessageBox::about( this,
+                      "About AGECYMO",
+                      "Another Generalize Cylinder Modeler\n"
+                      "\t developed by \n"
+                      "\tAlexis Derrien \n"
+                      "\tRomain Pacanowski \n"
+                      "\tAlexandre Viollet \n" );
+
+}
+

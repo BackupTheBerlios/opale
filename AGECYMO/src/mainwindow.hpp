@@ -1,11 +1,26 @@
 #ifndef CLASS_MAINWINDOW
 #define CLASS_MAINWINDOW
 
+#include <qdict.h>
+
+#include <qmenubar.h>
+#include <qpopupmenu.h>
+#include <qmessagebox.h>
 #include <qmainwindow.h>
+#include <qapplication.h>
+
+
+
+#include "pluginmanager.hpp"
 
 #include "canvas2d.hpp"
 #include "canvas3d.hpp"
 #include "window3d.hpp"
+
+class PluginManager;
+
+const QString FILE_KEY = "&File";
+const QString HELP_KEY = "&Help";
 
 class MainWindow : public QMainWindow
 {
@@ -13,6 +28,9 @@ class MainWindow : public QMainWindow
 
   private:
 
+
+  
+  
   const char* TITLE;
     
   int _screen_w; //screen's width
@@ -26,7 +44,12 @@ class MainWindow : public QMainWindow
 //   Window3D* _wXY;
 //   Window3D* _wXZ;
 //   Window3D* _wYZ;
+
+
+  QDict<QPopupMenu> _menus;
   
+  
+  PluginManager*  _pluginManager;
   
   
   public:
@@ -62,10 +85,18 @@ class MainWindow : public QMainWindow
 
   void initViewFrames();
   void updateViewFramesPosition();
+
+  void addStaticMenuBarContent();
+  
   
   protected:
   virtual void moveEvent(QMoveEvent* event);
+
+  public slots:
+
+  void about();
   
+ 
 
 };
 
