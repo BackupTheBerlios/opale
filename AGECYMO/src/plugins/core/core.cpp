@@ -23,6 +23,8 @@
 #include "faces.hpp"
 #include "precision.hpp"
 
+#include "core/CORE.h"
+
 using namespace std;
 using namespace gml;
 
@@ -46,7 +48,7 @@ void** query(void){
   menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuLoadAdd->emplacement->append("/&Tools/core validity");
   menuLoadAdd->image = new string("coreValidity.png");
-  menuLoadAdd->texte = new string("CTRL+V");
+  menuLoadAdd->texte = new string("CTRL+I");
 
   qDebug("INSIDE PLUGIN : Query core type  = %d", *type);
   
