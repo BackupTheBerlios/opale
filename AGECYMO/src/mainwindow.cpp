@@ -55,33 +55,42 @@ MainWindow::updateGUIWithPluginData(const QString & pluginID,
   for(int i=0; i<nbArgs; i++)
   {
 
+    //First we retrieve the MenuAddOn
     MenuAddOn* infoMenu = infos[i];
-
+    
     QString emplacement(infoMenu->emplacement->c_str());
     qDebug("emplacement = %s ", emplacement.latin1());
-    
+
+    // We split the string to learn where the plugin wants
+    // to be connected with the GUI components
     QStringList decomposition = QStringList::split(INPUT_COMPONENT_SEPARATOR, emplacement);
     
     QString component = decomposition[0];
     qDebug("Compoment = %s ", component.latin1());
 
-    
+
+    //Which component ?
     //TODO: to change the test
     if (component == "Menu")
     {
       QPopupMenu* aMenu = _menus.find(decomposition[1]);
-      
-      if(!aMenu)
-      {
-        QPopupMenu * aMenu = new QPopupMenu( this );
-        _menus.insert(decomposition[1], aMenu);
-        menuBar()->insertItem( decomposition[1], _menus[decomposition[1]]);
-      }
 
+      for(int j=1; j<decomposition.size()-1; j++)
+      {
+        
+        //Do we already have built this menu
+        if(!aMenu)
+        {
+          QPopupMenu * aMenu = new QPopupMenu( this );
+          _menus.insert(decomposition[j], aMenu);
+          menuBar()->insertItem( decomposition[j], _menus[decomposition[j]]);
+        }
+      }
+      
       
       QAction* aAction = new QAction(this);
-      aAction->setText(decomposition[2]);
-      aAction->setMenuText(decomposition[2]);
+      aAction->setText    ( decomposition[decomposition.size() -1] );
+      aAction->setMenuText( decomposition[decomposition.size() -1] );
       
       QSignalMapper* _signalMapper = new QSignalMapper(this);
       _signalMapper->setMapping(aAction, pluginID);
