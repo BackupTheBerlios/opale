@@ -105,6 +105,8 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbDiscretizedPoints)
   std::vector<gml::Point3D> pointsList;
   gml::Point3D p3D;
   
+  nbDiscretizedPoints *= (_pointsVector.size()-1);
+
   // New table in order to get the points
   Vector_HPoint3Df ctrlpoints(getNbPoints());
   
@@ -164,5 +166,5 @@ int NurbsCurve::addPoint(gml::Point3D *point)
  *************************************************************/
 int NurbsCurve::getNumberOfSegments()
 {
-  return 1;
+  return _pointsVector.size()-1;
 }
