@@ -40,9 +40,9 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   Renderer _renderer;
 
   bool     _axesEnabled;
-
   bool     _boundingBoxEnabled;
   bool     _normalEnabled;
+  bool     _infoEnabled;
   
   
   gml::Point2D _clickPos; //position saved when the user clicks
@@ -60,7 +60,8 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
 
   void  drawBoundingBox();
   void  drawNormals();
-
+  void  drawInfo();
+  
   void  setModel(Faces& faces);
   
   

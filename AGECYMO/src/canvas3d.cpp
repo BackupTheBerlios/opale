@@ -5,7 +5,8 @@ Canvas3D::Canvas3D(QWidget* parent, const char* name)
     : AbsCanvas(parent, name) ,//QGLWidget(parent, name),
       _axesEnabled(true),
       _boundingBoxEnabled(false),
-      _normalEnabled(false)
+      _normalEnabled(false),
+      _infoEnabled(false)
 {
   _lightPos[0] = 0;
   _lightPos[1] = 100;
@@ -113,7 +114,6 @@ Canvas3D::buildAxesDPL()
 
 }
 
-
 void
 Canvas3D::drawAxes()
 {
@@ -122,7 +122,6 @@ Canvas3D::drawAxes()
     glCallList(_axesIndexDPL);
   }
 }
-
 
 void
 Canvas3D::drawBoundingBox()
@@ -143,9 +142,46 @@ Canvas3D::drawNormals()
 }
 
 void
+Canvas3D::drawInfo()
+{
+  if(_infoEnabled)
+  {
+
+    int ntria   = _renderer.model().numberOfTriangles();
+    int nquad   = _renderer.model().numberOfQuads();
+    int nother  = _renderer.model().numberOfOthers();
+    int nvertex = _renderer.model().numberOfVertex();
+    
+    glColor3f(0.0 , 0.0, 1.0);
+    renderText(5,
+               10,
+               QString("Triangles : ").append(QString::number(ntria)) );  
+        
+    glColor3f(0.0 , 1.0, 0);
+    renderText(5,
+               25,
+               QString("Quads     : ").append(QString::number(nquad)) );  
+    
+    glColor3f(1.0 , 0.0, 0);
+    renderText(5,
+               40,
+               QString("Others    : ").append(QString::number(nother)) );  
+
+    glColor3f(1.0 , 1.0, 1.0);
+    renderText(5,
+               55,
+               QString("Vertices  : ").append(QString::number(nvertex)) );  
+    
+    
+  }
+  
+}
+
+void
 Canvas3D::setModel(Faces& faces)
 {
   _renderer.setModel(faces);
+  // glFinish();
   updateGL();
 }
 
@@ -217,7 +253,8 @@ Canvas3D::paintGL()
 
   drawBoundingBox();
   drawNormals();
-
+  drawInfo();
+  
   glFlush();
   
   
@@ -271,7 +308,6 @@ Canvas3D::mouseReleaseEvent(QMouseEvent* event)
             << " position y = " << event->y() << std::endl;
   
 }
-
 
 void
 Canvas3D::accelEvent(int id)
@@ -340,6 +376,13 @@ Canvas3D::accelEvent(int id)
     case ENABLE_DRAW_FPS:
     {
       _fpsEnabled = !_fpsEnabled;
+      updateGL();
+      break;
+    }    
+
+    case ENABLE_DRAW_INFO_MODEL:
+    {
+      _infoEnabled = !_infoEnabled;
       updateGL();
       break;
     }    
