@@ -36,7 +36,16 @@ CylinderGenerator::generate(const std::vector<Point3D> & wayPts,
 
   generatePoints( wayPts, sectionPts, profilePts);
   generateFaces(wayPts.size(), sectionPts.size() );
+
   
+  //todo put this in the generate Method
+  Faces* model = new Faces(_points, _faces);
+
+  qDebug(" Model = %p", model);
+  qDebug("about to set the model");
+
+  _canvas.setModel(*model);
+
 
   return _chronometer.elapsed();
 }
@@ -53,29 +62,46 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
 //   }
   
   _points = new std::vector<Point3D>();
-  
+
+  Matrix3D profileMatrix;
+  Matrix3D tmpFrame;
   Matrix3D currentFrame;
   Matrix3D previousFrame;
   
   currentFrame.loadIdentity();
   previousFrame.loadIdentity();
   
+
   
   initFrenetFrame( wayPts[0], wayPts[1], currentFrame);
+
+  computeProfileMatrix(profilePts, 0, profileMatrix);
+  tmpFrame = currentFrame;
+  currentFrame = tmpFrame * profileMatrix;
+
+//   std::cout << "FIRST currentFrame = " << std::endl
+//             << currentFrame << std::endl;
+  
   
   computePointsAccordingToFrame(sectionPts, currentFrame);
   
-  const int size = wayPts.size();
+  const unsigned int size = wayPts.size();
 
   qDebug("We have %d points for the path", size);
   
   for (unsigned int i=1; i<size-1; i++)
   {
     previousFrame = currentFrame;
+
+    
     
     computeFrenetFrame(previousFrame,
                        wayPts[i-1], wayPts[i], wayPts[i+1],
                        currentFrame);
+    //Profile part
+    computeProfileMatrix(profilePts, i, profileMatrix);
+    tmpFrame = currentFrame;
+    currentFrame = tmpFrame * profileMatrix;
     
     computePointsAccordingToFrame(sectionPts, currentFrame);
     
@@ -84,6 +110,11 @@ CylinderGenerator::generatePoints(const std::vector<Point3D> & wayPts,
   //previousFrame = currentFrame;
   lastFrenetFrame(wayPts[size-2], wayPts[size-1], currentFrame);
 
+  //Profile part
+  computeProfileMatrix(profilePts, (size-1), profileMatrix);
+  tmpFrame = currentFrame;
+  currentFrame = tmpFrame * profileMatrix;
+    
   computePointsAccordingToFrame(sectionPts, currentFrame);
   
 }
@@ -263,12 +294,19 @@ CylinderGenerator::lastFrenetFrame(const Point3D & p1,
 
 void
 CylinderGenerator::computeProfileMatrix( const std::vector<Point3D> & profilePts,
+                                         int indexCurrentPoint,
                                          Matrix3D & profileMatrix)
 {
   //Compute a profile matrix according to the profile curve
   //TODO: just do it !
   profileMatrix.loadIdentity();
 
+  double scaleFactor = profilePts[indexCurrentPoint][0];
+
+  std::cout << "Point current profile point = " << profilePts[indexCurrentPoint] << std::endl;
+  qDebug("scaleFactor = %f", scaleFactor);
+  
+  profileMatrix = Matrix3D::scale( scaleFactor, scaleFactor, scaleFactor);
 }
 
 void
@@ -324,36 +362,30 @@ CylinderGenerator::generateFaces(int nbPtWay, int nbPtSection)
 
 
   // TODO : Check this or the normal for face...
-  std::vector<int> * indexes = new std::vector<int>();
+//   std::vector<int> * indexes = new std::vector<int>();
 
-  for (int i = (nbPtSection - 1); i>=0; i--)
-  {
-    indexes->push_back(i);
-  }
+//   for (int i = (nbPtSection - 1); i>=0; i--)
+//   {
+//     indexes->push_back(i);
+//   }
   
-  Face* bottom = new Face( indexes, _points, nbPtSection);
-  _faces->push_back(bottom);
+//   Face* bottom = new Face( indexes, _points, nbPtSection);
+//   _faces->push_back(bottom);
 
 
-  indexes->clear();
+//   indexes->clear();
   
-  int i1 = _points->size() - nbPtSection;
-  int i2 = _points->size();
+//   int i1 = _points->size() - nbPtSection;
+//   int i2 = _points->size();
   
-  for (int i=i1; i<=i2; i++)
-  {
-    indexes->push_back(i);
-  }
+//   for (int i=i1; i<=i2; i++)
+//   {
+//     indexes->push_back(i);
+//   }
   
-  Face* top = new Face( indexes, _points, nbPtSection);
-  _faces->push_back(top);
-  delete indexes;
-
-  //todo put this in the generate Method
-  Faces* model = new Faces(_points, _faces);
-  qDebug(" Model = %p", model);
-  qDebug("about to set the model");
-  _canvas.setModel(*model);
+//   Face* top = new Face( indexes, _points, nbPtSection);
+//   _faces->push_back(top);
+//   delete indexes;
 
 }
 

@@ -76,6 +76,7 @@ class CylinderGenerator
   
   
   void computeProfileMatrix( const std::vector<Point3D> & profilePts,
+                             int indexCurrentPoint,
                              Matrix3D & profileMatrix);
   
 };
