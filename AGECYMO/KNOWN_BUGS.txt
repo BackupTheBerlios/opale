@@ -13,6 +13,11 @@ Nous sommes parfaitement conscients des bugs suivants :
 *) La discrétisation d'une NURBS n'est pas assez répartie pour un
  faible nombre de points demandés.
 
+
+*) Le solide généré peut parfois etre invalide au niveau de certainmes
+ normales qui se retrouvent inversées.
+
+
 *) Discrétisation non adapative sur le profil. Notre discrétisation
  n'est pas optimale sur le profil. En effet, il est inutile de
  trop discrétiser des segments horizontaux du profil
