@@ -122,6 +122,31 @@ Faces::faces()
 }
 
 
+int
+Faces::numberOfVertex() const
+{
+  return _nbPoints;
+}
+
+int
+Faces::numberOfTriangles() const
+{
+  return _nbTriangles;
+}
+
+int
+Faces::numberOfQuads() const
+{
+  return _nbQuads;
+}
+
+int
+Faces::numberOfOthers() const
+{
+  return _nbOthers;
+}
+
+
 std::ostream&
 operator<<(std::ostream& os, Faces const& f)
 {

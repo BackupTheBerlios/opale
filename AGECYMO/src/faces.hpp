@@ -36,20 +36,26 @@ class Faces
         std::vector<AbsFace*> *faces);
 
   ~Faces();
-  
+
+  //rendering methods
   void render() const;
 
   void renderWithNormal() const;
 
   void renderNormals() const;
   
-  
   void renderBoundingBox() const;
 
-  
+  //accessors
   std::vector<gml::Point3D> const & points();
 
   std::vector<AbsFace*> const & faces();
+
+  //accessors to obtain specific information
+  int numberOfVertex()    const;
+  int numberOfTriangles() const;
+  int numberOfQuads()     const;
+  int numberOfOthers()   const;
   
   
 
