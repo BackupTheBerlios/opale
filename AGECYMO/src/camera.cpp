@@ -47,7 +47,7 @@ Camera::incrementPhi()
   _position = newPosition;
   
   updateThetaTransformMatrix();
-//  updatePsiTransformMatrix();
+  updatePsiTransformMatrix();
 }
 
 void
@@ -60,7 +60,7 @@ Camera::decrementPhi()
   _position = newPosition;
 
   updateThetaTransformMatrix();
-  // updatePsiTransformMatrix();
+  updatePsiTransformMatrix();
 }
 
 void
@@ -111,7 +111,7 @@ Camera::incrementTheta()
   //newUp = _matIncrTheta * _up;
   //_up = newUp;
   
-  //updatePsiTransformMatrix();
+  updatePsiTransformMatrix();
 }
 
 void
@@ -141,7 +141,7 @@ Camera::decrementTheta()
   newPosition = _matDecrTheta * _position;
   _position = newPosition;
     
-  //updatePsiTransformMatrix();
+  updatePsiTransformMatrix();
 }
 
 void
