@@ -5,12 +5,24 @@
 
 using namespace std;
 
+/*******************************************************
+ * the default polyline constructor
+ *
+ ******************************************************/
 Polyline::Polyline()
 {}
 
+/*******************************************************
+ * the polyline destructor
+ *
+ ******************************************************/
 Polyline::~Polyline()
 {}
 
+/*******************************************************
+ * draw the polyline in the openGL widget
+ *
+ ******************************************************/
 void Polyline::render()
 {
   glColor3f(_redColor, _greenColor, _blueColor);
@@ -21,6 +33,12 @@ void Polyline::render()
   glEnd();
 }
 
+/*******************************************************
+ * add a point to the polyline
+ * @param point the point to add
+ * @return ADDED or NOT_ADDED
+ *
+ ******************************************************/
 std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
@@ -58,6 +76,13 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
   return pointsList;
 }
 
+
+ /*******************************************************
+  * discretize the polyline
+  * @param nbSegments the discretization resolution
+  * @return the vector of points (the discretized polyline)
+  *
+  ******************************************************/
 int Polyline::addPoint(gml::Point3D *point)
 {
   cout<<"point ajoute dans addPoint"<<endl;
