@@ -68,6 +68,51 @@ PluginManager::recordAvailablePlugins()
   }
     
 }
+    
+void
+PluginManager::executeRun(const QString & pluginFullName)
+{
+  
+}
+
+void
+PluginManager::executeLoad(const QString & pluginID)
+{
+  PluginHandler* plgh;
+  plgh = reloadPlugin(pluginID);
+
+  if (plgh != NULL)
+  {
+    loadFunction lf = *(plgh->load);
+    lf(_mw);
+    unloadPlugin(pluginID);
+  }
+  else
+  {
+    qWarning("Unable to execute the LOAD function. Problem while reloading plugin %s", pluginID.latin1());
+  }
+  
+}
+
+void
+PluginManager::executeSave(const QString & pluginID)
+{
+  PluginHandler* plgh;
+  plgh = reloadPlugin(pluginID);
+
+  if (plgh != NULL)
+  {
+    saveFunction sf = *(plgh->save);
+    sf(_mw);
+    unloadPlugin(pluginID);
+  }
+  else
+  {
+    qWarning("Unable to execute the SAVE function. Problem while reloading plugin %s", pluginID.latin1());
+  }
+  
+}
+
 
 void
 PluginManager::executePlugin(const QString & pluginFullName)
@@ -252,7 +297,7 @@ PluginManager::loadPlugin(const QString & pluginFullName)
   
 }
 
-void
+PluginHandler*
 PluginManager::reloadPlugin(const QString & pluginID)
 {
   PluginHandler* plgh = _plugins[pluginID];
@@ -261,7 +306,7 @@ PluginManager::reloadPlugin(const QString & pluginID)
   {
     //Strange trying to reload an unrecorded plugin...
     qWarning("Unknown Plugin %s !!!", pluginID.latin1());
-    return;
+    return NULL;
   }
 
     
@@ -271,7 +316,7 @@ PluginManager::reloadPlugin(const QString & pluginID)
   {
     //plugin already load !!
     qWarning("Plugin %s already load !!!", pluginID.latin1());
-    return;
+    return plgh;
   }
 
   
@@ -281,7 +326,7 @@ PluginManager::reloadPlugin(const QString & pluginID)
   if(!handler)
   {
     qWarning("Plugin %s could NOT BE LOAD !!!! WONT BE USED !!!", pluginID.latin1());
-    return;
+    return NULL;
   }
 
   //OK we found the plugin storing it
@@ -314,7 +359,8 @@ PluginManager::reloadPlugin(const QString & pluginID)
     default:
       break;
   }
-    
+
+  return plgh;
 }
 
 

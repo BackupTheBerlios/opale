@@ -95,7 +95,7 @@ class PluginManager
     
   void loadAndUnloadPlugin(const QString & pluginFullName);
     
-  void reloadPlugin(const QString & pluginFullName);
+  PluginHandler* reloadPlugin(const QString & pluginFullName);
     
 };
 
