@@ -304,7 +304,11 @@ MainWindow::model()
 void
 MainWindow::setModel(Faces& faces)
 {
-  dynamic_cast<Canvas3D &>( _w3d->canvas() ).renderer().setModel(faces);
+  Canvas3D& c3d = dynamic_cast<Canvas3D &>( _w3d->canvas() );
+  
+    
+  c3d.renderer().setModel(faces);
+  c3d.updateGL();
 }
 
 
