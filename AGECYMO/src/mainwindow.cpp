@@ -590,8 +590,6 @@ MainWindow::generateCylinder()
 {
   qDebug("Mainwindow : Dans generateCylinder ");
 
-//  _controlPanel->validateAll();
-
   if ( ! (_controlPanel->controlWayValue()) )
   {
     return;
@@ -611,6 +609,8 @@ MainWindow::generateCylinder()
   {
     return;
   }
+
+  _cylGenerator->setTorsionEnabled( _controlPanel->isTorsionEnabled());
   
   //Set the OpenGL Context to the 3D Canvas
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
@@ -664,23 +664,32 @@ MainWindow::generateCylinder()
 
   int nProfile = nWay / nbSegmentsProfil;
   nProfile = (nProfile < 2) ? (2) : (nProfile);
+
+  qDebug("nProfile = %d", nProfile);
   
   std::vector<Point3D> ptsProfile = profil->discretize( nProfile );
   
   int discretizeWay;
   int u = ptsProfile.size()/ nbSegmentsChemin;
+  qDebug(" nombre de points sur le profil = %d", ptsProfile.size() );
+  qDebug("u = %d", u);
+  qDebug("nbSegmentsChemin = %d", nbSegmentsChemin);
+  
   std::vector<Point3D> ptsChemin  = chemin->discretize( u );
+//  std::vector<Point3D> ptsChemin  = chemin->discretize( ptsProfile.size() );
 
-  while (  (discretizeWay = ptsChemin.size()) < ptsProfile.size() )
-  {
-    u++;
-    ptsChemin = chemin->discretize( u );
-  }
+  qDebug("size de ptsChemin = %d", ptsChemin.size() );
+  
+   while (  (discretizeWay = ptsChemin.size()) < ptsProfile.size() )
+   {
+     u++;
+     ptsChemin = chemin->discretize( u );
+   }
 
-  if ( ptsChemin.size() == (ptsProfile.size()+1) )
-  {
-    ptsChemin.pop_back();
-  }
+   while( ptsChemin.size() != (ptsProfile.size()) )
+   {
+     ptsChemin.pop_back();
+   }
   
   
   adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
