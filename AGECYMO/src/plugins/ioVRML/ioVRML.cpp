@@ -91,19 +91,19 @@ void** query(void){
 }
 
 /*// Sequence for points coordinates 
-static void sequence1Construction(vector<string> & sequence) {
+  static void sequence1Construction(vector<string> & sequence) {
   sequence.push_back(POINT_PARAMETER);
   sequence.push_back(L_SBRACKET);
   sequence.push_back(R_SBRACKET);
-}
+  }
 
 
 // Sequence for indexes (points order)
 static void sequence2Construction(vector<string> & sequence) {
-  sequence.push_back(COORD_INDEX_PARAMETER);
-  sequence.push_back(L_SBRACKET);
-  sequence.push_back(R_SBRACKET);
-  }*/
+sequence.push_back(COORD_INDEX_PARAMETER);
+sequence.push_back(L_SBRACKET);
+sequence.push_back(R_SBRACKET);
+}*/
 
 // In order to erase spaces
 static string eraseSpaces(string & text) {
@@ -159,9 +159,9 @@ static vector<string> searchWords(string & text) {
     currentChar = newText[i];
     if (currentChar == spaceString) {
       if (!word.empty()) {
-	listWords.push_back(word);
-	//cout << "word : " << word << endl;
-	word = "";
+        listWords.push_back(word);
+        //cout << "word : " << word << endl;
+        word = "";
       }
     }
     else {
@@ -202,11 +202,11 @@ int load(MainWindow *mainW){
 
   // The user chooses a file in order to load a VRML model
   QString fileName = QFileDialog::getOpenFileName(
-						  ".",
-						  "*.wrl",
-						  mainW,
-						  "VRML load dialog box",
-						  "choose a name for VRML load" );
+    ".",
+    "*.wrl",
+    mainW,
+    "VRML load dialog box",
+    "choose a name for VRML load" );
 
   // If there is no name defined exit
   if(fileName.isEmpty()){
@@ -254,40 +254,40 @@ int load(MainWindow *mainW){
       rightBracketPos = allFile.find(R_SBRACKET, leftBracketPos + strlen(L_SBRACKET));
       if (leftBracketPos != string::npos) {
 
-	string strTemp(allFile, leftBracketPos + strlen(L_SBRACKET), rightBracketPos-leftBracketPos-strlen(R_SBRACKET));
-	//cout << "strTemp : " << strTemp << endl;
-	listWords = searchWords(strTemp);
+        string strTemp(allFile, leftBracketPos + strlen(L_SBRACKET), rightBracketPos-leftBracketPos-strlen(R_SBRACKET));
+        //cout << "strTemp : " << strTemp << endl;
+        listWords = searchWords(strTemp);
 	
-	// Reading of each words
-	for (unsigned int i=0; i<listWords.size(); i++) {
-	  currentValue = atof(listWords[i].c_str());
-	  //cout << "currentVal : " << currentValue << endl;
+        // Reading of each words
+        for (unsigned int i=0; i<listWords.size(); i++) {
+          currentValue = atof(listWords[i].c_str());
+          //cout << "currentVal : " << currentValue << endl;
 
-	  // Coordinate X management
-	  if (numCoord == 1) {
-	    xValue = currentValue;
-	    numCoord++;
-	  }
-	  else {
-	    // Coordinate Y management
-	    if (numCoord == 2) {
-	      yValue = currentValue;
-	      numCoord++;
-	    }
-	    // Coordinate Z management 
-	    else {
-	      zValue = currentValue;
-	      Point3D p;
-	      p[0] = xValue;
-	      p[1] = yValue;
-	      p[2] = zValue;
-	      //cout << "x=" << p[0] << " y=" << p[1] << " z=" << p[2] << endl;
-	      listPoint->push_back(p);
-	      numCoord = 1;
+          // Coordinate X management
+          if (numCoord == 1) {
+            xValue = currentValue;
+            numCoord++;
+          }
+          else {
+            // Coordinate Y management
+            if (numCoord == 2) {
+              yValue = currentValue;
+              numCoord++;
+            }
+            // Coordinate Z management 
+            else {
+              zValue = currentValue;
+              Point3D p;
+              p[0] = xValue;
+              p[1] = yValue;
+              p[2] = zValue;
+              //cout << "x=" << p[0] << " y=" << p[1] << " z=" << p[2] << endl;
+              listPoint->push_back(p);
+              numCoord = 1;
 	      
-	    }
-	  }
-	}
+            }
+          }
+        }
       }
     }
   }
@@ -300,7 +300,7 @@ int load(MainWindow *mainW){
     
     // If there is no points anymore
     if (placeToSearchIndexes == string::npos) {
-       stillIndexes = false;
+      stillIndexes = false;
     }
     else {
       
@@ -310,58 +310,58 @@ int load(MainWindow *mainW){
       
       if (leftBracketPos != string::npos) {
 
-	string strTemp(allFile, leftBracketPos + strlen(L_SBRACKET), rightBracketPos-leftBracketPos-strlen(R_SBRACKET));
-	//cout << "strTemp : " << strTemp << endl;
-	listWords = searchWords(strTemp);
+        string strTemp(allFile, leftBracketPos + strlen(L_SBRACKET), rightBracketPos-leftBracketPos-strlen(R_SBRACKET));
+        //cout << "strTemp : " << strTemp << endl;
+        listWords = searchWords(strTemp);
 
-	// Management of the last -1
-	if (listWords.back() != "-1") {
-	  listWords.push_back("-1");
-	}
+        // Management of the last -1
+        if (listWords.back() != "-1") {
+          listWords.push_back("-1");
+        }
 	
-	// Reading of each words
-	for (unsigned int i=0; i<listWords.size(); i++) {
+        // Reading of each words
+        for (unsigned int i=0; i<listWords.size(); i++) {
 	  
-	  currentIndex = atof(listWords[i].c_str());
+          currentIndex = atof(listWords[i].c_str());
 	  
-	  if (currentIndex == -1) {
+          if (currentIndex == -1) {
 
-	    if (nbPointsIndex < 3) {
-	      mainW->getEventsWindow().writeComments("error in VRML file loading");
-	      return EXIT_FAILURE;
-	    }
+            if (nbPointsIndex < 3) {
+              mainW->getEventsWindow().writeComments("error in VRML file loading");
+              return EXIT_FAILURE;
+            }
 	    
-	    // Moving of indexes
-	    for (int i=0; i<=nbPointsIndex;i++) {
-	      indexValues[i] += indexesTranslation;
-	    }
+            // Moving of indexes
+            for (int i=0; i<=nbPointsIndex;i++) {
+              indexValues[i] += indexesTranslation;
+            }
 	    
-	    if (nbPointsIndex == 3) {
-	      t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
-	      //cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << endl;
-	      listFaces->push_back(t);
-	    }
-	    else {
-	      if (nbPointsIndex == 4) {
-		q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
-		//cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << " " << indexValues[3] << endl;
-		listFaces->push_back(q);
-	      }
-	      else {
-		f = new Face(&indexValues, listPoint, nbPointsIndex);
-		listFaces->push_back(f);
-	      }
-	    }
+            if (nbPointsIndex == 3) {
+              t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
+              //cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << endl;
+              listFaces->push_back(t);
+            }
+            else {
+              if (nbPointsIndex == 4) {
+                q = new Quad(listPoint, indexValues[0], indexValues[1], indexValues[2], indexValues[3]);
+                //cout << "indexes : " << indexValues[0] << " " << indexValues[1] << " " << indexValues[2] << " " << indexValues[3] << endl;
+                listFaces->push_back(q);
+              }
+              else {
+                f = new Face(&indexValues, listPoint, nbPointsIndex);
+                listFaces->push_back(f);
+              }
+            }
 
-	    nbPointsIndex = 0;
-	    indexValues.clear();
+            nbPointsIndex = 0;
+            indexValues.clear();
 	    
-	  }
-	  else {
-	    indexValues.push_back(currentIndex);
-	    nbPointsIndex++;
-	  }
-	}
+          }
+          else {
+            indexValues.push_back(currentIndex);
+            nbPointsIndex++;
+          }
+        }
       }
     }
 
