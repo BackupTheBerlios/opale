@@ -15,14 +15,14 @@
 
 
 //default color of control points
-const double RED_DEFAULT = 0.0;
-const double GREEN_DEFAULT = 0.0;
-const double BLUE_DEFAULT = 1.0;
+const double RED_DEFAULT = 0.58;
+const double GREEN_DEFAULT = 0.58;
+const double BLUE_DEFAULT = 0.9;
 
 //default color of selected control points
-const double RED_DEFAULT_SELECT = 1.0;
-const double GREEN_DEFAULT_SELECT = 0.0;
-const double BLUE_DEFAULT_SELECT = 0.0;
+const double RED_DEFAULT_SELECT = 0.94;
+const double GREEN_DEFAULT_SELECT = 0.55;
+const double BLUE_DEFAULT_SELECT = 0.55;
 
 class Canvas2D;
 

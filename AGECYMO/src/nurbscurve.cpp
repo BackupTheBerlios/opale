@@ -12,43 +12,29 @@
 
 using namespace std;
 
-NurbsCurve::NurbsCurve(Canvas2D *parent)
-  :
-  AbsCurve(parent)
-{
+NurbsCurve::NurbsCurve() {
 
-      _nbPointsDefine = 4;
-  
+  _nbPointsDefine = 4;
+
+  _red_nurb = RED_NURB;
+  _green_nurb = GREEN_NURB;
+  _blue_nurb = BLUE_NURB;
 }
-
-NurbsCurve::NurbsCurve(std::vector<gml::Point3D> pointsVector, 
-		       bool isClosed,
-		       Canvas2D *parent)
-  :
-  AbsCurve(pointsVector, isClosed, parent)
-{}
-
-
-
-NurbsCurve::NurbsCurve(const NurbsCurve &source)
-  :
-  AbsCurve(source)
-{
+ 
+NurbsCurve::~NurbsCurve() {
 }
-
-
 
 void NurbsCurve::render(){
 
   double increment; 
   increment = Control_point_size / 2.0;
   
-  glColor3f(_redComponent, _greenComponent, _blueComponent);
+  glColor3f(_redColor, _greenColor, _blueColor);
 
   glBegin(GL_LINE_STRIP);
 
   for(int i = 0 ; i < int(_pointsVector.size()); i++){
-    glVertex2f(_pointsVector[i][0], _pointsVector[i][1]);
+    glVertex2f((*_pointsVector[i])[0], (*_pointsVector[i])[1]);
   }
 
   glEnd();
@@ -63,11 +49,11 @@ void NurbsCurve::render(){
   
     // Construction of this new table
     for (int i=0; i < getNbPoints() ;i++) {
-      ctrlpoints[i] = PLib::HPoint3Df(_pointsVector[i][0],_pointsVector[i][1] ,0 ,1);
+      ctrlpoints[i] = PLib::HPoint3Df((*_pointsVector[i])[0],(*_pointsVector[i])[1] ,0 ,_HCoordinateVector[i]);
     }
   
     // New color
-    glColor3f(0,1,0.5);
+    glColor3f(_red_nurb, _green_nurb, _blue_nurb);
 
     // Knots contruction 
     int nknots = getNbPoints() + _nbPointsDefine;
@@ -93,190 +79,25 @@ void NurbsCurve::render(){
     glBegin(GL_LINE_STRIP);
     for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
       PLib::HPoint3Df p = curve(i);  
-      glVertex2f(p.x(), p.y());
+      float ponderateX;
+      float ponderateY;
+      if (p.x() >= 0) {
+	ponderateX = p.x()*p.w();
+      }
+      else {
+	ponderateX = p.x()/p.w();
+      }
+      if (p.x() >= 0) {
+	ponderateY = p.y()*p.w();
+      }
+      else {
+	ponderateY = p.y()/p.w();
+      }
+      glVertex2f(ponderateX, ponderateY);
     }
     glEnd();
 
   }
-  
-
-  glColor3f(_redComponent, _greenComponent, _blueComponent);
-  
-
-  bool selected;
-
-  //we draw the control points
-  for(int i = 0 ; i < int(_pointsVector.size()); i++){
-
-    if(isSelected(i)){
-       glColor3f(_redComponentSelect,
-		 _greenComponentSelect, 
-		 _blueComponentSelect);
-    }
-    else{
-      glColor3f(_redComponent, 
-
-		_greenComponent, 
-		_blueComponent);
-    }
-
-    glBegin(GL_POLYGON);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]-increment);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]-increment);
-    glEnd();
-  }
-}
-
-
-void NurbsCurve::managePressEvent(QMouseEvent* event,
-			      unsigned short toolType,
-			      unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-  int index;
-      
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-
-      addPoint(position);
-
-      // Management of the homogeneous coordinate
-      _HCoordinateVector.push_back(1);
-
-      // Current point selection
-      noSelection();
-      select(isExistingPoint(position));
-      
-      _startMovePoint[0] = position[0];
-      _startMovePoint[1] = position[1];
-   
-  }
-
-  else{
-    
-    /***************** selection mode **********************************/
-    //add to selection group with shift
-    if(event->state() == Qt::ShiftButton){
-      if(!isSelected(index)){
-	if((index=isExistingPoint(position)) != NO_EXIST){
-	  select(index);
-	}
-      }
-      _startMovePoint[0] = position[0];
-      _startMovePoint[1] = position[1];
-    }
-    
-    else if(event->state() == Qt::Keypad){
-      if((index=isExistingPoint(position)) != NO_EXIST){
-	deletePoint(index);
-      }
-    }
-    
-    //deselect and add without shift
-    else{
-      if((index=isExistingPoint(position)) != NO_EXIST){
-	if(!isSelected(index)){
-	  noSelection();
-	  select(index);
-
-	  // Management of the weight
-	  cout << "coin" << endl;
-
-	}
-	_startMovePoint[0] = position[0];
-	_startMovePoint[1] = position[1];
-	
-      }
-      else{
-	noSelection();
-      }
-    }
-  }
-}
-
-
-
-
-
-void NurbsCurve::manageMoveEvent(QMouseEvent* event,
-			     unsigned short toolType,
-			     unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  /***************** creation mode **********************************/
-  if(event->state() == Qt::ControlButton){
-  }
-  /***************** selection mode **********************************/
-  else{
-    gml::Point3D newPos;
-    for(unsigned i = 0; i<_pointsVector.size(); i++){
-      if(isSelected((int)i)){
-	newPos[0] = _pointsVector[i][0] 
-	  + (position[0] - _startMovePoint[0]);
-	newPos[1] = _pointsVector[i][1]
-	  + (position[1] - _startMovePoint[1]);
-	movePoint((int)i, newPos);
-      }
-    }
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-  }
-}
-
-
-
-
-
-void NurbsCurve::manageReleaseEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType)
-{
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-
-  if(event->type() == QEvent::MouseButtonRelease){
-    /***************** creation mode **********************************/
-    if(event->state() == Qt::ControlButton){
-      
-    }
-    /***************** selection mode **********************************/
-    else{
-      
-    }
-  } 
-}
-
-
-
-
-void NurbsCurve::manageDbClickEvent(QMouseEvent* event,
-				unsigned short toolType,
-				unsigned short canvasType)
-{
-
-  gml::Point3D position;
-  calculateQtToOpenGL(event,&position);
-  int index;
-
-  if((index=isExistingPoint(position)) != NO_EXIST){
-    if(!isSelected(index)){
-      noSelection();
-      select(index);
-      
-      // Management of the weight
-      cout << "coin2" << endl;
-      
-    }
-    _startMovePoint[0] = position[0];
-    _startMovePoint[1] = position[1];
-    
-  }
-
 }
 
 std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
@@ -289,11 +110,8 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   
   // Construction of this new table
   for (int i=0; i < getNbPoints() ;i++) {
-    ctrlpoints[i] = PLib::HPoint3Df(_pointsVector[i][0],_pointsVector[i][1] ,0 ,1);
+    ctrlpoints[i] = PLib::HPoint3Df((*_pointsVector[i])[0],(*_pointsVector[i])[1] ,0 ,1);
   }
-  
-  // New color
-  glColor3f(0,1,0.5);
   
   // Knots contruction 
   int nknots = getNbPoints() + _nbPointsDefine;
@@ -326,5 +144,10 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   return pointsList;
 }
 
-
+int NurbsCurve::addPoint(gml::Point3D *point)
+{
+  _pointsVector.push_back(point);
+  _HCoordinateVector.push_back(1.0);
+  return ADDED;
+}
 

@@ -6,9 +6,9 @@
 #include "qgl.h"
 
 //color for figure render
-const double RED_COLOR = 0.0;
-const double GREEN_COLOR = 1.0;
-const double BLUE_COLOR = 0.0;
+const double RED_COLOR = 0.66;
+const double GREEN_COLOR = 0.9;
+const double BLUE_COLOR = 0.58;
 
 //various cosntant values
 const int NO_EXIST = -1;

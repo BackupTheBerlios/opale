@@ -20,6 +20,10 @@ HEADERS		= absVector.hpp \
             abscurve.hpp \
             point.hpp \
             polyline.hpp \
+            circle.hpp \
+            quadri.hpp \
+            polygone.hpp \
+            nurbscurve.hpp \
             curves.hpp \
             vector.hpp \
             matrix.hpp \
@@ -44,6 +48,10 @@ HEADERS		= absVector.hpp \
 SOURCES		= testVector.cpp \
             abscurve.cpp \
             polyline.cpp \
+            circle.cpp \
+            polygone.cpp \
+            nurbscurve.cpp \
+            quadri.cpp \
             curves.cpp \
             matrix.cpp \
             absface.cpp \

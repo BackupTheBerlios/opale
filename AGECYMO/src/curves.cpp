@@ -5,6 +5,10 @@
 //
 #include "curves.hpp"
 #include "canvas2d.hpp"
+#include "circle.hpp"
+#include "quadri.hpp"
+#include "polygone.hpp"
+#include "nurbscurve.hpp"
 
 
 /**************************************************************
@@ -91,10 +95,12 @@ void Curves::deleteAllCurves()
   _parent->getPopupMenu()->setItemEnabled(1,true);
   _parent->getPopupMenu()->setItemEnabled(2,true);
   _parent->getPopupMenu()->setItemEnabled(3,true);
+  _parent->getPopupMenu()->setItemEnabled(4,true);
 
   if(_parent->getCanvasType() == SECTION_CANVAS){
     _parent->getPopupMenu()->setItemEnabled(2,false);
     _parent->getPopupMenu()->setItemEnabled(3,false);
+    _parent->getPopupMenu()->setItemEnabled(4,false);
   }
   
 }
@@ -419,11 +425,25 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(1,true);
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
+	_parent->getPopupMenu()->setItemEnabled(4,false);
+      }
+
+      //polygone creation
+      if(toolType == POLYG_MODE){
+	_listOfCurves.push_back(new Polygone(_parent));
+	_currentToolType = POLYG_MODE;
+	
+	//management of the popupMenu
+	_parent->getPopupMenu()->setItemEnabled(0,false);
+	_parent->getPopupMenu()->setItemEnabled(1,false);
+	_parent->getPopupMenu()->setItemEnabled(2,false);
+	_parent->getPopupMenu()->setItemEnabled(3,false);
+	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
 
       //rectangle creation
       if(toolType == REC_MODE){
-	_listOfCurves.push_back(new Polyline());
+	_listOfCurves.push_back(new Quadri());
 	_currentToolType = REC_MODE;
 
 	//management of the popupMenu
@@ -431,26 +451,29 @@ void Curves::managePressEvent(QMouseEvent* event,
 	_parent->getPopupMenu()->setItemEnabled(1,false);
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
+	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == CIRCLE_MODE){
-	_listOfCurves.push_back(new Polyline());
+	_listOfCurves.push_back(new Circle());
 	_currentToolType = CIRCLE_MODE;
-
+	
 	//management of the popupMenu
 	_parent->getPopupMenu()->setItemEnabled(0,false);
 	_parent->getPopupMenu()->setItemEnabled(1,false);
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
+	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
       if(toolType == NURBS_MODE){
-	_listOfCurves.push_back(new Polyline());
+	_listOfCurves.push_back(new NurbsCurve());
 	_currentToolType = NURBS_MODE;
-
+	
 	//management of the popupMenu
 	_parent->getPopupMenu()->setItemEnabled(0,true);
 	_parent->getPopupMenu()->setItemEnabled(1,false);
 	_parent->getPopupMenu()->setItemEnabled(2,false);
 	_parent->getPopupMenu()->setItemEnabled(3,false);
+	_parent->getPopupMenu()->setItemEnabled(4,false);
       }
 
       //we add the last point of the last curve to the new curve

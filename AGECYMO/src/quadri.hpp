@@ -11,33 +11,15 @@ private:
   
 public:
 
-  Quadri(Canvas2D *parent);
+  Quadri();
 
-  Quadri(std::vector<gml::Point3D> pointsVector, 
-	   bool isClosed,
-	   Canvas2D *parent);
-
-  Quadri(const Quadri &source);
+  ~Quadri();
 
   void render();
 
   std::vector<gml::Point3D> discretize(int nbSegments);
 
-  void managePressEvent(QMouseEvent* event,
-			unsigned short toolType,
-			unsigned short canvasType);
-
-  void manageMoveEvent(QMouseEvent* event,
-		       unsigned short toolType,
-		       unsigned short canvasType);
-
-  void manageReleaseEvent(QMouseEvent* event,
-			  unsigned short toolType,
-			  unsigned short canvasType);
-
-  void manageDbClickEvent(QMouseEvent* event,
-			  unsigned short toolType,
-			  unsigned short canvasType);
+  int addPoint(gml::Point3D *point);
 
 };
 

@@ -41,6 +41,7 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
   _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()),0,1 );
   _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()),0,2 );
   _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()),0,3 );
+  _fileMenu->insertItem( "Polygone",  this, SLOT(setPolygMode()),0,4 );
 
   if(_canvasType == PROFIL_CANVAS){
     

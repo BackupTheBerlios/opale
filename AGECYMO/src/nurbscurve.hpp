@@ -5,42 +5,33 @@
 #include "qgl.h"
 #include "abscurve.hpp"
 
+//color for figure render
+const double RED_NURB = 0.86;
+const double GREEN_NURB = 0.78;
+const double BLUE_NURB = 0.4;
+
 class NurbsCurve : public AbsCurve 
 {
 private:
 
   int _nbPointsDefine;
   std::vector<float> _HCoordinateVector;
+  //color for figure render
+  double _red_nurb;
+  double _green_nurb;
+  double _blue_nurb;
   
 public:
 
-  NurbsCurve(Canvas2D *parent);
+  NurbsCurve();
 
-  NurbsCurve(std::vector<gml::Point3D> pointsVector, 
-	   bool isClosed,
-	   Canvas2D *parent);
-
-  NurbsCurve(const NurbsCurve &source);
+  ~NurbsCurve();
 
   void render();
 
   std::vector<gml::Point3D> discretize(int nbSegments);
 
-  void managePressEvent(QMouseEvent* event,
-			unsigned short toolType,
-			unsigned short canvasType);
-
-  void manageMoveEvent(QMouseEvent* event,
-		       unsigned short toolType,
-		       unsigned short canvasType);
-
-  void manageReleaseEvent(QMouseEvent* event,
-			  unsigned short toolType,
-			  unsigned short canvasType);
-
-  void manageDbClickEvent(QMouseEvent* event,
-			  unsigned short toolType,
-			  unsigned short canvasType);
+  int addPoint(gml::Point3D *point);
 
 };
 
