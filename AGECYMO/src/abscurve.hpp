@@ -103,6 +103,7 @@ class AbsCurve
   double getRedSelect() const;
   double getGreenSelect() const;
   double getBlueSelect() const;
+  gml::Point3D getPoint(int index);
 
   //Protected Methods
   protected:
