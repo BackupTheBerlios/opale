@@ -23,8 +23,6 @@
 #include "faces.hpp"
 #include "precision.hpp"
 
-#include "core/CORE.h"
-
 using namespace std;
 using namespace gml;
 
