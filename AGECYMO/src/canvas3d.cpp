@@ -2,7 +2,8 @@
 #include "canvas3d.hpp"
 
 Canvas3D::Canvas3D(QWidget* parent, const char* name)
-    : AbsCanvas(parent, name) //QGLWidget(parent, name),
+    : AbsCanvas(parent, name) ,//QGLWidget(parent, name),
+      _axesEnabled(true)
 {
   
   _accel  = new QAccel(this);
@@ -12,6 +13,8 @@ Canvas3D::Canvas3D(QWidget* parent, const char* name)
   _accel->insertItem(Key_Down,  CAMERA_TURN_DOWN);
   _accel->insertItem(SHIFT + Key_Down,  CAMERA_MOVE_AWAY);
   _accel->insertItem(SHIFT + Key_Up,    CAMERA_MOVE_CLOSER);
+  _accel->insertItem(Key_F1,    ENABLE_DRAW_AXES);
+  _accel->insertItem(Key_F2,    ENABLE_DRAW_FPS);
   
   
   QObject::connect( _accel ,
@@ -96,11 +99,15 @@ Canvas3D::buildAxesDPL()
 void
 Canvas3D::drawAxes()
 {
-  glPolygonMode( GL_FRONT_AND_BACK , GL_FILL ) ;
-  glEnable( GL_COLOR_MATERIAL ) ;
-  glColorMaterial( GL_FRONT_AND_BACK , GL_AMBIENT_AND_DIFFUSE ) ;
+  if (_axesEnabled)
+  {
+    glPolygonMode( GL_FRONT_AND_BACK , GL_FILL ) ;
+    glEnable( GL_COLOR_MATERIAL ) ;
+    glColorMaterial( GL_FRONT_AND_BACK , GL_AMBIENT_AND_DIFFUSE ) ;
     
-  glCallList(_axesIndexDPL);
+    glCallList(_axesIndexDPL);
+  }
+  
   
 }
 
@@ -128,8 +135,9 @@ Canvas3D::paintGL()
   
   setView();
 
-  drawAxes();
 
+  drawAxes();
+  
   _renderer.render();
 
   _nFps++;
@@ -233,7 +241,23 @@ Canvas3D::accelEvent(int id)
       updateGL();
       break;
     }
-       
+
+    
+    case ENABLE_DRAW_AXES:
+    {
+      _axesEnabled = !_axesEnabled;
+      updateGL();
+      break;
+    }
+
+    case ENABLE_DRAW_FPS:
+    {
+      _fpsEnabled = !_fpsEnabled;
+      updateGL();
+      break;
+    }
+    
+    
     default:
       break;
   }

@@ -24,15 +24,18 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
     CAMERA_TURN_UPPER ,
     CAMERA_MOVE_AWAY  ,
     CAMERA_MOVE_CLOSER,
+    ENABLE_DRAW_AXES,
+    ENABLE_DRAW_FPS,
   };
 
   private:
 
   Renderer _renderer;
 
+  bool     _axesEnabled;
+  
   gml::Point2D _clickPos; //position saved when the user clicks
 
-  //int _axesIndexDPL; //indexe of the display list containing the axes.
   
   QAccel*  _accel;
   
