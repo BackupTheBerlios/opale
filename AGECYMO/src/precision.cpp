@@ -26,38 +26,6 @@ namespace gml
       return single;
     }
   }
-
-
-  static bool isEqual(double a, double b)
-  {
-    Precision*  pre = Precision::getInstance();
-    return pre->isEqual( a, b);
-  }
-  
-  static bool isGreater(double a, double b)
-  {
-    Precision*  pre = Precision::getInstance();
-    return pre->isGreater( a, b);
-  }
-  
-  static bool isGreaterOrEqual(double a, double b)
-  {
-    Precision*  pre = Precision::getInstance();
-    return pre->isGreaterOrEqual( a, b);
-  }
-  
-
-  static bool isLesser(double a, double b)
-  {
-    Precision*  pre = Precision::getInstance();
-    return pre->isLesser( a, b);
-  }
-  
-  static bool isLesserOrEqual(double a, double b)
-  {
-    Precision*  pre = Precision::getInstance();
-    return pre->isLesserOrEqual( a, b);
-  }
   
   
  

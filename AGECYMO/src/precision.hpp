@@ -4,6 +4,10 @@
 #include <iostream>
 #include <math.h>
 
+#ifdef CORE_LEVEL
+#include "CORE/CORE.h"
+#endif
+
 
 namespace gml 
 {
@@ -95,11 +99,45 @@ namespace gml
   
     bool isGreaterOrEqual(double a, double b)
     {
-      return (a => b );
+      return (a >= b );
     }
+
 #endif    
 
   }; //end of class Precision
+
+  static bool isEqual(double a, double b)
+  {
+    Precision*  pre = Precision::getInstance();
+    return pre->isEqual( a, b);
+  }
+  
+  static bool isGreater(double a, double b)
+  {
+    Precision*  pre = Precision::getInstance();
+    return pre->isGreater( a, b);
+  }
+  
+  static bool isGreaterOrEqual(double a, double b)
+  {
+    Precision*  pre = Precision::getInstance();
+    return pre->isGreaterOrEqual( a, b);
+  }
+  
+
+  static bool isLesser(double a, double b)
+  {
+    Precision*  pre = Precision::getInstance();
+    return pre->isLesser( a, b);
+  }
+  
+  static bool isLesserOrEqual(double a, double b)
+  {
+    Precision*  pre = Precision::getInstance();
+    return pre->isLesserOrEqual( a, b);
+  }
+
+
   
 }//end of namespace
 
