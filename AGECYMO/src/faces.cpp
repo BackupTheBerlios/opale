@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <qmessagebox.h> 
 
+#include "precision.hpp"
+
 using namespace std;
 
 #define TOLERANCE 0.0
@@ -442,6 +444,10 @@ Faces::computeAverageNormal(const std::vector<gml::Vector3D> & normals)
 
 void
 Faces::validModel() const{
+
+  double one = 1;
+  double null_value = 0;
+  
   
   std::vector< std::vector<gml::Point3D> > edges; 
   int nbEdges;
@@ -455,47 +461,67 @@ Faces::validModel() const{
   ostringstream oss3;
 
   // Verification if there is not edges intersection
-  for (int i=0 ; i<(int)(*_faces).size() ; i++) {
-    for (int j=0 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++) {
-
+  for (int i=0 ; i<(int)(*_faces).size() ; i++)
+  {
+    for (int j=0 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++)
+    {
       std::vector <gml::Point3D> temp;
       temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j]]);
 
-      if (j+1 == (int)(*(*_faces)[i]->getIndexes()).size()) {
-	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[0]]);
+      if (j+1 == (int)(*(*_faces)[i]->getIndexes()).size())
+      {
+        temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[0]]);
       }
-      else {
-	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j+1]]);
+      else
+      {
+        temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j+1]]);
       }
       edges.push_back(temp);
     }
   }
 
-  for (int i=0 ; i<(int)edges.size() ; i++) {
-    for (int j=i+1 ; j<(int)edges.size() ; j++) {
+  for (int i=0 ; i<(int)edges.size() ; i++)
+  {
+    for (int j=i+1 ; j<(int)edges.size() ; j++)
+    {
       std::vector <gml::Point3D> temp;
       temp.push_back(edges[i][1]);
       temp.push_back(edges[j][0]);
       temp.push_back(edges[j][1]);
       nbVerif++;
       double t1, t2;
-      int value = edges[i][0].inter(temp, &t1, &t2, TOLERANCE);
-      if (value == 1) {
-	if (((t1 > -TOLERANCE && t1 < TOLERANCE) || (t1 > 1.0-TOLERANCE && t1 < 1.0+TOLERANCE)) && ((t2 > -TOLERANCE && t2 < TOLERANCE) || (t2 > 1.0-TOLERANCE && t2 < 1.0+TOLERANCE))) {
-	  nbValid ++;
-	}
-	else {
-	  nbNotValid++;
-	}
+      int value = edges[i][0].inter(temp, &t1, &t2);
+
+      if (value == 1)
+      {
+     //    if (((t1 > -TOLERANCE && t1 < TOLERANCE) ||
+//              (t1 > 1.0-TOLERANCE && t1 < 1.0+TOLERANCE)) &&
+//             ((t2 > -TOLERANCE && t2 < TOLERANCE) ||
+//                 (t2 > 1.0-TOLERANCE && t2 < 1.0+TOLERANCE)))
+        // Ligne commentees dessus correspondent au test en bas non ?
+        // Test (t1 == 0 ou t1 == 1) et ( t2 ==0 ou t2 == 1) 
+        if ( ( gml::isEqual(t1, null_value) || gml::isEqual(t1, one) ) &&
+             ( gml::isEqual(t2, null_value) || gml::isEqual(t2, one) )    )
+        {
+          nbValid ++;
+        }
+        else
+        {
+          nbNotValid++;
+        }
       }
-      else {
-	nbValid++;
+      else
+      {
+        nbValid++;
       }
     }
   }
 
   
-  oss1 << "Number of edges : " << edges.size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid intersections : " << nbValid << endl << "Number of not valid intersections : " << nbNotValid << endl;
+  oss1 << "Number of edges : " << edges.size() << endl
+       << "Number of verifications : " << nbVerif << endl
+       << "Number of valid intersections : " << nbValid << endl
+       << "Number of not valid intersections : " << nbNotValid << endl;
   
   QMessageBox::information(0, "Validation 1 :", oss1.str());
 
@@ -503,7 +529,6 @@ Faces::validModel() const{
   nbValid = 0;
   nbNotValid = 0;
 	
-
   // Verification if each faces are in the same plane
   for (int i=0 ; i<(int)(*_faces).size() ; i++) {
 
@@ -512,68 +537,81 @@ Faces::validModel() const{
     gml::Point3D firstPoint = (*_points)[(*(*_faces)[i]->getIndexes())[0]];
 
     // The verification is necessary only if the face owns more of three points
-    if ((int)(*(*_faces)[i]->getIndexes()).size() > 3) {
-      
+    if ((int)(*(*_faces)[i]->getIndexes()).size() > 3)
+    {
       std::vector <gml::Point3D> temp;
 
-      for (int j=1 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++) {
-	temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j]]);
+      for (int j=1 ; j<(int)(*(*_faces)[i]->getIndexes()).size() ; j++)
+      {
+        temp.push_back((*_points)[(*(*_faces)[i]->getIndexes())[j]]);
       }
       
-      if (!firstPoint.onPlane(temp, TOLERANCE)) {
-	nbNotValid++;
+      if ( !firstPoint.onPlane(temp) )
+      {
+        nbNotValid++;
       }
-      else {
-	nbValid++;
+      else
+      {
+        nbValid++;
       }
-      
     }
-    else {
+    else
+    {
       nbValid++;
     }
   }
-
   
-  
-  oss2 << "Number of faces : " << (*_faces).size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid faces : " << nbValid << endl << "Number of not valid faces : " << nbNotValid << endl;
+  oss2 << "Number of faces : " << (*_faces).size() << endl
+       << "Number of verifications : " << nbVerif << endl
+       << "Number of valid faces : " << nbValid << endl
+       << "Number of not valid faces : " << nbNotValid << endl;
 
   QMessageBox::information(0, "Validation 2 :", oss2.str());
-
 
   nbVerif = 0;
   nbValid = 0;
   nbNotValid = 0;
 
-
-
-
   // Verification if each edge doesn't cut a face
-  for (int i=0 ; i<(int)edges.size() ; i++) {
-    for (int j=0 ; j<(int)(*_faces).size() ; j++) {
+  for (int i=0 ; i<(int)edges.size() ; i++)
+  {
+    for (int j=0 ; j<(int)(*_faces).size() ; j++)
+    {
       std::vector <gml::Point3D> temp;
       nbVerif++;
-      for (int k=0 ; k<(int)(*(*_faces)[j]->getIndexes()).size() ; k++) {
-	temp.push_back((*_points)[(*(*_faces)[j]->getIndexes())[k]]);
+      for (int k=0 ; k<(int)(*(*_faces)[j]->getIndexes()).size() ; k++)
+      {
+        temp.push_back((*_points)[(*(*_faces)[j]->getIndexes())[k]]);
       }
       double t;
       
-
-      if (edges[i][0].interPlan(edges[i][1], temp, &t, TOLERANCE)) {
-	if (((t > -TOLERANCE && t < TOLERANCE) || (t > 1.0-TOLERANCE && t < 1.0+TOLERANCE))) {
-	  nbValid ++;
-	}
-	else {
-	  nbNotValid++;
-	}
+      if ( edges[i][0].interPlan(edges[i][1], temp, &t) )
+      {
+      //   if (((t > -TOLERANCE && t < TOLERANCE) ||
+//              (t > 1.0-TOLERANCE && t < 1.0+TOLERANCE)))
+        //TEst commente (t == 0) ou (t ==1)
+        if ( gml::isEqual(t, null_value) || gml::isEqual(t, one) )
+        {
+          nbValid ++;
+        }
+        else
+        {
+          nbNotValid++;
+        }
       }
-      else {
-	nbValid++;
+      else
+      {
+        nbValid++;
       }
     }
   }
 
-  oss3 << "Number of faces : " << (*_faces).size() << endl << "Number of edges : " << edges.size() << endl << "Number of verifications : " << nbVerif << endl << "Number of valid faces : " << nbValid << endl << "Number of not valid faces : " << nbNotValid << endl;
+  oss3 << "Number of faces : " << (*_faces).size() << endl
+       << "Number of edges : " << edges.size() << endl
+       << "Number of verifications : " << nbVerif << endl
+       << "Number of valid faces : " << nbValid << endl
+       << "Number of not valid faces : " << nbNotValid << endl;
 
-   QMessageBox::information(0, "Validation 3 :", oss3.str());
+  QMessageBox::information(0, "Validation 3 :", oss3.str());
   
 }
