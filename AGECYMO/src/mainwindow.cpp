@@ -309,12 +309,6 @@ MainWindow::addStaticMenuBarContent()
 void
 MainWindow::initViewFrames(int screen_height, int frame_width, int application_width)
 {
-  
-
-
-  _comments->writeComments("coincoin");
-
-
   _w3d = new Window3D();
   Canvas3D* _canvas3d = new Canvas3D(this, _w3d);
   _canvas3d->setCaption("Perspective");
