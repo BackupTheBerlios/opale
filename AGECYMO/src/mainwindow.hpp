@@ -20,13 +20,15 @@
 #include <qtoolbutton.h>
 
 //Our stuff
+#include "matrix.hpp"
+#include "abscurve.hpp"
+#include "curves.hpp"
+
 #include "pluginmanager.hpp"
 
-#include "abscurve.hpp"
 #include "canvas2d.hpp"
 #include "canvas3d.hpp"
 #include "window3d.hpp"
-#include "curves.hpp"
 #include "controlpanel.hpp"
 #include "helpwindow.hpp"
 
@@ -123,7 +125,7 @@ class MainWindow : public QMainWindow
 
   void addStaticMenuBarContent();
 
-  void adjustSection(std::vector<Point3D> & ptsSection);
+  void adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor);
   
   
   protected:

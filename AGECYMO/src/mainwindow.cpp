@@ -501,8 +501,11 @@ MainWindow::generateCylinder()
                           "Impossible to generate a cylinder without curves .\n");
     return;
   }
-  
 
+  std::cout << "Chemin is closed = " << chemin->isClosed() << std::endl;
+  
+  _cylGenerator->setWayClosed( chemin->isClosed() );
+    
   int nbSegmentsChemin  =  chemin->getNbControlPoints() - 1;
   int nbSegmentsProfil  =  profil->getNbControlPoints() - 1;
   int nbSegmentsSection =  section->getNbControlPoints() - 1;
@@ -518,6 +521,8 @@ MainWindow::generateCylinder()
   paramDiscretisationSECTION = nSection / nbSegmentsSection;
   paramDiscretisationPROFIL  = nWay / nbSegmentsProfil;
   paramDiscretisationCHEMIN  = nWay / nbSegmentsChemin;
+
+  qDebug("nWay recupere = %d", nWay);
   
 
   qDebug("paramDiscretisationSECTION = %d", paramDiscretisationSECTION);
@@ -526,7 +531,7 @@ MainWindow::generateCylinder()
   
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
-  adjustSection(ptsSection);
+  adjustSection(ptsSection, _controlPanel->scaleFactor() );
   
   std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
 
@@ -542,18 +547,28 @@ MainWindow::generateCylinder()
 }
 
 void
-MainWindow::adjustSection(std::vector<Point3D> & ptsSection)
+MainWindow::adjustSection(std::vector<Point3D> & ptsSection, double scaleFactor)
 {
   Point3D temp;
+  Point3D temp2;
+  
+  Matrix3D scaleMatrix = Matrix3D::scale(scaleFactor, scaleFactor, scaleFactor);
   
   
   for (unsigned int i = 0; i< ptsSection.size(); i++)
   {
     temp = ptsSection[i];
 
-    ptsSection[i][0] = temp[0];
-    ptsSection[i][1] = 0;
-    ptsSection[i][2] = temp[1];
+    
+//     ptsSection[i][0] = temp[0];
+//     ptsSection[i][1] = 0;
+//     ptsSection[i][2] = temp[1];
+
+    temp2[0] = temp[0];
+    temp2[1] = 0;
+    temp2[2] = temp[1];
+
+    ptsSection[i] = scaleMatrix * temp2;
   }
 
 }
