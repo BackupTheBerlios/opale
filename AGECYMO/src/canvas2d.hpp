@@ -3,13 +3,15 @@
 
 #include "abscanvas.hpp"
 #include "polyline.hpp"
+#include "point.hpp"
 
 const int squareNumber = 50;
 const double glOrthoParameter = 4.0;
-const QString sectionS("section");
-const QString cheminS("chemin");
-const QString profilS("profil");
+const QString sectionS("Section");
+const QString cheminS("Chemin");
+const QString profilS("Profil");
 const QString window3dS("window3D");
+const int SQUARE_NUMBER_DEFAULT = 50;
 
 class Canvas2D : public AbsCanvas
 {
@@ -19,8 +21,10 @@ class Canvas2D : public AbsCanvas
 
   private:
   
+  int _squareNumber;
   Polyline _polyline;
   Polyline _symetrique;
+  
 
   void buildAxesDPL();
   void drawAxes();
@@ -40,7 +44,10 @@ class Canvas2D : public AbsCanvas
   void profilDoubleClickEvent(QMouseEvent* event);
   void cheminDoubleClickEvent(QMouseEvent* event);
   void window3dDoubleClickEvent(QMouseEvent* event);
-    
+  void calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point);
+  int getSquareNumber();
+  void setSquareNumber(int newValue);
+
   protected:
   virtual void initializeGL     ();
   virtual void paintGL          ();
