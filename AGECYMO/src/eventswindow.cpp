@@ -15,7 +15,7 @@ EventsWindow::EventsWindow() :
   QColor color(200, 20, 20);
   this->setColor(color);
   this->insert("Welcome to AGECYMO\n");
-  this->resize(275, 550);
+  this->resize(275, 450);
   this->move(1, 433);
 }
 
