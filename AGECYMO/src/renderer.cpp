@@ -36,7 +36,7 @@ Renderer::render()
   myfaces.push_back( new Tria(&mypoints) );
   myfaces.push_back( new Quad(&mypoints, 0, 2, 3, 4) );
   
-  Faces thefaces(mypoints, &myfaces);
+  Faces thefaces(&mypoints, &myfaces);
 
   setModel(thefaces);
     
