@@ -1,0 +1,32 @@
+<h2>Vue générale d'AGECYMO</h2>
+
+<p>Lorsque le modeleur démarré 5 fenêtres apparaissent : 
+</p>
+
+<ul>
+
+<li>
+Une fenetre sur la gauche dite principale qui contient la barre de
+menu et la barre d'outils ainsi qu un panneau de contrôle permettant
+de passer des options pour la génération du cylindre. 
+</li>
+
+<li>Une fenêtre 2D qui permet de définir le chemin</li>
+
+<li>Une fenêtre 2D qui permet de définir la section</li>
+
+<li>Une fenêtre 2D qui permet de définir le profil</li>
+
+
+<li>
+Une fenêtre 3D qui permet soit de visualiser le cylindre
+généralisé produit à l'aide des courbes définies dans les fenêtres 2D
+soit de visualiser un objet chargé depuis un fichier grâce à un plugin.
+</li>
+
+</ul>
+
+
+<h3>Opérations accessibles depuis la fenêtre princ</h3>
+<p>
+</p>
