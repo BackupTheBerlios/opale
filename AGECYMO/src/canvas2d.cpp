@@ -50,6 +50,9 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
   else{
     _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
     _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
+    _fileMenu->insertSeparator();
+    _fileMenu->insertItem( "delete selected", this, SLOT(deleteSelectedPoints()) );
+    _fileMenu->insertItem( "delete all points", this, SLOT(deleteAllPoints()) );
   }
   
   //polyline default tool
