@@ -12,18 +12,26 @@
 
 using namespace std;
 
+/*******************************************************
+ * the default NurbsCurve constructor
+ *
+ ******************************************************/
 NurbsCurve::NurbsCurve() {
 
   _nbPointsDefine = 4;
-
-  _red_nurb = RED_NURB;
-  _green_nurb = GREEN_NURB;
-  _blue_nurb = BLUE_NURB;
 }
  
+/*******************************************************
+ * the NurbsCurve destructor
+ *
+ ******************************************************/
 NurbsCurve::~NurbsCurve() {
 }
 
+/*******************************************************
+ * draw the nurbs in the openGL widget
+ *
+ ******************************************************/
 void NurbsCurve::render(){
 
   double increment; 
@@ -53,7 +61,7 @@ void NurbsCurve::render(){
     }
   
     // New color
-    glColor3f(_red_nurb, _green_nurb, _blue_nurb);
+    glColor3f(RED_NURB, GREEN_NURB, BLUE_NURB);
 
     // Knots contruction 
     int nknots = getNbPoints() + _nbPointsDefine;
@@ -86,6 +94,12 @@ void NurbsCurve::render(){
   }
 }
 
+/*******************************************************
+ * discretize the nurbs
+ * @param nbSegments the discretization resolution
+ * @return the vector of points (the discretized polyline)
+ *
+ ******************************************************/
 std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> pointsList;
@@ -129,6 +143,12 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   return pointsList;
 }
 
+/*******************************************************
+ * add a point to the nurbs
+ * @param point the point to add
+ * @return ADDED or NOT_ADDED
+ *
+ ******************************************************/
 int NurbsCurve::addPoint(gml::Point3D *point)
 {
   _pointsVector.push_back(point);

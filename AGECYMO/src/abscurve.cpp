@@ -74,4 +74,17 @@ bool AbsCurve::containPoint(gml::Point3D *point)
   return false;
 }
 
-
+/**************************************************************
+ *  
+ *  set the curve render color
+ *  @param red the red component
+ *  @param green the green component
+ *  @param blue the blue component
+ *
+ *************************************************************/
+void AbsCurve::setColor(double red, double green, double blue)
+{
+  _redColor = red;
+  _greenColor = green;
+  _blueColor = blue;
+}

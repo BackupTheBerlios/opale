@@ -107,6 +107,16 @@ public:
    *************************************************************/
   bool containPoint(gml::Point3D *point);
 
+  /**************************************************************
+   *  
+   *  set the curve render color
+   *  @param red the red component
+   *  @param green the green component
+   *  @param blue the blue component
+   *
+   *************************************************************/
+  void setColor(double red, double green, double blue);
+
 protected:
 
   double _redColor;   /**red render color of the object*/
