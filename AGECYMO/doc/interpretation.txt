@@ -1,0 +1,41 @@
+Interprétation des résultats:
+
+Test 1 : intersections non valides entre arètes
+
+Le fait d'augmenter le epsilon sur les modèles testés a
+pour but de baisser le nombre d'erreurs. Plus l'epsilon
+est élevé, plus la taille des deux segments testés diminue
+à partir de ses extrémités. Pour une valeur supérieure ou
+égale à 0.5, les deux extrémités du segment fusionnent. Il
+est donc normale pour les résultats récupérés de n'avoir 
+aucune erreur supérieure à 0.5.
+Néanmoins une variation anormale se produit sur certains 
+models pour des valeurs de epsilon faibles (Main, fourmis, pieces
+d'échecs).
+
+
+Test 2 : Coplanarité des faces
+
+Plus le epsilon est élevé, plus les tests admettent une coplanarité
+inexacte. Ce principe s'applique sur les valeurs entre 0 et 0.5. Il 
+est détecté sur les tests une remontée significative
+des erreurs pour un epsilon entre 0.5 et 1.0. 
+Ce phénomène reste inexpliqué ??
+peut être la même chose que précedemment ??
+
+
+Test 3 : intersection arètes/faces
+
+Les erreurs varient ici de deux façons selon les modèles
+-plus l'epsilon est élevé, plus les erreurs décroissent
+(Main, Vase, Lapin, Dragon).
+
+-les erreurs admettent un nombre significatif d'erreurs
+pour les epsilons 0.0, 0.5 et 1.0 (Pieces d'échec, fourmis) 
+pourquoi ?? 
+
+
+Test Core :
+Les résultats du test Core donne pour tous les tests un nombre
+d'erreurs moyen par rapport aux tests Mantilla. Il semblerai que
+ce nombre d'erreurs moyen corresponde à un espilon optimum.
