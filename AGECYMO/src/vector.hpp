@@ -30,6 +30,8 @@ namespace gml
     //operator overloading
     template <typename T2>
     Vector<T, N>& operator=(Vector<T2, N> const& v2); //T must contains T2
+
+    Vector<T, N>& operator=(Vector<T, N> const& v2); 
     
     template <typename T2>
     Vector<T, N> operator*(T2 l);
@@ -134,6 +136,13 @@ namespace gml
     return *this;
   }
 
+  template<typename T, int N>
+  Vector<T, N>& Vector<T, N>::operator=(Vector<T, N> const & v2)
+  {
+    AbsVector<T, N>::operator=(v2);
+    return *this;
+  }
+  
   template<typename T, int N>
   template<typename T2>
   Vector<T, N> Vector<T, N>::operator*(T2 l)

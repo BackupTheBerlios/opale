@@ -33,6 +33,8 @@ namespace gml
     template <typename T2>
     AbsVector<T, N>& operator=(AbsVector<T2, N> const& v2); //T must contains T2
 
+    AbsVector<T, N>& operator=(AbsVector<T, N> const& v2); 
+
     void stabilize();
   };
 
@@ -77,6 +79,21 @@ namespace gml
   template<typename T, int N>
   template <typename T2>
   AbsVector<T, N>& AbsVector<T, N>::operator=(AbsVector<T2, N> const & v2)
+  {
+    if ( (void *) this == (void  *) &v2) //assignment to itself ?
+    {
+      return *this;
+    }
+
+    for (int i=0; i<N; i++)
+    {
+      _data[i] = v2[i];
+    }    
+    return *this;
+  }
+
+  template<typename T, int N>
+  AbsVector<T, N>& AbsVector<T, N>::operator=(AbsVector<T, N> const & v2)
   {
     if ( (void *) this == (void  *) &v2) //assignment to itself ?
     {
