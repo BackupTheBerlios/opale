@@ -258,7 +258,9 @@ int save(MainWindow *mainWin){
     return EXIT_FAILURE;
   }
 
-  fileName = fileName + ".cur";
+  if(fileName.find(".cur") == -1){
+    fileName = fileName + ".cur";
+  }
 
   //opening file for writing
   ofstream file(fileName.latin1());
