@@ -83,7 +83,7 @@ public:
 
   /**************************************************************
    *
-   *  get the point at an index
+   *  get the point at a given index
    *  @param index the index of the point
    *  @return the point at index or NULL if not exists
    *
@@ -91,16 +91,16 @@ public:
   gml::Point3D *getPoint(int index) const;
 
   /**************************************************************
-   *
-   *  define if the object is empty (contains no points)
+   *  
+   *  returns whether or not the object is empty (contains no points)
    *  @return true if empty, false else
    *
    *************************************************************/
   bool isEmpty();
 
   /**************************************************************
-   *
-   *  define if a point is contained by the object
+   *  
+   *  returns whether or not a point is contained by the object
    *  @param point the point to be tested
    *  @return true if the object contains the point, false else
    *
