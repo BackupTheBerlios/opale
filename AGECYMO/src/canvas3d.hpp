@@ -28,6 +28,10 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
     ENABLE_DRAW_FPS,
     ENABLE_DRAW_BOUNDING_BOX,
     ENABLE_DRAW_INFO_MODEL, //number of quads, tria etc
+    WIREFRAME_RENDERING_MODE,
+    FLAT_RENDERING_MODE,
+    GOURAUD_RENDERING_MODE,
+    WF_HDLR_RENDERING_MODE,
   };
 
   private:
@@ -38,6 +42,7 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
   
   gml::Point2D _clickPos; //position saved when the user clicks
 
+  gml::Point3D _lightPos; //position of the light which is used for gouraud shading
   
   QAccel*  _accel;
   
