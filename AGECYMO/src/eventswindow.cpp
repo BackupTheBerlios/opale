@@ -2,6 +2,11 @@
 #include <time.h>
 #include "eventswindow.hpp"
 
+/**************************************************************
+ *
+ *  EventsWindow constructor
+ *
+ *************************************************************/
 EventsWindow::EventsWindow() :
     QMultiLineEdit(NULL, "log")
 {
@@ -14,10 +19,21 @@ EventsWindow::EventsWindow() :
   this->move(1, 433);
 }
 
+/**************************************************************
+ *
+ *  EventsWindow destructor
+ *
+ *************************************************************/
 EventsWindow::~EventsWindow()
 {
 }
 
+/**************************************************************
+ *
+ *  write a log.
+ *  @param text the log message
+ *
+ *************************************************************/
 void
 EventsWindow::writeComments(QString text)
 {
