@@ -492,6 +492,30 @@ MainWindow::generateCylinder()
   qDebug("Mainwindow : Dans generateCylinder ");
 
 //  _controlPanel->validateAll();
+
+  if ( ! (_controlPanel->controlWayValue()) )
+  {
+    return;
+  }
+
+  if ( ! (_controlPanel->controlSectionValue()) )
+  {
+    return;
+  }
+  
+  if ( ! (_controlPanel->controlScaleSectionValue()) )
+  {
+    return;
+  }
+  
+  if ( ! (_controlPanel->controlScaleWayValue()) )
+  {
+    return;
+  }
+  
+  
+  
+
   
   //Set the OpenGL Context to the 3D Canvas
   Canvas3D & canvas =  dynamic_cast<Canvas3D &>(_w3d->canvas());
@@ -537,8 +561,6 @@ MainWindow::generateCylinder()
   paramDiscretisationCHEMIN  = nWay / nbSegmentsChemin;
 
   qDebug("nWay recupere = %d", nWay);
-  
-
   qDebug("paramDiscretisationSECTION = %d", paramDiscretisationSECTION);
   qDebug("paramDiscretisationPROFIL = %d", paramDiscretisationPROFIL);
   qDebug("paramDiscretisationCHEMIN = %d", paramDiscretisationCHEMIN);
@@ -546,13 +568,28 @@ MainWindow::generateCylinder()
   
   std::vector<Point3D> ptsSection = section->discretize(paramDiscretisationSECTION);
   adjustSection(ptsSection, _controlPanel->scaleFactorSection() );
+
+  std::vector<Point3D> ptsProfile = profil->discretize(nWay / nbSegmentsProfil);
   
-  std::vector<Point3D> ptsChemin  = chemin->discretize(paramDiscretisationCHEMIN);
+  //std::vector<Point3D> ptsChemin  = chemin->discretize( (ptsProfile.size()/ nbSegmentsChemin) + 1);
+  //adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
+
+  int discretizeWay;
+  int u = ptsProfile.size()/ nbSegmentsChemin;
+  std::vector<Point3D> ptsChemin  = chemin->discretize( u );
+
+  while (  (discretizeWay = ptsChemin.size()) < ptsProfile.size() )
+  {
+    u++;
+    ptsChemin = chemin->discretize( u );
+  }
+    
   adjustWay(ptsChemin, _controlPanel->scaleFactorWay() );
   
-  
-  std::vector<Point3D> ptsProfile = profil->discretize(paramDiscretisationPROFIL);
-
+  qDebug("Apres Discretisation");
+  qDebug(" nb pt chemin = %d",  ptsChemin.size());
+  qDebug(" nb pt profile = %d", ptsProfile.size());
+    
   
   int timeTiGenerateIt = ( _cylGenerator->generate( ptsChemin,
                                                     ptsSection,

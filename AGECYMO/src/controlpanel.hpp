@@ -58,19 +58,19 @@ class ControlPanel : public QWidget
   
   bool isTorsionEnabled() const;
 
-  void validateAll();
+  bool controlWayValue();
 
+  bool controlSectionValue();
+
+  bool controlScaleSectionValue();
+  
+  bool controlScaleWayValue();
+  
+  
   private:
   void checkWay();
-  
-  private slots:
-  
-//  void validateWay(const QString& text);
-  void validateWay();
 
-  void validateSection();
 
-  void validateScale();
   
 };
 
