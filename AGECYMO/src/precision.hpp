@@ -685,62 +685,68 @@
       return false;
     }
 
-    //  if (plane[0]*vectorEdgeX + plane[1]*vectorEdgeY +	plane[2]*vectorEdgeZ
-    //    == null_value)
-    // BUG !!! PROBLEME 
-    //Test incomplet pour conclure il faut s assure que la droite n est PAS coplanaire au plan
-    if( isEqual((plane[0]*vectorEdgeX + plane[1]*vectorEdgeY +	plane[2]*vectorEdgeZ),
-                 null_value)
-      )
+    if(isEqual((plane[0]*vectorEdgeX + plane[1]*vectorEdgeY +	plane[2]*vectorEdgeZ), null_value))
     {
-      
       // 1.5) Verification if the egde is not a edge of the plane of the considerate face
       if (!onPlane(a, points) && !onPlane(b, points)) {
 	return false;
       }
+      else {
 
-      
-
-    }
-    
-    // 2) If the edge is an edge of the face
-    bool found1 = false;
-    bool found2 = false;
-    int i=0;
-    while ((!found1 || !found2 ) && i<points.size())
-    {
-      
-      if ( isTheSame(a, points[i]) ) 
-      {
-        found1 = true;
+	// Search if the points of the edge are the points of the face
+	 bool found1 = false;
+	 bool found2 = false;
+	 int i=0;
+	 while ((!found1 || !found2 ) && i<points.size())
+	   {
+	     
+	     if ( isTheSame(a, points[i]) ) 
+	       {
+		 found1 = true;
+	       }
+	     
+	     if ( isTheSame(b, points[i]) )
+	       {
+		 found2 = true;
+	       }
+	     i++;
+	   }
+	 
+	 // Case where the edge is a edge of the face
+	 if (found1 && found2) {
+	     return false;
+	   }
+	 else {
+	   if (!found1 && found2) {
+	     if (onFace(a, points)) {
+	       return true;
+	     }
+	     else {
+	       return false;
+	     }
+	   }
+	   else {
+	     if (found1 && !found2) {
+	       if (onFace(b, points)) {
+		 return true;
+	       }
+	       else {
+		 return false;
+	       }
+	     }
+	     else {
+	       if (onFace(a, points)) {
+		 *t=0.0;
+		 return true;
+	       }
+	       if (onFace(b, points)) {
+		 *t=1.0;
+		 return true;
+	       }
+	     }
+	   }
+	 }
       }
-            
-      if ( isTheSame(b, points[i]) )
-      {
-        found2 = true;
-      }
-      i++;
-    }
-    
-    if (!found1 && !found2) {
-      bool aOnFace = onFace(a, points);
-      bool bOnFace = onFace(b, points);
-      if (aOnFace) {
-	*t=0.0;
-	return true;
-      }
-      if (bOnFace) {
-	*t=1.0;
-	return true;
-      }
-      if (aOnFace, bOnFace) {
-	return false;
-      }
-	
-
-    if (found1 && found2)
-    {
-      return false;
     }
 
     // 3) Compute of t
@@ -824,7 +830,7 @@ static void edgesIntersections(std::vector< std::vector<gml::Point3D> > & edges)
       << "Number of valid intersections : " << nbValid << std::endl
       << "Number of not valid intersections : " << nbNotValid << std::endl;
   
-  QMessageBox::information(0, "Validation 1 :", oss.str());
+  QMessageBox::information(0, "First validation :", oss.str());
 }
 
 // Verification if each faces are in the same plane
@@ -877,7 +883,7 @@ static void facesOnSamePlan(std::vector<AbsFace*> & faces, std::vector<gml::Poin
       << "Number of verifications : " << nbVerif << std::endl
       << "Number of valid faces : " << nbValid << std::endl
       << "Number of not valid faces : " << nbNotValid << std::endl;
-  QMessageBox::information(0, "Validation 2 :", oss.str());
+  QMessageBox::information(0, "Second validation :", oss.str());
 }
 
 static void edgesCutFaces(std::vector<AbsFace*> & faces, std::vector< std::vector<gml::Point3D> > & edges, std::vector<gml::Point3D> points) 
@@ -934,7 +940,7 @@ static void edgesCutFaces(std::vector<AbsFace*> & faces, std::vector< std::vecto
       << "Number of valid faces : " << nbValid << std::endl
       << "Number of not valid faces : " << nbNotValid << std::endl;
   
-  QMessageBox::information(0, "Validation 3 :", oss.str());
+  QMessageBox::information(0, "Third validation :", oss.str());
   
 }//end of validate method
 
