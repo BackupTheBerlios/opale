@@ -2,6 +2,9 @@
 #define CLASS_PLUGIN_H
 
 
+const int OFFSET_ARG = 3;
+
+
 enum PluginType{ LOAD_AND_SAVE, ACTION }; //What's the type of the plugin ?
   
 enum CallType{ACTION_CALL, LOAD_CALL, SAVE_CALL}; 
