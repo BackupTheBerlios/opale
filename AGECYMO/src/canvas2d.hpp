@@ -13,7 +13,7 @@
 
 
 const int squareNumber = 50;
-const double glOrthoParameter = 4.0;
+const double glOrthoParameter = 1.0;
 const QString sectionS("Section");
 const QString cheminS("Chemin");
 const QString profilS("Profil");
