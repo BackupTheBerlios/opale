@@ -283,14 +283,18 @@ PluginManager::loadPlugin(const QString & pluginFullName)
   qDebug("  Number of component entries is %d \n", entries);
 
   //Preparing the stuffs
+  //std::vector<MenuAddOn *> * menus_infos= new std::vector<MenuAddOn *>(entries);
   std::vector<MenuAddOn *> menus_infos(entries);
-  for(int i=3; i<(3 + entries); i++)
+    
+  for(int i=OFFSET_ARG; i<(OFFSET_ARG + entries); i++)
   {
-    menus_infos[i] = static_cast<MenuAddOn *>(infos[i]);
+    std::cout << "i = " << i << std::endl;
+    menus_infos[i-OFFSET_ARG] = static_cast<MenuAddOn *>(infos[i]);
   }
     
-  _mw->updateGUIWithPluginData(*type, menus_infos);
+  _mw->updateGUIWithPluginData(pluginFullName, *type, menus_infos);
 
+  std::cout << "apres updateGUI dans pluginmanager" << std::endl;
   
   // We do not need parameters sent by query anymore so we delete it !
   delete[] infos;
