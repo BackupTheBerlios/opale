@@ -1,4 +1,5 @@
 #include <qmultilineedit.h>
+#include <time.h>
 #include "eventswindow.hpp"
 
 EventsWindow::EventsWindow() :
