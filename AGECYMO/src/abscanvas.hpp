@@ -9,6 +9,10 @@
 //Our objects
 #include "camera.hpp"
 
+/******************************************************
+ *  dirived from QGLWidget. generic canvas
+ *
+ ******************************************************/
 class AbsCanvas : public QGLWidget
 {
   Q_OBJECT
@@ -19,41 +23,68 @@ class AbsCanvas : public QGLWidget
   //Protected Members/Attributes
   protected:
   
-  static const int MIN_TIME_FOR_FPS_MEASURE = 2;
-  static const int FPS_X_OFFSET = 10;
-  static const int FPS_Y_OFFSET = 10;
+  static const int MIN_TIME_FOR_FPS_MEASURE = 2; /**for fps measures*/
+  static const int FPS_X_OFFSET = 10; /**fps x offset*/
+  static const int FPS_Y_OFFSET = 10; /**fps y offset*/
 
-  int _nFps; //frame per second
-  int _fpsEnabled; //True if we display the FPS on the Canvas false otherwise
+  int _nFps; /**frame per second*/
+  int _fpsEnabled; /**True if we display the FPS on the Canvas false otherwise*/
   
-  QTime _chronometer; // used to count the number of frames rendered. 
-  gml::Camera _camera; //The Camera associated
+  QTime _chronometer; /**used to count the number of frames rendered.*/
+  gml::Camera _camera; /**The Camera associated*/
     
-  int _axesIndexDPL; //indexe of the display list containing the axes.
+  int _axesIndexDPL; /**indexe of the display list containing the axes.*/
 
 
   //Public Methods
   public:
+
+  /**************************************************************
+   *
+   *  AbsCanvas constructor
+   *  @param parent the parent widget
+   *  @param name the name
+   *
+   *************************************************************/
   AbsCanvas(QWidget* parent = 0, const char* name = 0);
+
+  /**************************************************************
+   *
+   *  AbsCanvas destructor
+   *
+   *************************************************************/
   virtual ~AbsCanvas();
 
   //Protected Methods
   protected:
 
+  /**************************************************************
+   *
+   *  build the display list for axes
+   *
+   *************************************************************/
   virtual void buildAxesDPL() = 0;
+
+  /**************************************************************
+   *
+   *  draw the axes
+   *
+   *************************************************************/
   virtual void drawAxes() = 0;
 
-  void setView();//set the view according to the camera
-  void drawFps();
-  
-  //OpenGL routines
- //  virtual void initializeGL     ();
-//   virtual void paintGL          ();
-//   virtual void resizeGL         (int, int);  
-//   virtual void mousePressEvent  (QMouseEvent*);
-//   virtual void mouseMoveEvent   (QMouseEvent*);
-//   virtual void mouseReleaseEvent(QMouseEvent*);
+  /**************************************************************
+   *
+   *  set the view according to the camera
+   *
+   *************************************************************/
+  void setView();
 
+  /**************************************************************
+   *
+   *  draw fps info
+   *
+   *************************************************************/
+  void drawFps();
   
 };
 
