@@ -8,6 +8,7 @@ CylinderGenerator::CylinderGenerator(Canvas3D & acanvas)
       _minProfile(-1.0),
       _maxProfile(1.0),
       _isWayClosed(false),
+      _torsionEnabled(false),
       _chronometer()
 
 {
@@ -485,6 +486,25 @@ CylinderGenerator::computeProfileMatrix( const std::vector<Point3D> & profilePts
 //   qDebug("scaleFactor = %f", scaleFactor);
   
    profileMatrix = Matrix3D::scale( scaleFactor, scaleFactor, scaleFactor);
+
+   if ( _torsionEnabled)
+   {
+     qDebug("torsion active ");
+     
+     double angle = profilePts[indexCurrentPoint][1];
+
+     angle = acos( angle);
+
+
+     qDebug("angle = %f", angle * 3.14159);
+     
+     
+     Matrix3D rotationMatrix = Matrix3D::rotationY( angle);
+     Matrix3D tmpMatrix = profileMatrix;
+     profileMatrix = rotationMatrix * tmpMatrix;
+     
+   }
+   
 }
 
 void
