@@ -187,8 +187,7 @@ Canvas3D::setModel(Faces& faces)
 {
   qDebug("Canvas3D : dans setModel");
   
-  _renderer.setModel(faces);
-  glFinish();
+  _renderer.setModel(faces);  
   updateGL();
 
   qDebug("Canvas3D : fin  de set Model");
