@@ -67,16 +67,222 @@
 \vspace*{\stretch{1}}
 
 \tableofcontents
+\newpage
 %\listoffigures
 
 \section{Introduction}
 
 
-\section{Modèles testés}
+\section{Modèles testés et Résultats}
+
+Nous avons effectué les tests de validation sur les modèles suivants :
+\begin{itemize}
+\item Un cube (cf figure~\ref{cube})
+\item Un vase (cf figure~\ref{vase})
+\item Le lapin simplifé de Standford (cf figure~\ref{bunny})
+\item Le dragon simplifé de Standford (cf figure~\ref{dragon})
+\item Une main simplifiée de Standford (cf figure~\ref{hand})
+\item Des pièces d'échecs (cf figures~\ref{chess1},\ref{chess2} et \ref{chess3}).
+\end{itemize}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./cube.png}
+\caption{\label{cube} \textit{Le Cube}.}
+\end{center}
+\end{figure}
 
 
-\section{Résultats}
+\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+\hline
+ Modèle             & Points & Arètes & Faces & Triangles & Quads & Autres \\
+\hline
+ Cube               & 8      & 12     & 6     & 0         & 6     & 0 \\
+\hline
+\hline
+                    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+\hline
+ Nb. Vérifications  &  \multicolumn{2}{|c|}{RESULTAT} & \multicolumn{2}{|c|}{RESULTAT}  &  \multicolumn{2}{|c|}{RESULTAT} \\     
+\hline
+\hline
+ \begin{tabular}[t]{c|c}
+  Mantilla & 
+     \begin{tabular}[t]{c} 
+			 $\varepsilon = 1.0$ \\
+			 $\varepsilon = 0.0$ \\
+			 $\varepsilon = 0.5$ \\
+			 $\varepsilon = 0.1$ \\
+			 $\varepsilon = 0.001$ \\
+			 $\varepsilon = 10^{-6}$ \\
+			 $\varepsilon = 10^{-14}$ \\
+		 \end{tabular}\\
+ \end{tabular} & 
+   \multicolumn{2}{|c|}{
+		\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+	 \end{tabular} } & 
+	 \multicolumn{2}{|c|}{
+		\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+		\end{tabular}	 
+	 } & 	
+	 \multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+	 \end{tabular}
+	 }\\
+\hline
+\hline
+CORE &   
+\multicolumn{2}{|c|}{RESULTAT} &  
+\multicolumn{2}{|c|}{RESULTAT} & 
+\multicolumn{2}{|c|}{RESULTAT} \\
+\hline
+\end{tabular}
 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./vase.png}
+\caption{\label{vase} 
+\textit{Vase}.}
+\end{center}
+\end{figure}
+
+\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+\hline
+ Modèle             & Points & Arètes & Faces & Triangles & Quads & Autres \\
+\hline
+ Cube               & 8      & 12     & 6     & 0         & 6     & 0 \\
+\hline
+\hline
+                    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+\hline
+ Nb. Vérifications  &  \multicolumn{2}{|c|}{RESULTAT} & \multicolumn{2}{|c|}{RESULTAT}  &  \multicolumn{2}{|c|}{RESULTAT} \\     
+\hline
+\hline
+ \begin{tabular}[t]{c|c}
+  Mantilla & 
+     \begin{tabular}[t]{c} 
+			 $\varepsilon = 1.0$ \\
+			 $\varepsilon = 0.0$ \\
+			 $\varepsilon = 0.5$ \\
+			 $\varepsilon = 0.1$ \\
+			 $\varepsilon = 0.001$ \\
+			 $\varepsilon = 10^{-6}$ \\
+			 $\varepsilon = 10^{-14}$ \\
+		 \end{tabular}\\
+ \end{tabular} & 
+   \multicolumn{2}{|c|}{
+		\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+	 \end{tabular} } & 
+	 \multicolumn{2}{|c|}{
+		\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+		\end{tabular}	 
+	 } & 	
+	 \multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+			RESULTAT \\ 
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT \\
+			RESULTAT 
+	 \end{tabular}
+	 }\\
+\hline
+\hline
+CORE &   
+\multicolumn{2}{|c|}{RESULTAT} &  
+\multicolumn{2}{|c|}{RESULTAT} & 
+\multicolumn{2}{|c|}{RESULTAT} \\
+\hline
+\end{tabular}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./bunny.png}
+\caption{\label{bunny} 
+\textit{Le Lapin. Modèle VRML simplifié du	modèle original de Standford}.}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./dragon.png}
+\caption{\label{dragon} 
+\textit{Le Dragon. Modèle VRML simplifié du	modèle original de Standford}.}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./hand.png}
+\caption{\label{hand} 
+\textit{Main. Modèle VRML simplifié du	modèle original de Standford}.}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./chess1.png}
+\caption{\label{chess1} 
+\textit{Pièce d'échec}.}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./chess2.png}
+\caption{\label{chess2} 
+\textit{Pièce d'échec}.}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[]{./chess3.png}
+\caption{\label{chess3} 
+\textit{Pièce d'échec}.}
+\end{center}
+\end{figure}
+
+
+\onecolumn
 
 \section{Discussion et Conclusion}
 
