@@ -7,7 +7,7 @@
 
 //#include <qmessagebox.h> 
 
-#include "precision.hpp"
+//#include "precision.hpp"
 
 using namespace std;
 
