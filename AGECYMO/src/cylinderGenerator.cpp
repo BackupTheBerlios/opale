@@ -119,13 +119,14 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
   quasiNormale.normalize();
 
   tplus.normalize();
-  
   tangente = tplus;
   
   binormale  = cross(tangente, quasiNormale);
-
+  binormale.normalize();
+  
   normale = cross(binormale, tangente);
-
+  normale.normalize();
+  
   newCurrentFrame = Matrix3D( binormale[0], tangente[0], normale[0], current[0],
                               binormale[1], tangente[1], normale[1], current[1],
                               binormale[2], tangente[2], normale[2], current[2],
@@ -140,8 +141,35 @@ CylinderGenerator::computeFrenetFrame( const Matrix3D & previousFrame,
 //                               tangente[1],  normale[1], binormale[1], current[1],
 //                               tangente[2],  normale[2], binormale[2], current[2],
 //                               0, 0, 0, 1);
+
+  Vector3D previousBiNormal;
+  previousBiNormal[0] = previousFrame.m[0];
+  previousBiNormal[1] = previousFrame.m[4];
+  previousBiNormal[2] = previousFrame.m[8];
+
   
-  std::cout << "current frame is :" << std::endl
+  if (binormale[2] != previousBiNormal[2])
+  {
+    std::cout << "Binormale Changed" << std::endl;
+    std::cout <<  "Previous Binormal = " << previousBiNormal << std::endl;
+    std::cout <<  "New Binormal = " << binormale << std::endl;
+
+    
+    std::cout << "previous frame is :" << std::endl
+              << previousFrame << std::endl;
+
+    
+    newCurrentFrame = Matrix3D( -binormale[0], tangente[0], -normale[0], current[0],
+                                -binormale[1], tangente[1], -normale[1], current[1],
+                                -binormale[2], tangente[2], -normale[2], current[2],
+                                0, 0, 0, 1);
+
+    
+    return;
+  }
+  
+  
+  std::cout << "CURRENT frame is :" << std::endl
             << newCurrentFrame << std::endl;
   
 }
