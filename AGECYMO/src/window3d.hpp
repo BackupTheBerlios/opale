@@ -87,6 +87,13 @@ class Window3D : public QFrame
    *************************************************************/
   void setCameraUp(double upx, double upy, double upz);
 
+  /**************************************************************
+   *
+   *  manage close Event. a window3D cannot be closed
+   *  @param ce the close Event
+   *
+   *************************************************************/
+  void closeEvent(QCloseEvent* ce );
   
 };
 

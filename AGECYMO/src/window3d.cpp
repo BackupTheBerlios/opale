@@ -97,3 +97,13 @@ Window3D::setCameraUp(double upx, double upy, double upz)
 {
   //_canvas->setCameraUp( upx, upy, upz);
 }
+
+/**************************************************************
+ *
+ *  manage close Event. a window3D cannot be closed
+ *  @param ce the close Event
+ *
+ *************************************************************/
+void Window3D::closeEvent(QCloseEvent* ce ){
+  ce->ignore();
+}
