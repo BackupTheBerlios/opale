@@ -48,6 +48,14 @@ class Canvas2D : public AbsCanvas
   void setFigure(Curves *figure);
   QPopupMenu *getPopupMenu();
 
+  //popupWindow management
+  /*
+  void setPolyMode();
+  void setNurbsMode();
+  void setRectangleMode();
+  void setCircleMode();
+  void setPolygMode();
+  */
   private:
   
   int _squareNumber;

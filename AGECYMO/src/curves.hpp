@@ -1,8 +1,3 @@
-//
-//  curves.hpp
-//  
-//  allow to control many curves in a canvas
-//
 
 #ifndef CURVES_CLASS
 #define CURVES_CLASS
@@ -26,6 +21,10 @@ const double BLUE_DEFAULT_SELECT = 0.55;
 
 class Canvas2D;
 
+/******************************************************
+ *  allow to control many curves in a canvas
+ *
+ ******************************************************/
 class Curves
 {
 public:

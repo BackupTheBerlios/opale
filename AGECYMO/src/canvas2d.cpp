@@ -41,30 +41,98 @@ Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
   //popup menu building (differs from canvas type)
   _fileMenu = new QPopupMenu(this);
 
-  _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()),0,0 );
-  _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()),0,1 );
-  _fileMenu->insertItem( "Circle",  this, SLOT(setCircleMode()),0,2 );
-  _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()),0,3 );
-  _fileMenu->insertItem( "Polygone",  this, SLOT(setPolygMode()),0,4 );
+  //creation of the QActions
+  QAction *polyAction = 
+    new QAction(QIconSet(QPixmap("../images/polyline.png")),
+		"Polyline",0,this);
 
+  QAction *nurbsAction = 
+    new QAction(QIconSet(QPixmap("../images/nurbs.png")),
+		"Nurbs",0,this);
+
+  QAction *circleAction = 
+    new QAction(QIconSet(QPixmap("../images/ellipse.png")),
+		"Cercle",0,this);
+
+  QAction *quadriAction = 
+    new QAction(QIconSet(QPixmap("../images/quadri.png")),
+		"Rectangle",0,this);
+
+  QAction *polygAction = 
+    new QAction(QIconSet(QPixmap("../images/polygone.png")),
+		"Polygone",0,this);
+
+  QAction *selectAllAction = 
+    new QAction(QIconSet(QPixmap("../images/selectAll.png")),
+		"Select all",0,this);
+
+  QAction *deselectAllAction = 
+    new QAction(QIconSet(QPixmap("../images/deselectAll.png")),
+		"Deselect all",0,this);
+
+  QAction *deleteAllAction = 
+    new QAction(QIconSet(QPixmap("../images/deleteAll.png")),
+		"DeleteAll",0,this);
+
+  //connect actions
+  connect(polyAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(setPolyMode()) );
+  connect(nurbsAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(setNurbsMode()) );
+  connect(circleAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(setCircleMode()) );
+  connect(quadriAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(setRecMode()) );
+  connect(polygAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(setPolygMode()) );
+
+  connect(selectAllAction,
+          SIGNAL( activated() ),
+          this,
+	  SLOT(selectAllPoints()) );
+
+  connect(deselectAllAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(deselectAllPoints()) );
+
+  connect(deleteAllAction,
+          SIGNAL( activated() ),
+          this,
+          SLOT(deleteAllPoints()) );
+
+  //add QActions to menu
+  polyAction->addTo(_fileMenu);
+  nurbsAction->addTo(_fileMenu);
+  circleAction->addTo(_fileMenu);
+  quadriAction->addTo(_fileMenu);
+  polygAction->addTo(_fileMenu);
+  
+  //if it's the canvas profil, disable many tools
   if(_canvasType == PROFIL_CANVAS){
     
-    getPopupMenu()->setItemEnabled(2,false);
-    getPopupMenu()->setItemEnabled(3,false);
-    getPopupMenu()->setItemEnabled(4,false);
-    
+    _fileMenu->setItemEnabled(_fileMenu->idAt(2),false);
+    _fileMenu->setItemEnabled(_fileMenu->idAt(3),false);
+    _fileMenu->setItemEnabled(_fileMenu->idAt(4),false);  
   }
 
   _fileMenu->insertSeparator();
-  _fileMenu->insertItem( "select all", 
-			 this, SLOT(selectAllPoints()) );
-  _fileMenu->insertItem( "deselect all", 
-			 this, SLOT(deselectAllPoints()) );
 
+  selectAllAction->addTo(_fileMenu);
+  deselectAllAction->addTo(_fileMenu);
   _fileMenu->insertSeparator();
-  _fileMenu->insertItem( "delete all", 
-			 this, SLOT(deleteAllPoints()) );
-  
+  deleteAllAction->addTo(_fileMenu);
+
   //polyline default tool
   _toolMode = POLY_MODE;
   
@@ -313,6 +381,40 @@ QPopupMenu *Canvas2D::getPopupMenu()
   return _fileMenu;
 }
 
+/*
+//popupWindow management
+void Canvas2D::setPolyMode()
+{
+  
+  polyAction->setEnabled(false);
+  nurbsAction->setEnabled(true);
+  circleAction->setEnabled(false);
+  quadriAction->setEnabled(false);
+  polygAction->setEnabled(false);
+  
+}
+
+void Canvas2D::setNurbsMode()
+{
+
+}
+
+void Canvas2D::setRectangleMode()
+{
+
+}
+
+
+void Canvas2D::setCircleMode()
+{
+
+}
+
+void Canvas2D::setPolygMode()
+{
+
+}
+*/
 //SLOTS
 void Canvas2D::setPolyMode()
 {

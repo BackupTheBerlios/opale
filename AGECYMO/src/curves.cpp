@@ -90,17 +90,26 @@ void Curves::deleteAllCurves()
   _isClosed = false;
   _isSelected.clear();
 
+  _parent->getPopupMenu()
+    ->setItemEnabled(_parent->getPopupMenu()->idAt(0),true);
+  _parent->getPopupMenu()
+    ->setItemEnabled(_parent->getPopupMenu()->idAt(1),true);
+  _parent->getPopupMenu()
+    ->setItemEnabled(_parent->getPopupMenu()->idAt(2),true);
+  _parent->getPopupMenu()
+    ->setItemEnabled(_parent->getPopupMenu()->idAt(3),true);
+  _parent->getPopupMenu()
+    ->setItemEnabled(_parent->getPopupMenu()->idAt(4),true);
+  
   //popupMenu management
-  _parent->getPopupMenu()->setItemEnabled(0,true);
-  _parent->getPopupMenu()->setItemEnabled(1,true);
-  _parent->getPopupMenu()->setItemEnabled(2,true);
-  _parent->getPopupMenu()->setItemEnabled(3,true);
-  _parent->getPopupMenu()->setItemEnabled(4,true);
 
   if(_parent->getCanvasType() == PROFIL_CANVAS){
-    _parent->getPopupMenu()->setItemEnabled(2,false);
-    _parent->getPopupMenu()->setItemEnabled(3,false);
-    _parent->getPopupMenu()->setItemEnabled(4,false);
+    _parent->getPopupMenu()
+      ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+    _parent->getPopupMenu()
+      ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+    _parent->getPopupMenu()
+      ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
   }
   
 }
@@ -522,11 +531,17 @@ void Curves::managePressEvent(QMouseEvent* event,
         _parent->getMW().getEventsWindow().writeComments("New point added!!");
 
         //management of the popupMenu
-        _parent->getPopupMenu()->setItemEnabled(0,false);
-        _parent->getPopupMenu()->setItemEnabled(1,true);
-        _parent->getPopupMenu()->setItemEnabled(2,false);
-        _parent->getPopupMenu()->setItemEnabled(3,false);
-        _parent->getPopupMenu()->setItemEnabled(4,false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(1),true);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
+
       }
 
       //polygone creation
@@ -537,11 +552,17 @@ void Curves::managePressEvent(QMouseEvent* event,
         _currentToolType = POLYG_MODE;
 	
         //management of the popupMenu
-        _parent->getPopupMenu()->setItemEnabled(0,false);
-        _parent->getPopupMenu()->setItemEnabled(1,false);
-        _parent->getPopupMenu()->setItemEnabled(2,false);
-        _parent->getPopupMenu()->setItemEnabled(3,false);
-        _parent->getPopupMenu()->setItemEnabled(4,false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(1),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
+
       }
 
       //rectangle creation
@@ -552,11 +573,17 @@ void Curves::managePressEvent(QMouseEvent* event,
         _currentToolType = REC_MODE;
 
         //management of the popupMenu
-        _parent->getPopupMenu()->setItemEnabled(0,false);
-        _parent->getPopupMenu()->setItemEnabled(1,false);
-        _parent->getPopupMenu()->setItemEnabled(2,false);
-        _parent->getPopupMenu()->setItemEnabled(3,false);
-        _parent->getPopupMenu()->setItemEnabled(4,false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(1),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
+
       }
       if(toolType == CIRCLE_MODE){
         newCurve = new Circle();
@@ -565,11 +592,17 @@ void Curves::managePressEvent(QMouseEvent* event,
         _currentToolType = CIRCLE_MODE;
 	
         //management of the popupMenu
-        _parent->getPopupMenu()->setItemEnabled(0,false);
-        _parent->getPopupMenu()->setItemEnabled(1,false);
-        _parent->getPopupMenu()->setItemEnabled(2,false);
-        _parent->getPopupMenu()->setItemEnabled(3,false);
-        _parent->getPopupMenu()->setItemEnabled(4,false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(1),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
+
       }
       if(toolType == NURBS_MODE){
         newCurve = new NurbsCurve();
@@ -577,11 +610,16 @@ void Curves::managePressEvent(QMouseEvent* event,
         _currentToolType = NURBS_MODE;
 	
         //management of the popupMenu
-        _parent->getPopupMenu()->setItemEnabled(0,true);
-        _parent->getPopupMenu()->setItemEnabled(1,false);
-        _parent->getPopupMenu()->setItemEnabled(2,false);
-        _parent->getPopupMenu()->setItemEnabled(3,false);
-        _parent->getPopupMenu()->setItemEnabled(4,false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(0),true);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(1),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(2),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(3),false);
+	_parent->getPopupMenu()
+	  ->setItemEnabled(_parent->getPopupMenu()->idAt(4),false);
       }
 
       //we add the last point of the last curve to the new curve
