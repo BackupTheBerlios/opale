@@ -22,7 +22,7 @@ const int NO_EXIST = -1;
 const int NO_SELECTION = -1;
 
 //size of control points
-const double Control_point_size = 0.10;
+const double Control_point_size = 0.03;
 
 class AbsCurve
 {
