@@ -62,7 +62,7 @@ void **query(void){
   //Load action 
   MenuAddOn *menuLoadAdd = new MenuAddOn();
   menuLoadAdd->typeAppel = LOAD_CALL;
-  menuLoadAdd->emplacement = new string(MENUBAR_CMP);
+  menuLoadAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuLoadAdd->emplacement->append("/file/loadVRML");
   menuLoadAdd->image = NULL;
   menuLoadAdd->texte = NULL;
@@ -70,7 +70,7 @@ void **query(void){
   //Save Action 
   MenuAddOn *menuSaveAdd = new MenuAddOn();
   menuSaveAdd->typeAppel = SAVE_CALL;
-  menuSaveAdd->emplacement = new string(MENUBAR_CMP);
+  menuSaveAdd->emplacement = new string(PluginManager::MENUBAR_CMP);
   menuSaveAdd->emplacement->append("/file/saveVRML");
   menuSaveAdd->image = NULL;
   menuSaveAdd->texte = NULL;
