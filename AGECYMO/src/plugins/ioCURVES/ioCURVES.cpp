@@ -13,6 +13,8 @@
 #include <qapplication.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
+#include <qstring.h>
+
 //Our stuff
 #include "mainwindow.hpp"
 #include "point.hpp"
@@ -121,7 +123,8 @@ int load(MainWindow *mainWin){
     return EXIT_FAILURE;
   }
 
-  mainWin->getEventsWindow().writeComments("VRML model loading...");
+  QString message(" Cylinder model loading...");
+  mainWin->getEventsWindow().writeComments( message );
 
   //opening file for writing
   ifstream file(fileName.latin1());
@@ -141,7 +144,8 @@ int load(MainWindow *mainWin){
       figure = new Curves(&mainWin->getProfilCanvas());
     }
     else{
-      mainWin->getEventsWindow().writeComments("error in curves loading : canvas type not recognized");
+      message = "error in curves loading : canvas type not recognized";
+      mainWin->getEventsWindow().writeComments( message );
     }
 
     //get the close parameter
@@ -197,7 +201,8 @@ int load(MainWindow *mainWin){
 	curve = new NurbsCurve();
       }
       if(curve == NULL){
-	  mainWin->getEventsWindow().writeComments("error in curves loading : curves type not recognized");
+        message = "error in curves loading : curves type not recognized";
+	  mainWin->getEventsWindow().writeComments( message );
       }
 
       file>>indexCurve;
@@ -228,7 +233,8 @@ int load(MainWindow *mainWin){
   //file closing
   file.close();
 
-  mainWin->getEventsWindow().writeComments("curves loaded");
+  message = "curves loaded";
+  mainWin->getEventsWindow().writeComments( message );
   return EXIT_SUCCESS;
 }
 
@@ -265,7 +271,8 @@ int save(MainWindow *mainWin){
     fileName = fileName + ".cur";
   }
 
-  mainWin->getEventsWindow().writeComments("curves saving...");
+  QString message("Saving curves");
+  mainWin->getEventsWindow().writeComments( message );
 
   //opening file for writing
   ofstream file(fileName.latin1());
@@ -339,7 +346,8 @@ int save(MainWindow *mainWin){
 	  file<<REC_MODE<<SPACE;
 	}
 	else{
-	  mainWin->getEventsWindow().writeComments("error in curves saving : curve type not recognized");
+    message = "error in curves saving : curve type not recognized";
+    mainWin->getEventsWindow().writeComments( message );
 	}
 
 	//write the index of the points
@@ -358,14 +366,17 @@ int save(MainWindow *mainWin){
 
     }
     else{
-      mainWin->getEventsWindow().writeComments("error in curves saving : curves not exists");
+      message = "error in curves saving : curves not exists";
+      mainWin->getEventsWindow().writeComments( message );
     }
   }
 
   //file closing
   file.close();
 
-  mainWin->getEventsWindow().writeComments("curves saved");
+  message = "curves saved";
+  
+  mainWin->getEventsWindow().writeComments( message );
 
   return EXIT_SUCCESS;
 }
