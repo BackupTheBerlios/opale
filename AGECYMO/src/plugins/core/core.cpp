@@ -83,17 +83,11 @@ int save(MainWindow *mainW){
 extern "C"
 int load(MainWindow *mainWin){
 
-  //we load faces from the application
-  Faces *faces_to_write;
-  faces_to_write = new Faces(mainWin->model());
-
   QString message("Core validity calcul launched on current model...");
   mainWin->getEventsWindow().writeComments( message );
 
   //here starts the validity calcul
-
-
-
+  validateModel(mainWin->model());
   //here ends the validity calcul 
 
   message = "Core validity calcul over";
