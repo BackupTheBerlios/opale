@@ -31,10 +31,10 @@ LIBS      += -lm -Wl,-E -ldl -rdynamic
 
 LD_LIBRARY_PATH += ../lib/
 
-HEADERS		= absVector.hpp \
+HEADERS		= precision.hpp \
+            absVector.hpp \
             abscurve.hpp \
             point.hpp \
-            precision.hpp \
             polyline.hpp \
             circle.hpp \
             quadri.hpp \
@@ -60,11 +60,12 @@ HEADERS		= absVector.hpp \
             controlpanel.hpp \
             helpwindow.hpp \
             eventswindow.hpp \
-            mainwindow.hpp 
+            mainwindow.hpp
 
-SOURCES		= testVector.cpp \
+#testVector.cpp
+
+SOURCES		= precision.cpp \
             abscurve.cpp \
-            precision.cpp \
             polyline.cpp \
             circle.cpp \
             polygone.cpp \
