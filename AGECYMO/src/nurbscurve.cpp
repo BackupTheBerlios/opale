@@ -131,7 +131,7 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   
   PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
   
-  glBegin(GL_LINE_STRIP);
+
   for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
     PLib::HPoint3Df p = curve(i);  
     p3D[0] = p.x() / p.w();
@@ -139,7 +139,7 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
     p3D[2] = p.z() / p.w();
     pointsList.push_back(p3D);
   }
-  glEnd();
+
   
   return pointsList;
 }
