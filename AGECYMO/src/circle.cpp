@@ -51,31 +51,6 @@ void Circle::render(){
 
   glColor3f(_redColor, _greenColor, _blueColor);
   
-
-  /*bool selected;
-
-  //we draw the control points
-  for(int i = 0 ; i < int(_pointsVector.size()); i++){
-
-    if(isSelected(i)){
-       glColor3f(_redColor,
-		 _greenComponentSelect, 
-		 _blueComponentSelect);
-    }
-    else{
-      glColor3f(_redComponent, 
-
-		_greenComponent, 
-		_blueComponent);
-    }
-
-    glBegin(GL_POLYGON);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]-increment);
-    glVertex2f(_pointsVector[i][0]-increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]+increment);
-    glVertex2f(_pointsVector[i][0]+increment, _pointsVector[i][1]-increment);
-    glEnd();
-    }*/
 }
 
 std::vector<gml::Point3D> Circle::discretize(int nbSegments)
@@ -103,25 +78,6 @@ std::vector<gml::Point3D> Circle::discretize(int nbSegments)
     pointsList.push_back(p);
   }
 
-  // In order to manage the last point of the revolution
-  /*float angle = 360 * 3.14159F / 180 ;
-  float xLastPoint = (float)(_pointsVector[0][0] + r*cos(angle)) ;
-  float yLastPoint = (float)(_pointsVector[0][1] + r*sin(angle)) ;
-  Point3D p;
-  p[0] = xLastPoint;
-  p[1] = yLastPoint;
-  p[2] = 0.0;
-  pointsList.push_back(p);*/
-
-//   float angle = 0 * 3.14159F / 180 ;
-//   float xLastPoint = (float)((*_pointsVector[0])[0] + r*cos(angle)) ;
-//   float yLastPoint = (float)((*_pointsVector[0])[1] + r*sin(angle)) ;
-//   Point3D p;
-//   p[0] = xLastPoint;
-//   p[1] = yLastPoint;
-//   p[2] = 0.0;
-//   pointsList.push_back(p);
-  
   return pointsList;
 }  
 
