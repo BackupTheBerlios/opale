@@ -25,25 +25,17 @@ Tria::render()
 
   std::vector<gml::Point3D> tpoints = *_points;
   
-//   std::cout << _points[_i1];
-//   std::cout << _points[_i2];
-//   std::cout << _points[_i3];
-  
   
   glBegin(GL_TRIANGLES);
 
-  glColor3f(1.0, 0.0, 0.0);
+  glColor3f(0.0, 0.0, 1.0);
   glVertex3d(tpoints[_i1][0],
              tpoints[_i1][1],
              tpoints[_i1][2]);
     
-  glColor3f(0.0, 1.0, 0.0);
-  
   glVertex3d(tpoints[_i2][0],
              tpoints[_i2][1],
              tpoints[_i2][2]);
-    
-  glColor3f(0.0, 0.0, 1.0);
   
   glVertex3d(tpoints[_i3][0],
              tpoints[_i3][1],
