@@ -89,11 +89,12 @@ void Polygone::render(){
 
 /*******************************************************
  * discretize the polygone
- * @param nbSegments the discretization resolution
+ * @param nbDiscretizedPoints the number of points discretized 
+ * between two points of a segment of the polygon.
  * @return the vector of points (the discretized polyline)
  *
  ******************************************************/
-std::vector<gml::Point3D> Polygone::discretize(int nbSegments)
+std::vector<gml::Point3D> Polygone::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> pointsList;
   std::vector<gml::Point3D> pointsPoly;
@@ -123,15 +124,15 @@ std::vector<gml::Point3D> Polygone::discretize(int nbSegments)
       pointsList.push_back(pointsPoly[i]);
       float diffx = fabs(pointsPoly[i][0] - pointsPoly[i+1][0]);
       float diffy = fabs(pointsPoly[i][1] - pointsPoly[i+1][1]);
-      int nbPointsSegment = nbSegments/_nbPoints;
+      int nbPointsSegment = nbDiscretizedPoints/_nbPoints;
       for (int j=1; j<nbPointsSegment;j++) {
 	if (pointsPoly[i][0] < pointsPoly[i+1][0] && 
 	    pointsPoly[i][1] < pointsPoly[i+1][1]) {
 	  Point3D p;
 	  p[0] = pointsPoly[i][0] + 
-	    (diffx*(j/((float)nbSegments/(float)_nbPoints)));
+	    (diffx*(j/((float)nbDiscretizedPoints/(float)_nbPoints)));
 	  p[1] = pointsPoly[i][1] + 
-	    (diffy*(j/((float)nbSegments/(float)_nbPoints)));
+	    (diffy*(j/((float)nbDiscretizedPoints/(float)_nbPoints)));
 	  p[2] = 0.0;
 	  pointsList.push_back(p);
 	}
@@ -140,9 +141,9 @@ std::vector<gml::Point3D> Polygone::discretize(int nbSegments)
 	      pointsPoly[i][1] < pointsPoly[i+1][1]) {
 	    Point3D p;
 	    p[0] = pointsPoly[i][0] - 
-	      (diffx*(j/(float)(nbSegments/(float)_nbPoints)));
+	      (diffx*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	    p[1] = pointsPoly[i][1] + 
-	      (diffy*(j/(float)(nbSegments/(float)_nbPoints)));
+	      (diffy*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	    p[2] = 0.0;
 	    pointsList.push_back(p);
 	  }
@@ -151,18 +152,18 @@ std::vector<gml::Point3D> Polygone::discretize(int nbSegments)
 		pointsPoly[i][1] > pointsPoly[i+1][1]) {
 	      Point3D p;
 	      p[0] = pointsPoly[i][0] - 
-		(diffx*(j/(float)(nbSegments/(float)_nbPoints)));
+		(diffx*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	      p[1] = pointsPoly[i][1] - 
-		(diffy*(j/(float)(nbSegments/(float)_nbPoints)));
+		(diffy*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	      p[2] = 0.0;
 	      pointsList.push_back(p);
 	    }
 	    else {
 	      Point3D p;
 	      p[0] = pointsPoly[i][0] + 
-		(diffx*(j/(float)(nbSegments/(float)_nbPoints)));
+		(diffx*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	      p[1] = pointsPoly[i][1] - 
-		(diffy*(j/(float)(nbSegments/(float)_nbPoints)));
+		(diffy*(j/(float)(nbDiscretizedPoints/(float)_nbPoints)));
 	      p[2] = 0.0;
 	      pointsList.push_back(p);
 	    }
@@ -197,3 +198,13 @@ int Polygone::addPoint(gml::Point3D *point)
   }
 }
 
+/**************************************************************
+ *
+ *  get the number of segment of the curve
+ *  @return the number of segments
+ *
+ *************************************************************/
+int Polygone::getNumberOfSegments()
+{
+  return _nbPoints;
+}

@@ -36,16 +36,16 @@ void Polyline::render()
 
  /*******************************************************
   * discretize the polyline
-  * @param nbSegments the discretization resolution
+  * @param nbPointsDiscretized the number of discretized points
+  * between two points of a segment of the polyline
   * @return the vector of points (the discretized polyline)
   *
   ******************************************************/
-std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
+std::vector<gml::Point3D> Polyline::discretize(int nbPointsDiscretized)
 {
   std::vector<gml::Point3D> pointsList;
   gml::Point3D vec;
   gml::Point3D point;
-  double tmpx, tmpy;
   double increment, coeff;
   
   //the first point
@@ -53,8 +53,8 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
   point[1] = (*_pointsVector[0])[1];
   pointsList.push_back(point);
 
-  nbSegments = nbSegments-1;
-  increment = 1.0/(double)nbSegments;
+  nbPointsDiscretized = nbPointsDiscretized-1;
+  increment = 1.0/(double)nbPointsDiscretized;
   
   for(unsigned i = 0 ; i<_pointsVector.size()-1; i++){
 
@@ -64,7 +64,7 @@ std::vector<gml::Point3D> Polyline::discretize(int nbSegments)
 
     coeff = increment;
 
-    for(int j = 1 ; j<=nbSegments ; j++){
+    for(int j = 1 ; j<=nbPointsDiscretized ; j++){
       point[0] = vec[0] * coeff;
       point[1] = vec[1] * coeff;
       point[0] += (*_pointsVector[i])[0];
@@ -88,4 +88,15 @@ int Polyline::addPoint(gml::Point3D *point)
   cout<<"point ajoute dans addPoint"<<endl;
   _pointsVector.push_back(point);
   return ADDED;
+}
+
+/**************************************************************
+ *
+ *  get the number of segment of the curve
+ *  @return the number of segments
+ *
+ *************************************************************/
+int Polyline::getNumberOfSegments()
+{
+  return _pointsVector.size()-1;
 }

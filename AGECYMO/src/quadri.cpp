@@ -59,11 +59,12 @@ void Quadri::render(){
 
 /*******************************************************
  * discretize the quadri
- * @param nbSegments the discretization resolution
+ * @param nbDiscretizedPoints the number of discretized points 
+ * between two points of a segment af the quadri.
  * @return the vector of points (the discretized polyline)
  *
  ******************************************************/
-std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
+std::vector<gml::Point3D> Quadri::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> listPoints;
   std::vector<gml::Point3D> fourPoints;
@@ -78,8 +79,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   
   Point3D p;
 
-  for (double i=perim/(float)nbSegments; 
-       i<2*diffy ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbDiscretizedPoints; 
+       i<2*diffy ; i += perim/(float)nbDiscretizedPoints) {
     p[0] = fourPoints[0][0];
     p[1] = fourPoints[0][1] + i;
     p[2] = 0.0;
@@ -92,8 +93,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[1]);
 
-  for (double i=perim/(float)nbSegments; 
-       i<2*diffx ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbDiscretizedPoints; 
+       i<2*diffx ; i += perim/(float)nbDiscretizedPoints) {
     p[0] = fourPoints[1][0] - i;
     p[1] = fourPoints[1][1];
     p[2] = 0.0;
@@ -106,8 +107,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[2]);
 
-  for (double i=perim/(float)nbSegments; 
-       i<2*diffy ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbDiscretizedPoints; 
+       i<2*diffy ; i += perim/(float)nbDiscretizedPoints) {
     p[0] = fourPoints[2][0];
     p[1] = fourPoints[2][1] - i;
     p[2] = 0.0;
@@ -120,8 +121,8 @@ std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
   fourPoints.push_back(p);
   listPoints.push_back(fourPoints[3]);
 
-  for (double i=perim/(float)nbSegments; 
-       i<2*diffx ; i += perim/(float)nbSegments) {
+  for (double i=perim/(float)nbDiscretizedPoints; 
+       i<2*diffx ; i += perim/(float)nbDiscretizedPoints) {
     p[0] = fourPoints[3][0] + i;
     p[1] = fourPoints[3][1];
     p[2] = 0.0;
@@ -147,4 +148,14 @@ int Quadri::addPoint(gml::Point3D *point)
   }
 }
 
+/**************************************************************
+ *
+ *  get the number of segment of the curve
+ *  @return the number of segments
+ *
+ *************************************************************/
+int Quadri::getNumberOfSegments()
+{
+  return 4;
+}
 

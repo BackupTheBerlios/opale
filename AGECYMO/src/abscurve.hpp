@@ -65,11 +65,20 @@ public:
   /**************************************************************
    *
    *  discretize the object
-   *  @param nbSegments the discretization resolution
+   *  @param nbDiscretizedPoints the number of discretized points 
+   *  between two points of a segment of the curve.
    *  @return the vector of the discretized object
    *
    *************************************************************/
-  virtual std::vector<gml::Point3D> discretize(int nbSegments) = 0;
+  virtual std::vector<gml::Point3D> discretize(int nbDiscretizedPoints) = 0;
+
+  /**************************************************************
+   *
+   *  get the number of segment of the curve
+   *  @return the number of segments
+   *
+   *************************************************************/
+  virtual int getNumberOfSegments() = 0;
 
   //non virtual methods
 

@@ -65,11 +65,11 @@ void Circle::render(){
 
 /*******************************************************
  * discretize the circle
- * @param nbSegments the discretization resolution
+ * @param nbDiscretizedPoints the number of discretized points.
  * @return the vector of points (the discretized polyline)
  *
  ******************************************************/
-std::vector<gml::Point3D> Circle::discretize(int nbSegments)
+std::vector<gml::Point3D> Circle::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> pointsList;
 
@@ -81,7 +81,7 @@ std::vector<gml::Point3D> Circle::discretize(int nbSegments)
   
   float r = sqrt(xRay + yRay);
 
-  int step = 360/nbSegments;
+  int step = 360/nbDiscretizedPoints;
   
   for ( int i = 0 ; i < 360 ; i=i+step ) {
     float angle = i * 3.14159F / 180 ;
@@ -112,4 +112,15 @@ int Circle::addPoint(gml::Point3D *point)
   else {
     return NOT_ADDED;
   }
+}
+
+/**************************************************************
+ *
+ *  get the number of segment of the curve
+ *  @return the number of segments
+ *
+ *************************************************************/
+int Circle::getNumberOfSegments()
+{
+  return 1;
 }

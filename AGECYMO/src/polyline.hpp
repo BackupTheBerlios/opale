@@ -43,12 +43,21 @@ public:
 
   /*******************************************************
    * discretize the polyline
-   * @param nbSegments the discretization resolution
+   * @param nbDiscretizedPoints the number of discretized points
+   * between two points of a segment of the polyline.
    * @return the vector of points (the discretized polyline)
    *
    ******************************************************/
-  std::vector<gml::Point3D> discretize(int nbSegments);
+  std::vector<gml::Point3D> discretize(int nbDiscretizedPoints);
   
+  /**************************************************************
+   *
+   *  get the number of segment of the curve
+   *  @return the number of segments
+   *
+   *************************************************************/
+  int getNumberOfSegments();
+
 };
 
 #endif

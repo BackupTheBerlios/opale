@@ -386,18 +386,18 @@ void Curves::calculateQtToOpenGL(QMouseEvent* event, gml::Point3D *point)
 /**************************************************************
  *
  *  discretize the entiere figure (all the curves).
- *  @param nbSegments the number of segments of the global
- *  network. we have to find a multiple of the number of curves.
+ *  @param nbDiscretizedPoints the number discretized points between
+ *  two segments of a curve.
  *  @return the list of points
  *
  *************************************************************/
-std::vector<gml::Point3D> Curves::discretize(int nbSegments)
+std::vector<gml::Point3D> Curves::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> pointsList;
   std::vector<gml::Point3D> tmp;
 
   for(int i = 0; i<getNbCurves(); i++){
-    tmp = _listOfCurves[i]->discretize(nbSegments);
+    tmp = _listOfCurves[i]->discretize(nbDiscretizedPoints);
 
     //if it's the first curve, add the first point
     if(i==0){

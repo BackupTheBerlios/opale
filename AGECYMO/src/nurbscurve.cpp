@@ -96,11 +96,11 @@ void NurbsCurve::render(){
 
 /*******************************************************
  * discretize the nurbs
- * @param nbSegments the discretization resolution
+ * @param nbDiscretizedPoints the number of discretized points
  * @return the vector of points (the discretized polyline)
  *
  ******************************************************/
-std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
+std::vector<gml::Point3D> NurbsCurve::discretize(int nbDiscretizedPoints)
 {
   std::vector<gml::Point3D> pointsList;
   gml::Point3D p3D;
@@ -131,7 +131,7 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   
   PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
   
-  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+(((float)getNbPoints()-(float)_nbPointsDefine+1)/(float)nbSegments)) {
+  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+(((float)getNbPoints()-(float)_nbPointsDefine+1)/(float)nbDiscretizedPoints)) {
     PLib::HPoint3Df p = curve(i);  
     p3D[0] = p.x() / p.w();
     p3D[1] = p.y() / p.w();
@@ -156,3 +156,13 @@ int NurbsCurve::addPoint(gml::Point3D *point)
   return ADDED;
 }
 
+/**************************************************************
+ *
+ *  get the number of segment of the curve
+ *  @return the number of segments
+ *
+ *************************************************************/
+int NurbsCurve::getNumberOfSegments()
+{
+  return 1;
+}

@@ -47,7 +47,7 @@ public:
    * @return the vector of points (the discretized polyline)
    *
    ******************************************************/
-  std::vector<gml::Point3D> discretize(int nbSegments);
+  std::vector<gml::Point3D> discretize(int nbDiscretizedPoints);
 
   /*******************************************************
    * add a point to the nurbs
@@ -56,6 +56,14 @@ public:
    *
    ******************************************************/
   int addPoint(gml::Point3D *point);
+
+  /**************************************************************
+   *
+   *  get the number of segment of the curve
+   *  @return the number of segments
+   *
+   *************************************************************/
+  int getNumberOfSegments();
 
 };
 

@@ -219,12 +219,12 @@ public:
   /**************************************************************
    *
    *  discretize the entiere figure (all the curves)
-   *  @param nbSegments the number of segments between two control
-   *   point of the network
+   *  @param nbPointsDiscretized the number of discretized points
+   *  between two point of a segment
    *  @return the list of points
    *
    *************************************************************/
-  std::vector<gml::Point3D> discretize(int nbSegments);
+  std::vector<gml::Point3D> discretize(int nbPointsDiscretized);
 
   //colors management
 
