@@ -26,6 +26,8 @@ Faces::~Faces()
   
   delete _faces;
   delete _points;
+
+  qDebug("END of destructor ");
 }
 
 
@@ -279,11 +281,9 @@ Faces::updateVertexNormals()
   
   for (unsigned int i=0; i < _points->size(); i++)
   {
-    qDebug(" i  = %d", i);
     
     for (unsigned int j=0; j<_faces->size(); j++)
     {
-      qDebug(" j  = %d", j);
       
       if ( (lesfaces[j])->containVertex(i) )
       {
@@ -297,15 +297,11 @@ Faces::updateVertexNormals()
 
   }
 
-  qDebug("fin premiere bouvcle");
-  
   
   for (unsigned int j=0; j < _faces->size(); j++)
   {
     lesfaces[j]->setNormals( &_normals);
   }
-
-  qDebug("normals address is %p", &_normals);
   
   qDebug("FACES : end of updateVertexNormal ");
 }
