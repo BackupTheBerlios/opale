@@ -43,17 +43,24 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
     _fileMenu->insertItem( "Rectangle",  this, SLOT(setRecMode()) );
     _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
 
-    _fileMenu->insertSeparator();
-    _fileMenu->insertItem( "delete selected", this, SLOT(deleteSelectedPoints()) );
-    _fileMenu->insertItem( "delete all points", this, SLOT(deleteAllPoints()) );
+    
   }
   else{
     _fileMenu->insertItem( "Polyline",  this, SLOT(setPolyMode()) );
     _fileMenu->insertItem( "Nurbs", this, SLOT(setNurbsMode()) );
-    _fileMenu->insertSeparator();
-    _fileMenu->insertItem( "delete selected", this, SLOT(deleteSelectedPoints()) );
-    _fileMenu->insertItem( "delete all points", this, SLOT(deleteAllPoints()) );
   }
+
+  _fileMenu->insertSeparator();
+  _fileMenu->insertItem( "select all", 
+			 this, SLOT(selectAllPoints()) );
+  _fileMenu->insertItem( "deselect all", 
+			 this, SLOT(deselectAllPoints()) );
+
+  _fileMenu->insertSeparator();
+  _fileMenu->insertItem( "delete selected", 
+			   this, SLOT(deleteSelectedPoints()) );
+  _fileMenu->insertItem( "delete all", 
+			 this, SLOT(deleteAllPoints()) );
   
   //polyline default tool
   _toolMode = POLY_MODE;
@@ -234,7 +241,7 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
       }
       
       if(_figure != NULL){
-	_figure->manageEvent(event,_toolMode,_canvasType);
+	_figure->managePressEvent(event,_toolMode,_canvasType);
 	updateGL();
       }
       else{
@@ -249,7 +256,7 @@ void
 Canvas2D::mouseMoveEvent(QMouseEvent* event)
 {
   if(_figure != NULL){
-    _figure->manageEvent(event,_toolMode,_canvasType);
+    _figure->manageMoveEvent(event,_toolMode,_canvasType);
     updateGL();
   }
 }
@@ -259,7 +266,7 @@ void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 {
   if(_figure != NULL){
-    _figure->manageEvent(event,_toolMode,_canvasType);
+    _figure->manageReleaseEvent(event,_toolMode,_canvasType);
     updateGL();
   }
 }
@@ -299,18 +306,10 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
       
       //if a figure has been created
       if(_figure != NULL){
-	_figure->manageEvent(event,_toolMode,_canvasType);
+	_figure->manageDbClickEvent(event,_toolMode,_canvasType);
 	updateGL();
       }
     }
-  }
-}
-
-void Canvas2D::keyPressEvent (QKeyEvent *event)
-{
-  if(_figure!=NULL){
-    _figure->manageKeyEvent(event,_toolMode,_canvasType);
-    updateGL();
   }
 }
 
@@ -365,5 +364,20 @@ void Canvas2D::deleteSelectedPoints()
       delete(_figure);
       _figure = NULL;
     }
+  }
+}
+
+
+void Canvas2D::selectAllPoints()
+{
+  if(_figure!=NULL){
+    _figure->selectAll();
+  }
+}
+
+void Canvas2D::deselectAllPoints()
+{
+  if(_figure!=NULL){
+    _figure->noSelection();
   }
 }
