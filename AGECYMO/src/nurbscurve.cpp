@@ -79,21 +79,7 @@ void NurbsCurve::render(){
     glBegin(GL_LINE_STRIP);
     for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
       PLib::HPoint3Df p = curve(i);  
-      float ponderateX;
-      float ponderateY;
-      if (p.x() >= 0) {
-	ponderateX = p.x()*p.w();
-      }
-      else {
-	ponderateX = p.x()/p.w();
-      }
-      if (p.x() >= 0) {
-	ponderateY = p.y()*p.w();
-      }
-      else {
-	ponderateY = p.y()/p.w();
-      }
-      glVertex2f(ponderateX, ponderateY);
+      glVertex2f(p.x()/p.w(), p.y()/p.w());
     }
     glEnd();
 
@@ -131,8 +117,7 @@ std::vector<gml::Point3D> NurbsCurve::discretize(int nbSegments)
   
   PLib::NurbsCurvef curve(ctrlpoints, knots, _nbPointsDefine-1);
   
-
-  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+0.01) {
+  for (float i=0;i<=getNbPoints()-_nbPointsDefine+1;i=i+(((float)getNbPoints()-(float)_nbPointsDefine+1)/(float)nbSegments)) {
     PLib::HPoint3Df p = curve(i);  
     p3D[0] = p.x() / p.w();
     p3D[1] = p.y() / p.w();
