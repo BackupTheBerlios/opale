@@ -26,6 +26,8 @@ class Canvas3D : public AbsCanvas   //public QGLWidget
     CAMERA_MOVE_CLOSER,
     ENABLE_DRAW_AXES,
     ENABLE_DRAW_FPS,
+    ENABLE_DRAW_BOUNDING_BOX,
+    ENABLE_DRAW_INFO_MODEL, //number of quads, tria etc
   };
 
   private:
