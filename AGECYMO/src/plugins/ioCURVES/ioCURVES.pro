@@ -15,7 +15,8 @@ HEADERS		= ../../point.hpp \
             ../../quad.hpp \
             ../../faces.hpp \
             ../../nurbscurve.hpp \
-            ../../renderer.hpp
+            ../../renderer.hpp \
+            ../../abscurve.hpp
 
 SOURCES		=  ../../absface.cpp \
              ../../face.cpp \
@@ -24,6 +25,7 @@ SOURCES		=  ../../absface.cpp \
              ../../faces.cpp \
              ../../nurbscurve.cpp \
              ../../renderer.cpp \
+             ../../abscurve.cpp \
              ioCURVES.cpp
 
 TARGET		= ioCURVES.plg
