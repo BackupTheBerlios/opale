@@ -53,31 +53,63 @@ void Quadri::render(){
 std::vector<gml::Point3D> Quadri::discretize(int nbSegments)
 {
   std::vector<gml::Point3D> listPoints;
+  std::vector<gml::Point3D> fourPoints;
 
-  float diffx = (*_pointsVector[0])[0] - (*_pointsVector[1])[0];
-  float diffy = (*_pointsVector[0])[1] - (*_pointsVector[1])[1];
+  float diffx = fabs((*_pointsVector[0])[0] - (*_pointsVector[1])[0]);
+  float diffy = fabs((*_pointsVector[0])[1] - (*_pointsVector[1])[1]);
 
-  listPoints.push_back((*_pointsVector[1]));
+  fourPoints.push_back((*_pointsVector[1]));
+  listPoints.push_back(fourPoints[0]);
+
+  float perim = 8 * diffx + 8 * diffy;
   
   Point3D p;
-  
-  p[0] = (*_pointsVector[1])[0];
-  p[1] = (*_pointsVector[1])[1]+ 2 * diffy;
+
+  for (double i=perim/(float)nbSegments; i<2*diffy ; i += perim/(float)nbSegments) {
+    p[0] = fourPoints[0][0];
+    p[1] = fourPoints[0][1] + i;
+    p[2] = 0.0;
+    listPoints.push_back(p);
+  }
+
+  p[0] = fourPoints[0][0];
+  p[1] = fourPoints[0][1] + 2*diffy;
   p[2] = 0.0;
+  fourPoints.push_back(p);
+  listPoints.push_back(fourPoints[1]);
 
-  listPoints.push_back(p);
+  for (double i=perim/(float)nbSegments; i<2*diffx ; i += perim/(float)nbSegments) {
+    p[0] = fourPoints[1][0] - i;
+    p[1] = fourPoints[1][1];
+    p[2] = 0.0;
+    listPoints.push_back(p);
+  }
 
-  p[0] = (*_pointsVector[1])[0] + 2 * diffx;
-  p[1] = (*_pointsVector[1])[1] + 2 * diffy;
+  p[0] = fourPoints[1][0] - 2*diffx;
+  p[1] = fourPoints[1][1];
   p[2] = 0.0;
+  fourPoints.push_back(p);
+  listPoints.push_back(fourPoints[2]);
 
-  listPoints.push_back(p);
+  for (double i=perim/(float)nbSegments; i<2*diffy ; i += perim/(float)nbSegments) {
+    p[0] = fourPoints[2][0];
+    p[1] = fourPoints[2][1] - i;
+    p[2] = 0.0;
+    listPoints.push_back(p);
+  }
 
-  p[0] = (*_pointsVector[1])[0] + 2 * diffx;
-  p[1] = (*_pointsVector[1])[1];
+  p[0] = fourPoints[2][0];
+  p[1] = fourPoints[2][1] - 2*diffy;
   p[2] = 0.0;
+  fourPoints.push_back(p);
+  listPoints.push_back(fourPoints[3]);
 
-  listPoints.push_back(p);
+  for (double i=perim/(float)nbSegments; i<2*diffx ; i += perim/(float)nbSegments) {
+    p[0] = fourPoints[3][0] + i;
+    p[1] = fourPoints[3][1];
+    p[2] = 0.0;
+    listPoints.push_back(p);
+  }
 
   return listPoints;
 }  
