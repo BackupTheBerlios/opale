@@ -88,11 +88,9 @@ int load(MainWindow *mainW){
 
   //here we get the epsilon value with a popup
   bool ok;
-  double res = QInputDialog::getDouble("Mantilla validity", 
+  double res = QInputDialog::getDouble("Mantilla validity",
 				       "Enter Epsilon [0,1]",
-				       Precision::getInstance()
-				       ->getEpsilon()
-				       , 0,
+				       Precision::getInstance()->getEpsilon(), 0,
 				       1, 15, &ok, NULL );
 
   //user has entered a correct value and pressed OK
@@ -101,7 +99,11 @@ int load(MainWindow *mainW){
     //here we set the epsilon in the precision class
     Precision::getInstance()->setEpsilon(res);
 
-    message = "Epsilon value set";
+    QString num;
+    num.setNum(Precision::getInstance()->getEpsilon());
+    
+    message = "Epsilon value set to ";
+    message.append(num) ;
     mainW->getEventsWindow().writeComments( message);
   }
   
