@@ -15,7 +15,8 @@ int mode = CREATION_MODE;
 Canvas2D::Canvas2D(QWidget* parent, const char* name)
     : AbsCanvas(parent, name)
 {
-    
+  QString type(name);
+
   _toolMenuBar = new QMenuBar(this,"the Tools");
   _fileMenu = new QPopupMenu(this);
 
@@ -29,13 +30,13 @@ Canvas2D::Canvas2D(QWidget* parent, const char* name)
 
   _squareNumber = SQUARE_NUMBER_DEFAULT; 
 
-  if((caption().compare(sectionS))==0){
+  if((type.compare(sectionS))==0){
     _canvasType = SECTION_CANVAS;
   }
-  else if((caption().compare(cheminS))==0){
+  else if((type.compare(cheminS))==0){
         _canvasType = CHEMIN_CANVAS;
   }
-  else if((caption().compare(profilS))==0){
+  else if((type.compare(profilS))==0){
         _canvasType = PROFIL_CANVAS;
   }
   else{
@@ -50,10 +51,14 @@ void
 Canvas2D::buildAxesDPL()
 {
   _axesIndexDPL = glGenLists(1);
-  double increment = (glOrthoParameter*2)/double(squareNumber);
-  double xposition = -glOrthoParameter + increment;
-  double yposition = -glOrthoParameter + increment;
-    
+  double increment ;
+  double xposition ;
+  double yposition ;
+
+  increment = (glOrthoParameter*2)/double(squareNumber);
+  xposition = -glOrthoParameter + increment;
+  yposition = -glOrthoParameter + increment;
+
 
   qDebug("index DPL axes 2D = %d\n", _axesIndexDPL);
 
@@ -65,29 +70,58 @@ Canvas2D::buildAxesDPL()
 
     glBegin(GL_LINES);
 
-    //we draw vertical axes
-    for(int i = 0; i<squareNumber; i++){
-      glVertex2f(xposition , glOrthoParameter);
-      glVertex2f(xposition , -glOrthoParameter);
-      xposition += increment;
+    if(_canvasType == PROFIL_CANVAS){
+
+      xposition += glOrthoParameter;
+
+      //we draw vertical axes
+      for(int i = 0; i<squareNumber/2; i++){
+	glVertex2f(xposition , glOrthoParameter);
+	glVertex2f(xposition , -glOrthoParameter);
+	xposition += increment;
+      }
+      
+      //we draw vertical axes
+      for(int i = 0; i<squareNumber; i++){
+	glVertex2f(glOrthoParameter , yposition);
+	glVertex2f(0.0, yposition);
+	yposition += increment;
+      }
+
+      glColor3f(0.2, 0.2, 0.2);
+
+      //we draw the repere axes
+      glVertex2f(0.0,0.0);
+      glVertex2f(glOrthoParameter,0.0);
+      glVertex2f(0.0,glOrthoParameter);
+      glVertex2f(0.0,-glOrthoParameter);
     }
+    else{
+      
+      //we draw vertical axes
+      for(int i = 0; i<squareNumber; i++){
+	glVertex2f(xposition , glOrthoParameter);
+	glVertex2f(xposition , -glOrthoParameter);
+	xposition += increment;
+      }
+      
+      //we draw vertical axes
+      for(int i = 0; i<squareNumber; i++){
+	glVertex2f(glOrthoParameter , yposition);
+	glVertex2f(-glOrthoParameter, yposition);
+	yposition += increment;
+      }
 
-    //we draw vertical axes
-    for(int i = 0; i<squareNumber; i++){
-      glVertex2f(glOrthoParameter , yposition);
-      glVertex2f(-glOrthoParameter, yposition);
-      yposition += increment;
-    }
+      glColor3f(0.2, 0.2, 0.2);
 
-    glColor3f(0.2, 0.2, 0.2);
-
-    //we draw the repere axes
-    glVertex2f(0.0,glOrthoParameter);
-    glVertex2f(0.0,-glOrthoParameter);
-    glVertex2f(glOrthoParameter,0.0);
-    glVertex2f(-glOrthoParameter,0.0);
+      //we draw the repere axes
+      glVertex2f(0.0,glOrthoParameter);
+      glVertex2f(0.0,-glOrthoParameter);
+      glVertex2f(glOrthoParameter,0.0);
+      glVertex2f(-glOrthoParameter,0.0);
     
-    glEnd();
+    }
+      glEnd();
     glEndList();
     
   }
@@ -156,23 +190,25 @@ int cpt = 3;
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
-  if(_figure == NULL){
-    if(_toolMode == POLY_MODE){
-      _figure = new Polyline(this);
+  if(_canvasType != PROFIL_CANVAS || event->x()>width()/2.0){
+    if(_figure == NULL){
+      if(_toolMode == POLY_MODE){
+	_figure = new Polyline(this);
+      }
+      if(_toolMode == CIRCLE_MODE){
+	cout<<"creation dun cercle !!!!"<<endl;
+      }
+      if(_toolMode == REC_MODE){
+	
+      }
+      if(_toolMode == NURBS_MODE){
+	
+      }
     }
-    if(_toolMode == CIRCLE_MODE){
-      cout<<"creation dun cercle !!!!"<<endl;
-    }
-    if(_toolMode == REC_MODE){
-
-    }
-    if(_toolMode == NURBS_MODE){
-      
-    }
-  }
     
-  _figure->manageEvent(event,_toolMode,_canvasType);
-  updateGL();
+    _figure->manageEvent(event,_toolMode,_canvasType);
+    updateGL();
+  }
 }
 
 
@@ -197,24 +233,27 @@ Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 void
 Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 {
-  if(_figure == NULL){
-    if(_toolMode == POLY_MODE)
-      _figure = new Polyline(this);
-  }
-
-  if(_toolMode == CIRCLE_MODE){
-    cout<<"creation dun cercle !!!!"<<endl;
-  }
-  if(_toolMode == REC_MODE){
+  //profil frame division
+  if(_canvasType != PROFIL_CANVAS || event->x()>width()/2.0){
+    if(_figure == NULL){
+      if(_toolMode == POLY_MODE)
+	_figure = new Polyline(this);
+    }
+    
+    if(_toolMode == CIRCLE_MODE){
+      cout<<"creation dun cercle !!!!"<<endl;
+    }
+    if(_toolMode == REC_MODE){
+      
+    }
+    if(_toolMode == NURBS_MODE){
+    
+    }
+    
+    _figure->manageEvent(event,_toolMode,_canvasType);
+    updateGL();
     
   }
-  if(_toolMode == NURBS_MODE){
-    
-  }
-    
-  _figure->manageEvent(event,_toolMode,_canvasType);
-  updateGL();
-
 }
 
 int Canvas2D::getSquareNumber()
