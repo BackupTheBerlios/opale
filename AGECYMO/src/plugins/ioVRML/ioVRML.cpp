@@ -124,11 +124,30 @@ int load(MainWindow *mainW){
   vector<string> awaitedSequence2;
   vector<Point3D> *listPoint = new vector<Point3D>();
   vector<AbsFace*> *listFaces = new vector<AbsFace*>();
-  
-  ifstream VRMLFile ("./vase1.wrl",ios::in);
+
+  int indexesTranslation = 0;
+
+
+  // User chooses a file in order to load a VRML model
+  QString fileName = QFileDialog::getSaveFileName(
+                    ".",
+                    "",
+                    mainW,
+                    "VRML load dialog box",
+                    "choose a name for VRML load" );
+
+  // If no name defined exit
+  if(fileName.isEmpty()){
+    return EXIT_FAILURE;
+  }
+
+  // Open the file
+  ifstream VRMLFile (fileName,ios::in);
 
   Tria *t;
   Quad *q;
+  Face *f;
+
 
   // Making of awaited sequences
   sequence1Construction(awaitedSequence1);
@@ -196,6 +215,11 @@ int load(MainWindow *mainW){
 	    return EXIT_FAILURE;
 	  }
 
+	  // Moving of indexes
+	  for (int i=0; i<=nbPointsIndex;i++) {
+	    indexValues[i] += indexesTranslation;
+	  }
+
   	  if (nbPointsIndex == 3) {
 	    t = new Tria(listPoint, indexValues[0], indexValues[1], indexValues[2]);
 	    listFaces->push_back(t);
@@ -206,7 +230,8 @@ int load(MainWindow *mainW){
 	      listFaces->push_back(q);
 	    }
 	    else {
-	      //Face f(v, nbPointsIndex, 
+	      f = new Face(&indexValues, listPoint, nbPointsIndex);
+	      listFaces->push_back(f);
 	    }
 	  }
 
@@ -239,14 +264,18 @@ int load(MainWindow *mainW){
 
     // If there are more one index declaration
     if (awaitedSequence2.empty()) {
+      // Indexes management
+      indexesTranslation = indexesTranslation + listPoint->size();
+    
+      
       sequence2Construction(awaitedSequence2);
-      }
+    }
 
   } 
 
-  Faces* f = new Faces(listPoint, listFaces);
+  Faces* faces = new Faces(listPoint, listFaces);
   //cout << "La face :" << endl << *f;
-  mainW->setModel(*f);
+  mainW->setModel(*faces);
   
 
 
