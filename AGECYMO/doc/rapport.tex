@@ -64,7 +64,7 @@
 	\date{\small{Janvier 2005}}
 	\maketitle
 	\thispagestyle{empty}
-	\vspace*{\stretch{1}}
+%	\vspace*{\stretch{1}}
 
 	\tableofcontents
 	\newpage
@@ -108,9 +108,9 @@
 	\item Des pièces d'échecs (cf figures~\ref{chess1},\ref{chess2} et \ref{chess3}).
 	\end{itemize}
 
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./cube.png}
+			\includegraphics[width=5cm]{./cube.png}
 			\caption{\label{cube} \textit{Le Cube}.}
 		\end{center}
 	\end{figure}
@@ -118,7 +118,7 @@
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
-		Modèle             & Points & Arètes & Faces & Triangles & Quads & Autres \\
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
 		\hline
 		Cube               & 8      & 12     & 6     & 0         & 6     & 0 \\
 		\hline
@@ -182,9 +182,9 @@
 	\end{tabular}
 
 
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./vase.png}
+			\includegraphics[width=5cm]{./vase.png}
 			\caption{\label{vase} 
 				\textit{Vase}.}
 		\end{center}
@@ -192,14 +192,14 @@
 
 	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
 		\hline
-		Modèle             & Points & Arètes & Faces & Triangles & Quads & Autres \\
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
 		\hline
-		Cube               & 8      & 12     & 6     & 0         & 6     & 0 \\
+		Vase               & 30      & 55     & 26     & 0         & 25     & 1 \\
 		\hline
 		\hline
     & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
 		\hline
-		Nb. Vérifications  &  \multicolumn{2}{|c|}{RESULTAT} & \multicolumn{2}{|c|}{RESULTAT}  &  \multicolumn{2}{|c|}{RESULTAT} \\     
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{1485} & \multicolumn{2}{|c|}{26}  &  \multicolumn{2}{|c|}{1430} \\     
 		\hline
 		\hline
 		\begin{tabular}[t]{c|c}
@@ -216,96 +216,615 @@
 		\end{tabular} & 
 		\multicolumn{2}{|c|}{
 			\begin{tabular}[t]{c}
-				RESULTAT \\ 
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT 
+				0 \\ 
+				5 \\
+				0 \\
+				1 \\
+				0 \\
+				0 \\
+				0 
 		\end{tabular} } & 
 		\multicolumn{2}{|c|}{
 			\begin{tabular}[t]{c}
-				RESULTAT \\ 
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT 
+				26  \\ 
+				24  \\
+				26  \\
+				5  \\
+				19  \\
+				22  \\
+				22  
 			\end{tabular}	 
 		} & 	
 		\multicolumn{2}{|c|}{
 		 	\begin{tabular}[t]{c}
-				RESULTAT \\ 
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT \\
-				RESULTAT 
+				0  \\ 
+				5  \\
+				85  \\
+				121  \\
+				26  \\
+				11  \\
+				11  
 			\end{tabular}
 		}\\
 		\hline
 		\hline
 		CORE &   
-		\multicolumn{2}{|c|}{RESULTAT} &  
-		\multicolumn{2}{|c|}{RESULTAT} & 
-		\multicolumn{2}{|c|}{RESULTAT} \\
+		\multicolumn{2}{|c|}{3} &  
+		\multicolumn{2}{|c|}{22} & 
+		\multicolumn{2}{|c|}{11} \\
 		\hline
 	\end{tabular}
 
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./bunny.png}
+			\includegraphics[width=5cm]{./bunny.png}
 			\caption{\label{bunny} 
 				\textit{Le Lapin. Modèle VRML simplifié du	modèle original de Standford}.}
 		\end{center}
 	\end{figure}
 
-	\begin{figure}[h!]
+
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Lapin              & 1494    & 4412   &  2915 &  2915 & 0     & 0 \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$9\,730\,666$} & \multicolumn{2}{|c|}{$2\,915$}  &  \multicolumn{2}{|c|}{$12\,860\,980$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0  \\ 
+				403 \\
+				0  \\
+				127 \\
+				0  \\
+				0  \\
+				0  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0 \\ 
+				0 \\
+				0  \\
+				0 \\
+				0  \\
+				0  \\
+				0  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				0  \\ 
+				55 \\
+				0  \\
+				7 \\
+				0  \\
+				0  \\
+				227  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{146} &  
+		\multicolumn{2}{|c|}{0} & 
+		\multicolumn{2}{|c|}{19981} \\
+		\hline
+	\end{tabular}
+
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./dragon.png}
+			\includegraphics[width=5cm]{./dragon.png}
 			\caption{\label{dragon} 
 				\textit{Le Dragon. Modèle VRML simplifié du	modèle original de Standford}.}
 		\end{center}
 	\end{figure}
 
-	\begin{figure}[h!]
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Dragon             & 1257    & 4095   & 2730  & 2730      & 0     & 0 \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$8\,382\,465$} & \multicolumn{2}{|c|}{$2730$}  &  \multicolumn{2}{|c|}{$11\,179\,350$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0  \\ 
+				309  \\
+				0  \\
+				0  \\
+				0  \\
+				2  \\
+				0  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0  \\ 
+				0  \\
+				0  \\
+				0  \\
+				0  \\
+				0  \\
+				0  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				0  \\ 
+				50  \\
+				0  \\
+				0  \\
+				0  \\
+				0  \\
+				1747  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$28$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$22\,281$} \\
+		\hline
+	\end{tabular}
+
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./hand.png}
+			\includegraphics[width=5cm]{./hand.png}
 			\caption{\label{hand} 
 				\textit{Main. Modèle VRML simplifié du	modèle original de Standford}.}
 		\end{center}
 	\end{figure}
 
 
-	\begin{figure}[h!]
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Main               & $1055$  & $3195$ & $2130$  & $2130$  & $0$   & $0$ \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$5\,102\,415$} & \multicolumn{2}{|c|}{$2130$}  &  \multicolumn{2}{|c|}{$6\,805\,350$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0  \\ 
+				209  \\
+				0  \\
+				728  \\
+				1  \\
+				0  \\
+				0  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0  \\ 
+				0  \\
+				0  \\
+				0  \\
+				0  \\
+				0  \\
+				0  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				0  \\ 
+				45  \\
+				0  \\
+				37  \\
+				1  \\
+				0  \\
+				1051 
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$0$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$13\,887$} \\
+		\hline
+	\end{tabular}
+
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Fourmille          & $486$   & $1\,368$ & $912$ & $912$   & $0$   & $0$ \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$935\,028$} & \multicolumn{2}{|c|}{$912$}  &  \multicolumn{2}{|c|}{$1\,247\,616$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$93$  \\
+				$0$  \\
+				$838$  \\
+				$9$  \\
+				$9$  \\
+				$10$  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$ \\ 
+				$0$ \\
+				$0$ \\
+				$0$ \\
+				$0$ \\
+				$0$ \\
+				$0$ 
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				$16\,304$   \\ 
+				$2\,531$  \\
+				$15\,318$  \\
+				$8\,404$  \\
+				$5\,677$  \\
+				$5\,424$  \\
+				$5\,101$  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$89$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$5\,966$} \\
+		\hline
+	\end{tabular}
+
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./chess1.png}
+			\includegraphics[width=5cm]{./chess1.png}
 			\caption{\label{chess1} 
-				\textit{Pièce d'échec}.}
+				\textit{Pièce d'échec $1$}.}
 		\end{center}
 	\end{figure}
 
-	\begin{figure}[h!]
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Pièce d'échec $1$    & $389$   & $1\,159$ & $772$ & $772$     & 0     & 0 \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$671\,061$} & \multicolumn{2}{|c|}{$772$}  &  \multicolumn{2}{|c|}{$894\,748$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$131$  \\
+				$0$  \\
+				$228$  \\
+				$5$  \\
+				$3$  \\
+				$3$  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				$24\,126$  \\ 
+				$4\,023$  \\
+				$22\,050$  \\
+				$9\,293$  \\
+				$6\,749$  \\
+				$6\,298$  \\
+				$6\,221$  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$152$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$7\,041$} \\
+		\hline
+	\end{tabular}
+
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./chess2.png}
+			\includegraphics[width=5cm]{./chess2.png}
 			\caption{\label{chess2} 
-				\textit{Pièce d'échec}.}
+				\textit{Pièce d'échec $2$}.}
 		\end{center}
 	\end{figure}
 
-	\begin{figure}[h!]
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Pièce d'échec $2$    & $380$   & $1\,134$ & $756$ &  $756$  &  $0$   & $0$ \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$642\,411$} & \multicolumn{2}{|c|}{$756$}  &  \multicolumn{2}{|c|}{$857\,304$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$87$  \\
+				$0$  \\
+				$71$  \\
+				$9$  \\
+				$0$  \\
+				$0$  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				$20\,538$  \\ 
+				$2\,739$  \\
+				$12\,991$  \\
+				$8\,039$  \\
+				$6\,199$  \\
+				$5\,527$  \\
+				$5\,336$  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$94$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$\,5866$} \\
+		\hline
+	\end{tabular}
+
+	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[]{./chess3.png}
+			\includegraphics[width=5cm]{./chess3.png}
 			\caption{\label{chess3} 
-				\textit{Pièce d'échec}.}
+				\textit{Pièce d'échec $3$}.}
 		\end{center}
 	\end{figure}
 
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Pièce d'échec $3$  & $390$   & $1\,164$ & $776$ & $776$   & $0$   & $0$ \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$676\,866$} & \multicolumn{2}{|c|}{$776$}  &  \multicolumn{2}{|c|}{$903\,264$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$82$  \\
+				$0$  \\
+				$226$  \\
+				$0$  \\
+				$0$  \\
+				$0$  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				$20\,775$  \\ 
+				$2\,743$  \\
+				$18\,889$  \\
+				$7\,452$  \\
+				$5\,503$  \\
+				$5\,210$  \\
+				$5\,146$  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$84$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$5\,471$} \\
+		\hline
+	\end{tabular}
 
-	\onecolumn
+
+	\begin{tabular}[t]{|c|c|c|c||c|c|c|}
+		\hline
+		Modèle             & Sommets & Arètes & Faces & Triangles & Quads & Autres \\
+		\hline
+		Pièce d'échec $4$  & $416$   & $1\,242$ & $828$ & $828$   & $0$     & $0$ \\
+		\hline
+		\hline
+    & \multicolumn{2}{|c|}{Test 1} & \multicolumn{2}{|c|}{Test 2} & \multicolumn{2}{|c|}{Test 3} \\
+		\hline
+		Nb. Vérifications  &  \multicolumn{2}{|c|}{$770\,061$} & \multicolumn{2}{|c|}{$828$}  &  \multicolumn{2}{|c|}{$1\,028\,376$} \\     
+		\hline
+		\hline
+		\begin{tabular}[t]{c|c}
+			Mantilla & 
+			\begin{tabular}[t]{c} 
+				$\varepsilon = 1.0$ \\
+				$\varepsilon = 0.0$ \\
+				$\varepsilon = 0.5$ \\
+				$\varepsilon = 0.1$ \\
+				$\varepsilon = 0.001$ \\
+				$\varepsilon = 10^{-6}$ \\
+				$\varepsilon = 10^{-14}$ \\
+			\end{tabular}\\
+		\end{tabular} & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				0 \\ 
+				167 \\
+				0 \\
+				103  \\
+				0  \\
+				0  \\
+				0  
+		\end{tabular} } & 
+		\multicolumn{2}{|c|}{
+			\begin{tabular}[t]{c}
+				$0$  \\ 
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  \\
+				$0$  
+			\end{tabular}	 
+		} & 	
+		\multicolumn{2}{|c|}{
+		 	\begin{tabular}[t]{c}
+				$27\,183$  \\ 
+				$3\,771$  \\
+				$19\,920$  \\
+				$8\,997$  \\
+				$7\,126$  \\
+				$6\,901$  \\
+				$6\,785$  
+			\end{tabular}
+		}\\
+		\hline
+		\hline
+		CORE &   
+		\multicolumn{2}{|c|}{$169$} &  
+		\multicolumn{2}{|c|}{$0$} & 
+		\multicolumn{2}{|c|}{$7741$} \\
+		\hline
+	\end{tabular}
 
 	\section{Discussion et Conclusion}
 
