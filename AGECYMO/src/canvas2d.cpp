@@ -13,7 +13,14 @@ gml::Point3D savePoint;
 int mode = CREATION_MODE;
 
 
-
+/**************************************************************
+ *
+ *  constructor 
+ *  @param MainWindow the mainWindow
+ *  @param parent the parent widget
+ *  @return name the name of the canvas
+ *
+ *************************************************************/
 Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
     : AbsCanvas(parent, name)
 { 
@@ -140,6 +147,11 @@ Canvas2D::Canvas2D(MainWindow* mw, QWidget* parent, const char* name)
   _figure = new Curves(this);;
 }
 
+/**************************************************************
+ *
+ *  build principal axes
+ *
+ *************************************************************/
 void
 Canvas2D::buildAxesDPL()
 {
@@ -226,13 +238,22 @@ Canvas2D::buildAxesDPL()
   
 }
 
-
+/**************************************************************
+ *
+ *  draw axes in an openGL context
+ *
+ *************************************************************/
 void
 Canvas2D::drawAxes()
 {      
   glCallList(_axesIndexDPL);
 }
 
+/**************************************************************
+ *
+ *  initialise the openGL context
+ *
+ *************************************************************/
 void
 Canvas2D::initializeGL()
 {
@@ -243,6 +264,11 @@ Canvas2D::initializeGL()
   buildAxesDPL();
 }
 
+/**************************************************************
+ *
+ *  paint canvas curves in openGL context
+ *
+ *************************************************************/
 void
 Canvas2D::paintGL()
 {
@@ -263,6 +289,13 @@ Canvas2D::paintGL()
 }
 
 
+/**************************************************************
+ *
+ *  resize the canvas
+ *  @param x the height
+ *  @param y the width
+ *
+ *************************************************************/
 void
 Canvas2D::resizeGL(int width, int height)
 {
@@ -279,9 +312,13 @@ Canvas2D::resizeGL(int width, int height)
 	     glOrthoParameter);
 }
 
-int cpt = 3;
 
-//mouse press management
+/**************************************************************
+ *
+ *  manage mouse press event
+ *  @param event the event
+ *
+ *************************************************************/
 void
 Canvas2D::mousePressEvent(QMouseEvent* event)
 {
@@ -298,7 +335,12 @@ Canvas2D::mousePressEvent(QMouseEvent* event)
   }
 }
 
-//move mouse management
+/**************************************************************
+ *
+ *  manage mouse move event
+ *  @param event the event
+ *
+ *************************************************************/
 void
 Canvas2D::mouseMoveEvent(QMouseEvent* event)
 {
@@ -306,7 +348,12 @@ Canvas2D::mouseMoveEvent(QMouseEvent* event)
     updateGL();
 }
 
-//realease mouse management
+/**************************************************************
+ *
+ *  manage mouse release event
+ *  @param event the event
+ *
+ *************************************************************/
 void
 Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -315,7 +362,12 @@ Canvas2D::mouseReleaseEvent(QMouseEvent* event)
 }
 
 
-//double click management
+/**************************************************************
+ *
+ *  manage moude double click event
+ *  @param event the event
+ *
+ *************************************************************/
 void
 Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
 {
@@ -336,37 +388,77 @@ Canvas2D::mouseDoubleClickEvent(QMouseEvent* event)
   }
 }
 
-
+/**************************************************************
+ *
+ *  get the number of square (grid resolution)
+ *  @return the square number
+ *
+ *************************************************************/
 int Canvas2D::getSquareNumber()
 {
   return _squareNumber;
 }
 
+/**************************************************************
+ *
+ *  set the number of square (grid resolution)
+ *  @param newValue the new square number
+ *
+ *************************************************************/
 void Canvas2D::setSquareNumber(int newValue)
 {
   _squareNumber = newValue;
 }
 
-
+/**************************************************************
+ *
+ *  get the curves
+ *  @return the curves
+ *
+ *************************************************************/
 Curves *Canvas2D::getFigure()
 {
   return _figure;
 }
 
+/**************************************************************
+ *
+ *  get the selected toolMode
+ *  @return the toolMode
+ *
+ *************************************************************/
 unsigned short Canvas2D::getToolMode()
 {
   return _toolMode;
 }
+
+/**************************************************************
+ *
+ *  get the type of this canvas
+ *  @return the canvas type
+ *
+ *************************************************************/
 unsigned short Canvas2D::getCanvasType()
 {
   return _canvasType;
 }
 
-
+/**************************************************************
+ *
+ *  get the mainWindow
+ *  @return the mainwindow
+ *
+ *************************************************************/
 MainWindow& Canvas2D::getMW() {
   return *_mw;
 }
 
+/**************************************************************
+ *
+ *  set the curves
+ *  @param the curves to set
+ *
+ *************************************************************/
 void Canvas2D::setFigure(Curves *figure)
 {
   if(_figure!=NULL){
@@ -376,71 +468,73 @@ void Canvas2D::setFigure(Curves *figure)
   updateGL();
 }
 
+/**************************************************************
+ *
+ *  get the popupMenu for manage tools
+ *  @return the tools popupMenu
+ *
+ *************************************************************/
 QPopupMenu *Canvas2D::getPopupMenu()
 {
   return _fileMenu;
 }
 
-/*
-//popupWindow management
-void Canvas2D::setPolyMode()
-{
-  
-  polyAction->setEnabled(false);
-  nurbsAction->setEnabled(true);
-  circleAction->setEnabled(false);
-  quadriAction->setEnabled(false);
-  polygAction->setEnabled(false);
-  
-}
 
-void Canvas2D::setNurbsMode()
-{
-
-}
-
-void Canvas2D::setRectangleMode()
-{
-
-}
-
-
-void Canvas2D::setCircleMode()
-{
-
-}
-
-void Canvas2D::setPolygMode()
-{
-
-}
-*/
-//SLOTS
+/**************************************************************
+ *
+ *  set toolMode to polylin mode
+ *
+ *************************************************************/
 void Canvas2D::setPolyMode()
 {
   _toolMode = POLY_MODE;
 }
 
+/**************************************************************
+ *
+ *  set toolMode to polygone mode
+ *
+ *************************************************************/
 void Canvas2D::setPolygMode()
 {
   _toolMode = POLYG_MODE;
 }
 
+/**************************************************************
+ *
+ *  set toolMode ti circle mode
+ *
+ *************************************************************/
 void Canvas2D::setCircleMode()
 {
   _toolMode = CIRCLE_MODE;
 }
 
+/**************************************************************
+ *
+ *  set toolMode to rectangle mode
+ *
+ *************************************************************/
 void Canvas2D::setRecMode()
 {
   _toolMode = REC_MODE;
 }
 
+/**************************************************************
+ *
+ *  set toolMode to nubs mode
+ *
+ *************************************************************/
 void Canvas2D::setNurbsMode()
 {
   _toolMode = NURBS_MODE;
 }
 
+/**************************************************************
+ *
+ *  delete all the points (here mean all the curves too)
+ *
+ *************************************************************/
 void Canvas2D::deleteAllPoints()
 {
   _figure->deleteAllCurves();
@@ -448,6 +542,11 @@ void Canvas2D::deleteAllPoints()
   _toolMode = POLY_MODE;
 }
 
+/**************************************************************
+ *
+ *  select all the points
+ *
+ *************************************************************/
 void Canvas2D::selectAllPoints()
 {
   _figure->selectAll();
@@ -458,6 +557,11 @@ void Canvas2D::selectAllPoints()
   }
 }
 
+/**************************************************************
+ *
+ *  deselect all the points
+ *
+ *************************************************************/
 void Canvas2D::deselectAllPoints()
 {
   _figure->noSelection();
